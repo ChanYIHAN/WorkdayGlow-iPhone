@@ -41,7 +41,7 @@ struct PhotoMemoryProvider: AppIntentTimelineProvider {
             configuration.secondPhoto,
             configuration.thirdPhoto
         ]
-        let photos = files.compactMap { file in
+        let photos: [Data] = files.compactMap { (file: IntentFile?) -> Data? in
             guard let file else { return nil }
             return PhotoThumbnailer.thumbnailData(from: file.data)
         }
