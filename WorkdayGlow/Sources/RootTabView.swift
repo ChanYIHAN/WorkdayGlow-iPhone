@@ -70,7 +70,7 @@ struct RootTabView: View {
                 try? await Task.sleep(nanoseconds: 350_000_000)
                 ShortcutBridge.openExternalURL(destination)
             }
-        case "photos", "music", "health", "weather", "love", "time":
+        case "photos", "music", "health", "weather", "love", "time", "finance":
             selectedTab = .widgets
         default:
             break

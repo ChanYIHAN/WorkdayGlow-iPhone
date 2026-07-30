@@ -31,6 +31,12 @@ struct WidgetTemplateDetailView: View {
                 if template.usesMusicLink {
                     musicSetupSection
                 }
+                if template.usesExchangeRates {
+                    exchangeRateSourceSection
+                }
+                if template.usesGoldMarketData || template.usesStockMarketData {
+                    alphaVantageSetupSection
+                }
                 installSection
             }
             .padding()
@@ -75,8 +81,11 @@ struct WidgetTemplateDetailView: View {
                 .foregroundStyle(.secondary)
 
             HStack(spacing: 8) {
-                Label(template.usesWeatherData ? "在线更新" : "本地处理", systemImage: "iphone")
-                Label(template.usesWeatherData ? "每小时" : "隐私优先", systemImage: template.usesWeatherData ? "arrow.clockwise" : "hand.raised.fill")
+                Label(usesOnlineData ? "在线更新" : "本地处理", systemImage: "iphone")
+                Label(
+                    usesOnlineData ? "延迟参考" : "隐私优先",
+                    systemImage: usesOnlineData ? "arrow.clockwise" : "hand.raised.fill"
+                )
                 Label("可编辑", systemImage: "slider.horizontal.3")
             }
             .font(.caption2)
@@ -199,6 +208,54 @@ struct WidgetTemplateDetailView: View {
         .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 
+    private var exchangeRateSourceSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label("ECB 每日参考汇率", systemImage: "eurosign.arrow.circlepath")
+                .font(.headline)
+
+            Text("无需 API Key。欧洲中央银行通常在每个工作日发布一次参考汇率；跨币种结果由欧元基准数据交叉计算，适合旅行和日常参考，不代表银行实际兑换价格。")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            Link(
+                "查看 ECB 数据来源",
+                destination: URL(string: "https://data.ecb.europa.eu/help/api/data")!
+            )
+            .font(.caption)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(18)
+        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+    }
+
+    private var alphaVantageSetupSection: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            Label("需要免费的行情 Key", systemImage: "key.fill")
+                .font(.headline)
+
+            Text(
+                template.usesGoldMarketData
+                    ? "黄金组件使用 Alpha Vantage 的黄金/白银接口，约每 6 小时请求一次。人民币每克价格是根据国际金价与 ECB 汇率计算的估值。"
+                    : "股票组件使用 Alpha Vantage 免费日线接口，显示最新收盘价，不是实时或 15 分钟行情。港股代码可先在 Alpha Vantage 搜索页面确认。"
+            )
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+
+            Link(
+                "免费申请 Alpha Vantage API Key",
+                destination: URL(string: "https://www.alphavantage.co/support/#api-key")!
+            )
+            .font(.caption)
+
+            Text("不要把 Key 写进 GitHub。添加组件后长按 →“编辑小组件”，只在该组件的配置中填写。")
+                .font(.caption)
+                .foregroundStyle(Color("AuroraCoral"))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(18)
+        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+    }
+
     private var configurationInstruction: String {
         if let style = template.configurationStyleName {
             if template.usesHealthData {
@@ -212,6 +269,15 @@ struct WidgetTemplateDetailView: View {
             }
             if template.usesMusicLink {
                 return "长按组件并选择“编辑小组件”，把样式设为“\(style)”，填写歌名、歌手、Apple Music 分享链接和可选封面。"
+            }
+            if template.usesExchangeRates {
+                return "长按组件并选择“编辑小组件”，把样式设为“\(style)”，再选择基准货币、目标货币和换算金额。"
+            }
+            if template.usesGoldMarketData {
+                return "先免费申请 Alpha Vantage Key，再长按组件 →“编辑小组件”，选择“\(style)”并填写 Key。"
+            }
+            if template.usesStockMarketData {
+                return "长按组件 →“编辑小组件”，选择“\(style)”，填写 Alpha Vantage Key、股票代码与显示名称。"
             }
             return "添加后长按并选择“编辑小组件”，把样式设为“\(style)”并填写对应信息。"
         }
@@ -234,9 +300,21 @@ struct WidgetTemplateDetailView: View {
             "桌面实际效果会显示你从“文件”选择的私人照片"
         case .music:
             "点击桌面组件会打开你填写的 Apple Music 链接"
+        case .finance:
+            if template.usesExchangeRates {
+                "桌面实际效果会显示 ECB 最新工作日参考汇率"
+            } else if template.usesGoldMarketData {
+                "桌面实际效果会使用你填写的 Key 获取黄金参考行情"
+            } else {
+                "桌面实际效果会显示最新日线收盘数据，不是实时行情"
+            }
         default:
             "桌面实际效果会根据你的上下班时间与收入设置更新"
         }
+    }
+
+    private var usesOnlineData: Bool {
+        template.usesWeatherData || template.category == .finance
     }
 
     private func instructionRow(number: Int, text: String) -> some View {

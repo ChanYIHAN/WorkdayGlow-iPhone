@@ -114,6 +114,13 @@ struct DiscoveryView: View {
                 title: "把喜欢的瞬间\n留在桌面",
                 accent: Color("RoseGlow")
             )
+
+            FeaturedStoryCard(
+                template: .goldTrend,
+                eyebrow: "参考行情",
+                title: "汇率、黄金与股票\n清晰看懂",
+                accent: Color("ButterGlow")
+            )
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .frame(height: 300)
@@ -189,6 +196,19 @@ struct DiscoveryView: View {
                 CompactTemplateNavigationCard(template: .shortcutStack)
                 CompactTemplateNavigationCard(template: .focusConsole)
             }
+        }
+        .padding(.horizontal)
+
+        VStack(spacing: 16) {
+            TemplateSectionHeader("汇率与市场", subtitle: "延迟参考行情，不制造交易焦虑")
+            TemplateNavigationCard(template: .currencyMatrix)
+
+            HStack(spacing: 14) {
+                CompactTemplateNavigationCard(template: .goldSpot)
+                CompactTemplateNavigationCard(template: .stockQuote)
+            }
+
+            TemplateNavigationCard(template: .watchlistBento)
         }
         .padding(.horizontal)
 

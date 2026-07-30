@@ -18,5 +18,8 @@ struct WorkdayGlowWidgetBundle: WidgetBundle {
         UtilityLauncherWidget()
         PhotoMemoryWidget()
         MusicLauncherWidget()
+        CurrencyRateWidget()
+        GoldMarketWidget()
+        StockMarketWidget()
     }
 }

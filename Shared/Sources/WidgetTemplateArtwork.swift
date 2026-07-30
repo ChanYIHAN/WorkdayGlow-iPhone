@@ -53,6 +53,10 @@ struct WidgetTemplateBackground: View {
              .photoPolaroid, .photoFilmstrip, .photoMosaic,
              .musicVinyl, .musicGlass, .musicWave:
             CreativeTemplateBackground(template: template)
+        case .currencyMinimal, .currencyMatrix, .travelConverter,
+             .goldSpot, .goldTrend, .metalsDuo,
+             .stockQuote, .watchlistBento, .dualMarket:
+            FinanceTemplateBackground(template: template)
         }
     }
 }
@@ -100,6 +104,10 @@ struct WidgetTemplateArtwork: View {
                  .photoPolaroid, .photoFilmstrip, .photoMosaic,
                  .musicVinyl, .musicGlass, .musicWave:
                 CreativeTemplateArtwork(template: template, size: size)
+            case .currencyMinimal, .currencyMatrix, .travelConverter,
+                 .goldSpot, .goldTrend, .metalsDuo,
+                 .stockQuote, .watchlistBento, .dualMarket:
+                FinanceTemplateArtwork(template: template, size: size)
             }
         }
         .accessibilityElement(children: .contain)

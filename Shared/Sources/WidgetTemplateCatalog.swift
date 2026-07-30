@@ -12,6 +12,7 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
     case tools
     case photos
     case music
+    case finance
 
     var id: String { rawValue }
 
@@ -28,6 +29,7 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
         case .tools: "工具"
         case .photos: "相册"
         case .music: "音乐"
+        case .finance: "行情"
         }
     }
 
@@ -44,6 +46,7 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
         case .tools: "switch.2"
         case .photos: "photo.on.rectangle.angled"
         case .music: "music.note"
+        case .finance: "chart.line.uptrend.xyaxis"
         }
     }
 }
@@ -92,6 +95,15 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     case musicVinyl
     case musicGlass
     case musicWave
+    case currencyMinimal
+    case currencyMatrix
+    case travelConverter
+    case goldSpot
+    case goldTrend
+    case metalsDuo
+    case stockQuote
+    case watchlistBento
+    case dualMarket
 
     var id: String { rawValue }
 
@@ -124,6 +136,15 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .musicVinyl: "黑胶唱片"
         case .musicGlass: "玻璃播放器"
         case .musicWave: "声波胶囊"
+        case .currencyMinimal: "极简汇率"
+        case .currencyMatrix: "汇率矩阵"
+        case .travelConverter: "旅行换算"
+        case .goldSpot: "黄金现货"
+        case .goldTrend: "金价曲线"
+        case .metalsDuo: "金银双卡"
+        case .stockQuote: "单股行情"
+        case .watchlistBento: "自选股便当"
+        case .dualMarket: "港美双市场"
         }
     }
 
@@ -156,6 +177,15 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .musicVinyl: "黑胶唱片与专辑信息组成的复古音乐卡"
         case .musicGlass: "通透渐变、专辑封面与播放入口"
         case .musicWave: "把歌名与声波做成克制的小号组件"
+        case .currencyMinimal: "一个汇率、一眼读懂，使用 ECB 每日参考数据"
+        case .currencyMatrix: "常用币种并排呈现，跨境消费更从容"
+        case .travelConverter: "输入金额，把旅行预算直接换算到桌面"
+        case .goldSpot: "国际黄金价格与人民币每克估值"
+        case .goldTrend: "用柔和曲线查看近期黄金方向"
+        case .metalsDuo: "黄金与白银价格放在同一张资产卡片"
+        case .stockQuote: "突出一只港股或美股的最新收盘表现"
+        case .watchlistBento: "三只自选股的收盘价格与涨跌幅"
+        case .dualMarket: "港股与美股各选一只，跨市场对照"
         }
     }
 
@@ -181,6 +211,10 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
             .photos
         case .musicVinyl, .musicGlass, .musicWave:
             .music
+        case .currencyMinimal, .currencyMatrix, .travelConverter,
+             .goldSpot, .goldTrend, .metalsDuo,
+             .stockQuote, .watchlistBento, .dualMarket:
+            .finance
         }
     }
 
@@ -213,6 +247,15 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .musicVinyl: "record.circle"
         case .musicGlass: "play.circle.fill"
         case .musicWave: "waveform"
+        case .currencyMinimal: "dollarsign.arrow.circlepath"
+        case .currencyMatrix: "square.grid.2x2.fill"
+        case .travelConverter: "airplane.departure"
+        case .goldSpot: "circle.hexagongrid.fill"
+        case .goldTrend: "chart.line.uptrend.xyaxis"
+        case .metalsDuo: "seal.fill"
+        case .stockQuote: "chart.line.uptrend.xyaxis"
+        case .watchlistBento: "list.bullet.rectangle.fill"
+        case .dualMarket: "globe.asia.australia.fill"
         }
     }
 
@@ -234,6 +277,12 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
             [.medium]
         case .photoFilmstrip, .photoMosaic:
             [.medium, .large]
+        case .currencyMinimal, .travelConverter, .goldSpot, .stockQuote:
+            [.small, .medium]
+        case .currencyMatrix, .metalsDuo:
+            [.medium]
+        case .goldTrend, .watchlistBento, .dualMarket:
+            [.medium, .large]
         }
     }
 
@@ -242,6 +291,8 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .progressOrbit, .afterworkPlan, .oxygenPulse, .weatherMinimal,
              .loveOrbit, .editorialClock, .calendarClock, .shortcutStack,
              .focusConsole, .photoPolaroid, .musicVinyl, .musicWave:
+            .small
+        case .currencyMinimal, .travelConverter, .goldSpot, .stockQuote:
             .small
         default:
             .medium
@@ -257,13 +308,22 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .tools: "快捷工具"
         case .photos: "相册记忆"
         case .music: "音乐播放器"
+        case .finance:
+            switch self {
+            case .currencyMinimal, .currencyMatrix, .travelConverter:
+                "汇率换算"
+            case .goldSpot, .goldTrend, .metalsDuo:
+                "黄金价格"
+            default:
+                "港美股行情"
+            }
         default: title
         }
     }
 
     var configurationStyleName: String? {
         switch category {
-        case .health, .weather, .love, .time, .tools, .photos, .music:
+        case .health, .weather, .love, .time, .tools, .photos, .music, .finance:
             title
         default:
             nil
@@ -288,6 +348,33 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
 
     var usesMusicLink: Bool {
         category == .music
+    }
+
+    var usesExchangeRates: Bool {
+        switch self {
+        case .currencyMinimal, .currencyMatrix, .travelConverter:
+            true
+        default:
+            false
+        }
+    }
+
+    var usesGoldMarketData: Bool {
+        switch self {
+        case .goldSpot, .goldTrend, .metalsDuo:
+            true
+        default:
+            false
+        }
+    }
+
+    var usesStockMarketData: Bool {
+        switch self {
+        case .stockQuote, .watchlistBento, .dualMarket:
+            true
+        default:
+            false
+        }
     }
 
     static func templates(for category: WidgetTemplateCategory) -> [WidgetTemplateKind] {

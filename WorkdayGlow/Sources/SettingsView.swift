@@ -91,7 +91,7 @@ struct SettingsView: View {
                 } header: {
                     Text("隐私与数据")
                 } footer: {
-                    Text("健康数据留在设备上；天气组件只把你填写的城市名称发送给 Open-Meteo。")
+                    Text("健康数据留在设备上；天气、汇率、黄金和股票组件仅向对应数据服务发送完成查询所需的内容。")
                 }
 
                 Section {
@@ -106,7 +106,7 @@ struct SettingsView: View {
                             .font(.headline)
                             .foregroundStyle(store.settings.theme.palette.accentStart)
 
-                        Text("应用内设置只用于概览页。由于免费 Apple ID 不支持 App Group，桌面小组件需要长按后单独配置一次。所有数据仍只保存在本机。")
+                        Text("应用内设置只用于概览页。由于免费 Apple ID 不支持 App Group，桌面小组件需要长按后单独配置一次；行情密钥与自选代码也由 iOS 保存在对应组件配置中。")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }

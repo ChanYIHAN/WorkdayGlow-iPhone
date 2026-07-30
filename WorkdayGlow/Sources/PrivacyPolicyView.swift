@@ -73,6 +73,24 @@ struct PrivacyPolicyView: View {
                 )
             }
 
+            Section("汇率与行情") {
+                policyRow(
+                    symbol: "eurosign.arrow.circlepath",
+                    title: "ECB 每日汇率",
+                    text: "汇率组件只把所选币种代码发送给欧洲中央银行公开接口，不需要账号或密钥。"
+                )
+                policyRow(
+                    symbol: "chart.line.uptrend.xyaxis",
+                    title: "Alpha Vantage 行情",
+                    text: "黄金与股票组件会把你填写的 API Key 和品种或股票代码发送给 Alpha Vantage。密钥由 iOS 保存在对应的小组件配置中，不会写入 GitHub。"
+                )
+                policyRow(
+                    symbol: "clock.badge.exclamationmark",
+                    title: "延迟参考数据",
+                    text: "免费行情可能延迟，并按较低频率刷新；它不是实时交易报价，也不构成投资建议。"
+                )
+            }
+
             Section("设备数据") {
                 policyRow(
                     symbol: "externaldrive.fill.badge.checkmark",
