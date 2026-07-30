@@ -44,7 +44,7 @@ struct HealthAccessView: View {
                 .padding(.vertical, 12)
             }
 
-            Section("最近读取结果") {
+            Section {
                 healthRow(
                     symbol: "waveform.path.ecg",
                     title: "心率",
@@ -63,6 +63,8 @@ struct HealthAccessView: View {
                     value: model.oxygenText,
                     tint: Color("SkyGlow")
                 )
+            } header: {
+                Text("最近读取结果")
             } footer: {
                 Text("没有 Apple Watch 或兼容设备记录时，相应指标会显示为“暂无数据”。血氧数据是否可用取决于设备型号和所在地区。")
             }

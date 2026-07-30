@@ -11,7 +11,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("工作时间") {
+                Section {
                     DatePicker(
                         "上班时间",
                         selection: startTimeBinding,
@@ -26,11 +26,13 @@ struct SettingsView: View {
                     )
 
                     weekdayPicker
+                } header: {
+                    Text("工作时间")
                 } footer: {
                     Text("倒计时以设备本地时间为准；第一版暂不扣除午休时间。")
                 }
 
-                Section("收入估算") {
+                Section {
                     TextField(
                         "月薪",
                         value: salaryBinding,
@@ -50,6 +52,8 @@ struct SettingsView: View {
                     }
 
                     Toggle("隐藏金额", isOn: privacyBinding)
+                } header: {
+                    Text("收入估算")
                 } footer: {
                     Text("今日预计收入按“月薪 ÷ 21.75 × 今日工作进度”计算，仅作为轻量估算。")
                 }
@@ -66,22 +70,26 @@ struct SettingsView: View {
                     ThemePreviewRow(theme: store.settings.theme)
                 }
 
-                Section("健康组件") {
+                Section {
                     NavigationLink {
                         HealthAccessView()
                     } label: {
                         Label("Apple 健康授权", systemImage: "heart.text.square.fill")
                     }
+                } header: {
+                    Text("健康组件")
                 } footer: {
                     Text("健康组件只读取最近心率、昨夜睡眠和最近血氧；授权必须在主 App 内完成。")
                 }
 
-                Section("隐私与数据") {
+                Section {
                     NavigationLink {
                         PrivacyPolicyView()
                     } label: {
                         Label("隐私说明", systemImage: "hand.raised.fill")
                     }
+                } header: {
+                    Text("隐私与数据")
                 } footer: {
                     Text("健康数据留在设备上；天气组件只把你填写的城市名称发送给 Open-Meteo。")
                 }
