@@ -797,7 +797,7 @@ struct LifestyleTemplateArtwork: View {
 
     private var sleepQuality: String {
         guard let hours = health.sleepHours else { return "打开 App 授权健康数据" }
-        switch hours {
+        return switch hours {
         case 7...: "睡得不错，今天保持节奏"
         case 6..<7: "睡眠略短，记得适当休息"
         default: "今天尽量早点休息"
@@ -856,7 +856,7 @@ struct LifestyleTemplateArtwork: View {
         currentCalendar.timeZone = .autoupdatingCurrent
         let currentDay = currentCalendar.ordinality(of: .day, in: .era, for: date) ?? 0
 
-        switch localDay - currentDay {
+        return switch localDay - currentDay {
         case let difference where difference > 0: "明天"
         case let difference where difference < 0: "昨天"
         default: "今天"

@@ -4,6 +4,14 @@ import WidgetKit
 struct WorkdayTemplateWidget: Widget {
     let template: WidgetTemplateKind
 
+    init() {
+        template = .minimalCountdown
+    }
+
+    init(template: WidgetTemplateKind) {
+        self.template = template
+    }
+
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
             kind: "WorkdayGlow.\(template.rawValue)",

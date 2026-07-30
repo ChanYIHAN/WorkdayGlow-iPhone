@@ -17,16 +17,16 @@ struct HealthStatusProvider: AppIntentTimelineProvider {
         for configuration: HealthWidgetConfigurationIntent,
         in context: Context
     ) async -> HealthStatusEntry {
-        let metrics: HealthMetrics
+        let fetchedMetrics: HealthMetrics
         if context.isPreview {
-            metrics = .preview
+            fetchedMetrics = .preview
         } else {
-            metrics = await metrics(for: configuration)
+            fetchedMetrics = await metrics(for: configuration)
         }
 
         return HealthStatusEntry(
             date: .now,
-            metrics: metrics,
+            metrics: fetchedMetrics,
             style: configuration.style
         )
     }
