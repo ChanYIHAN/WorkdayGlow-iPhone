@@ -1,0 +1,150 @@
+# 下班光轨 · iPhone 设计版
+
+一个本地优先的 SwiftUI 应用与 WidgetKit 桌面小组件，最低支持 iOS 17。项目不包含自建服务器、账号、广告、统计 SDK 或付费能力。
+
+## 已实现
+
+- 模板画廊首页、精选轮播、横向分类与组件详情页
+- 发现、组件库、概览、设置四个原生 Tab
+- 实时下班倒计时、今日工作进度、今日预计收入、距离发薪日
+- 18 款可选视觉模板，对应 11 个真实 WidgetKit 组件入口
+- Apple 健康：最近心率、昨夜睡眠、最近血氧，支持自动读取与手动备用
+- 天气：当前天气、未来六小时、极简天气，使用免费的 Open-Meteo
+- 恋爱纪念日：在一起天数、下一个周年倒计时
+- 时间：编辑部时钟、世界时间、日历时钟
+- 小、中、大三种尺寸，并按模板提供合适的尺寸组合
+- 极光、暮色、海盐三套主题
+- 隐私模式
+- 工作日、上下班时间、月薪、币种与发薪日设置
+- App Intent 小组件配置，不依赖付费 App Group
+- GitHub Actions 未签名 IPA 构建流程
+
+## 组件目录：18 款设计
+
+| 分类 | 组件风格 | 尺寸 |
+| --- | --- | --- |
+| 光轨倒计时 | 深色极光、综合信息 | 小 / 中 / 大 |
+| 极简倒计时 | 奶油留白、强调数字 | 小 / 中 |
+| 收入便当 | 深色 Bento 数据卡 | 中 / 大 |
+| 本周节奏 | 一周工作与休息节奏 | 中 / 大 |
+| 进度轨道 | 双圆环进度 | 小 / 中 |
+| 发薪月历 | 发薪日高亮月历 | 中 / 大 |
+| 今晚提案 | 明亮、轻松的下班提醒 | 小 / 中 |
+| 健康 | 健康便当 / 睡眠丝带 / 血氧脉冲 | 小 / 中 |
+| 天气 | 天气画布 / 逐时天气 / 极简天气 | 小 / 中 |
+| 恋爱 | 恋爱天数 / 纪念日轨道 | 小 / 中 |
+| 时间 | 编辑部时钟 / 世界时间 / 日历时钟 | 小 / 中 |
+
+为了避免 WidgetKit 选择器被大量近似入口挤满，健康、天气、恋爱和时间各自只有一个组件入口。添加后长按组件，选择“编辑小组件”，即可切换同分类的视觉样式。
+
+## 数据来源与隐私
+
+- 健康组件经用户授权后直接在设备上只读查询 HealthKit，不上传健康数据。
+- 血氧是否有记录取决于兼容设备、Apple Watch 型号和所在地区。
+- 天气组件只把你手动填写的城市名称发送给 Open-Meteo，不申请定位权限；界面保留 Open-Meteo 署名。
+- 工作、收入、纪念日与手动健康值只保存在本机或 iOS 小组件配置中。
+- 完整说明见 [PRIVACY.md](PRIVACY.md)。
+
+## 免费签名模式的设计取舍
+
+免费 Apple ID 不支持 App Group，所以主应用与小组件不能使用标准共享容器。
+
+- 主应用里的设置用于应用内概览。
+- 添加桌面小组件后，长按小组件并选择“编辑小组件”，再填写一次小组件设置。
+- 小组件设置由 iOS 的 App Intents / WidgetKit 保存，不需要 App Group。
+- 除天气查询外，数据都在本机处理。
+
+这是为了让组件可以使用免费 Apple ID 签名。Apple 对 Personal Team 的描述文件仍设有 7 天有效期；Sideloadly 的自动刷新只是让电脑在到期前自动重新签名。
+
+HealthKit 是受签名能力保护的系统框架。工程已经给主 App 和 Widget 扩展配置 HealthKit entitlement，但“未签名 IPA → Sideloadly 免费重签”是否保留该能力，取决于实际生成的描述文件和签名工具，无法在 Windows 端静态保证：
+
+- 安装成功且能弹出 Apple 健康授权时，可使用“自动读取 Apple 健康”。
+- 如果授权按钮报错、组件无数据或侧载工具移除了该能力，长按健康组件 →“编辑小组件”→ 把“数据来源”设为“手动填写”。
+- 有 Mac 时，使用 Xcode 和 Personal Team 直接运行到自己的 iPhone，更适合验证 HealthKit 能力。
+
+## 方案 A：没有 Mac，用 GitHub Actions 构建
+
+1. 新建一个 GitHub 仓库。
+2. 把本目录里的所有内容上传到仓库根目录，包括 `.github`。
+3. 打开仓库的 `Actions` 页面。
+4. 选择 `Build unsigned IPA`。
+5. 点击 `Run workflow`。
+6. 构建成功后，在运行记录底部下载 `WorkdayGlow-unsigned-ipa`。
+7. 解压得到 `WorkdayGlow-unsigned.ipa`。
+
+GitHub Actions 会使用 macOS/Xcode 构建，但不会写入任何 Apple 账号或签名。
+
+公开仓库使用标准 GitHub-hosted runner 不计费；私有仓库会消耗账号方案包含的 Actions 免费分钟。本流程设置了 20 分钟超时，通常一次构建可落在免费额度内，但运行前仍建议查看 GitHub 的 Actions 使用量。若账号没有设置付款方式，免费额度用完后任务会被阻止，而不是自动扣费。
+
+## 方案 B：有 Mac，本地构建
+
+安装当前稳定版 Xcode 和 XcodeGen：
+
+```bash
+brew install xcodegen
+```
+
+在项目目录执行：
+
+```bash
+zsh Scripts/build_unsigned_ipa.command
+```
+
+完成后会在项目根目录生成 `WorkdayGlow-unsigned.ipa`。
+
+如果只想在 Xcode 中预览：
+
+```bash
+zsh Scripts/generate_project.command
+```
+
+## 使用 Sideloadly 安装
+
+1. 只从 `https://sideloadly.io` 下载 Sideloadly。
+2. Windows 按其说明安装网页版 iTunes 与 iCloud；不要使用 Microsoft Store 版本。
+3. 用 USB 连接 iPhone，并在手机上选择“信任此电脑”。
+4. 将 `WorkdayGlow-unsigned.ipa` 拖入 Sideloadly。
+5. 使用你的免费 Apple ID 签名安装。
+6. 保持同一个 Apple ID 和同一个 Bundle ID，以便覆盖刷新并尽量保留本地数据。
+7. 启用 Sideloadly 的 `Automatic App Refreshing`。
+8. 不要启用 `Remove app extensions / PlugIns`；桌面小组件就在扩展包中，移除后只剩主应用。
+9. 配置 Wi-Fi sideloading，并让 Sideloadly Daemon 在电脑后台运行。
+
+自动刷新要求电脑能够通过同一局域网或 USB 发现 iPhone。免费签名本质上仍然是 7 天，电脑未运行、设备长期不在同一网络或刷新失败时，应用仍可能过期。
+
+首次安装后，较新的 iOS 版本可能要求在“设置 → 隐私与安全性 → 开发者模式”中启用开发者模式。
+
+## 添加和设置小组件
+
+1. 先打开一次“下班光轨”应用。
+2. 回到主屏幕，长按空白处并添加小组件。
+3. 搜索“下班光轨”。
+4. 选择喜欢的模板与尺寸。
+5. 添加后长按小组件，选择“编辑小组件”。
+6. 根据组件填写配置：
+   - 下班类：上班/下班时间、工作日、收入、发薪日、币种和主题。
+   - 健康类：视觉样式、Apple 健康或手动数据来源。
+   - 天气类：城市名称和视觉样式。
+   - 恋爱类：开始日期、双方称呼和视觉样式。
+   - 时间类：视觉样式和世界时间城市。
+
+健康组件第一次使用前，请打开主 App →“设置”→“Apple 健康授权”。Widget 扩展不能自行弹出系统健康授权窗口。
+
+## 安全提醒
+
+- Sideloadly 和爱思助手都不是 Apple 官方工具。
+- 第三方工具需要处理设备通信和签名过程，不应称为 Apple 官方认可的分发方式。
+- 建议只从工具官方网站下载；不要使用来源不明的重打包版本。
+- 可以为自签名单独准备一个 Apple ID，避免把主要 Apple ID 输入不可信软件。
+- 不要向任何人提供验证码、恢复密钥或设备解锁密码。
+
+## 项目结构
+
+```text
+WorkdayGlow/Sources          主应用
+WorkdayGlowWidget/Sources    WidgetKit 与 App Intent 配置
+Shared/Sources               计算逻辑和视觉组件
+Shared/Resources             颜色与隐私清单
+Configuration               Bundle ID 配置
+.github/workflows            未签名 IPA 云端构建
+```

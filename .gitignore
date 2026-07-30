@@ -1,0 +1,8 @@
+.DS_Store
+DerivedData/
+build/
+Payload/
+*.ipa
+*.xcuserstate
+xcuserdata/
+WorkdayGlow.xcodeproj/

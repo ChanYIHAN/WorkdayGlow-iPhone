@@ -1,0 +1,7 @@
+// Unsigned builds use these local identifiers. Sideloadly can replace/sign them
+// with the identifiers generated for your free Apple ID.
+APP_BUNDLE_IDENTIFIER = com.yourname.WorkdayGlow
+WIDGET_BUNDLE_IDENTIFIER = com.yourname.WorkdayGlow.widget
+
+SWIFT_STRICT_CONCURRENCY = targeted
+ENABLE_USER_SCRIPT_SANDBOXING = YES
