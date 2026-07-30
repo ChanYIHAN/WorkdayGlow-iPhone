@@ -47,6 +47,32 @@ struct PrivacyPolicyView: View {
                 )
             }
 
+            Section("快捷工具") {
+                policyRow(
+                    symbol: "switch.2",
+                    title: "系统快捷指令",
+                    text: "工具组件只按你填写的名称打开 Apple“快捷指令”App，不读取 Wi-Fi、蓝牙、蜂窝数据或飞行模式状态。"
+                )
+                policyRow(
+                    symbol: "checkmark.shield.fill",
+                    title: "不使用私有接口",
+                    text: "应用不会绕过 iOS 权限直接切换系统设置，也不会使用未公开的系统设置地址。"
+                )
+            }
+
+            Section("照片与音乐") {
+                policyRow(
+                    symbol: "photo.fill",
+                    title: "本地照片",
+                    text: "你为相册或音乐组件选择的图片由 iOS 小组件配置保存，只在设备上缩小和显示，不会上传。"
+                )
+                policyRow(
+                    symbol: "music.note",
+                    title: "音乐链接",
+                    text: "音乐组件仅保存你填写的标题、描述和分享链接；点击时由系统打开对应的 Apple Music 页面。"
+                )
+            }
+
             Section("设备数据") {
                 policyRow(
                     symbol: "externaldrive.fill.badge.checkmark",

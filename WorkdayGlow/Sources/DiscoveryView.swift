@@ -100,6 +100,20 @@ struct DiscoveryView: View {
                 title: "把今天的天空\n放在桌面",
                 accent: Color("SkyGlow")
             )
+
+            FeaturedStoryCard(
+                template: .controlDeck,
+                eyebrow: "快捷工具",
+                title: "常用开关\n一步就到",
+                accent: Color("AuroraLavender")
+            )
+
+            FeaturedStoryCard(
+                template: .photoMosaic,
+                eyebrow: "私人画廊",
+                title: "把喜欢的瞬间\n留在桌面",
+                accent: Color("RoseGlow")
+            )
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .frame(height: 300)
@@ -164,6 +178,30 @@ struct DiscoveryView: View {
                 CompactTemplateNavigationCard(template: .loveOrbit)
                 CompactTemplateNavigationCard(template: .editorialClock)
             }
+        }
+        .padding(.horizontal)
+
+        VStack(spacing: 16) {
+            TemplateSectionHeader("快捷与连接", subtitle: "通过系统快捷指令，少滑几层菜单")
+            TemplateNavigationCard(template: .controlDeck)
+
+            HStack(spacing: 14) {
+                CompactTemplateNavigationCard(template: .shortcutStack)
+                CompactTemplateNavigationCard(template: .focusConsole)
+            }
+        }
+        .padding(.horizontal)
+
+        VStack(spacing: 16) {
+            TemplateSectionHeader("照片与音乐", subtitle: "把桌面变成只属于你的情绪画廊")
+            TemplateNavigationCard(template: .photoFilmstrip)
+
+            HStack(spacing: 14) {
+                CompactTemplateNavigationCard(template: .photoPolaroid)
+                CompactTemplateNavigationCard(template: .musicVinyl)
+            }
+
+            TemplateNavigationCard(template: .musicGlass)
         }
         .padding(.horizontal)
     }

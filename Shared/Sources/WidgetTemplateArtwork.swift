@@ -49,6 +49,10 @@ struct WidgetTemplateBackground: View {
              .loveDays, .loveOrbit,
              .editorialClock, .worldClock, .calendarClock:
             LifestyleTemplateBackground(template: template)
+        case .controlDeck, .shortcutStack, .focusConsole,
+             .photoPolaroid, .photoFilmstrip, .photoMosaic,
+             .musicVinyl, .musicGlass, .musicWave:
+            CreativeTemplateBackground(template: template)
         }
     }
 }
@@ -92,6 +96,10 @@ struct WidgetTemplateArtwork: View {
                     size: size,
                     date: snapshot.date
                 )
+            case .controlDeck, .shortcutStack, .focusConsole,
+                 .photoPolaroid, .photoFilmstrip, .photoMosaic,
+                 .musicVinyl, .musicGlass, .musicWave:
+                CreativeTemplateArtwork(template: template, size: size)
             }
         }
         .accessibilityElement(children: .contain)

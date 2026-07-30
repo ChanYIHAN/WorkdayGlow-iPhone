@@ -15,5 +15,8 @@ struct WorkdayGlowWidgetBundle: WidgetBundle {
         WeatherForecastWidget()
         LoveAnniversaryWidget()
         TimePosterWidget()
+        UtilityLauncherWidget()
+        PhotoMemoryWidget()
+        MusicLauncherWidget()
     }
 }
