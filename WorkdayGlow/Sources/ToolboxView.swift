@@ -16,7 +16,7 @@ struct ToolboxView: View {
                 .padding()
                 .padding(.bottom, 24)
             }
-            .background(Color("GalleryCanvas").ignoresSafeArea())
+            .background(AppCanvas())
             .navigationTitle("快捷工具")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -119,10 +119,7 @@ struct ToolboxView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(15)
-                    .background(
-                        Color.white.opacity(0.9),
-                        in: RoundedRectangle(cornerRadius: 22, style: .continuous)
-                    )
+                    .appGlassSurface(cornerRadius: 22, interactive: true)
                 }
                 .buttonStyle(.plain)
             }
@@ -157,7 +154,7 @@ struct ToolboxView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.9), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var limitationNote: some View {

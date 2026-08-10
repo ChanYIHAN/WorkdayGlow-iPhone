@@ -43,7 +43,7 @@ struct RootTabView: View {
                 }
                 .tag(RootTab.settings)
         }
-        .tint(Color("PlumInk"))
+        .tint(Color.accentColor)
         .onOpenURL(perform: handleDeepLink)
     }
 
@@ -70,7 +70,7 @@ struct RootTabView: View {
                 try? await Task.sleep(nanoseconds: 350_000_000)
                 ShortcutBridge.openExternalURL(destination)
             }
-        case "photos", "music", "health", "weather", "love", "time", "finance":
+        case "photos", "music", "health", "weather", "love", "time", "finance", "planner", "daily":
             selectedTab = .widgets
         default:
             break

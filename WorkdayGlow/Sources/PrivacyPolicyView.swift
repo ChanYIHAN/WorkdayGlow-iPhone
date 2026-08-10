@@ -9,7 +9,7 @@ struct PrivacyPolicyView: View {
                         .font(.headline)
                         .foregroundStyle(Color("PlumInk"))
 
-                    Text("下班光轨不包含账号系统、广告、统计 SDK 或自建服务器。你的工作时间、收入、纪念日和手动健康数据保存在设备或 iOS 的小组件配置中。")
+                    Text("下班光轨不包含账号系统、广告、统计 SDK 或自建服务器。你的工作时间、收入、纪念日、日程与手动健康数据保存在设备或 iOS 的小组件配置中。")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -20,7 +20,7 @@ struct PrivacyPolicyView: View {
                 policyRow(
                     symbol: "waveform.path.ecg",
                     title: "读取内容",
-                    text: "经你授权后，仅只读访问最近心率、最近血氧和昨夜睡眠时长。"
+                    text: "经你授权后，仅只读访问最近心率、最近血氧、昨夜睡眠，以及今日步数、步行距离和活动能量。"
                 )
                 policyRow(
                     symbol: "iphone.gen3",
@@ -88,6 +88,19 @@ struct PrivacyPolicyView: View {
                     symbol: "clock.badge.exclamationmark",
                     title: "延迟参考数据",
                     text: "免费行情可能延迟，并按较低频率刷新；它不是实时交易报价，也不构成投资建议。"
+                )
+            }
+
+            Section("日程与每日灵感") {
+                policyRow(
+                    symbol: "checklist",
+                    title: "仅保存在本机",
+                    text: "日程事项、专注目标、日出日落时间由 iOS 保存在对应的小组件配置中，不会上传。"
+                )
+                policyRow(
+                    symbol: "moonphase.waxing.gibbous",
+                    title: "本地估算",
+                    text: "每日语录与月相均在设备上生成；月相是便于日常展示的近似计算，不用于天文观测。"
                 )
             }
 

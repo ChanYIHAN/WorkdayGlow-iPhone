@@ -76,8 +76,8 @@ struct HealthStatusWidget: Widget {
                 }
         }
         .configurationDisplayName("健康状态")
-        .description("自动读取最近心率、昨夜睡眠和血氧，也可切换为手动数据。")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .description("读取心率、睡眠、血氧、步数、距离与活动能量，也可切换为手动数据。")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
     }
 }
@@ -89,11 +89,19 @@ private struct HealthStatusWidgetView: View {
     var body: some View {
         LifestyleTemplateArtwork(
             template: entry.style.template,
-            size: family == .systemSmall ? .small : .medium,
+            size: artworkSize,
             date: entry.date,
             health: entry.metrics
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .widgetURL(URL(string: "workdayglow://health"))
+    }
+
+    private var artworkSize: WidgetArtworkSize {
+        switch family {
+        case .systemSmall: .small
+        case .systemLarge: .large
+        default: .medium
+        }
     }
 }

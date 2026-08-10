@@ -22,7 +22,7 @@ struct HealthAccessView: View {
                         .font(.title3)
                         .fontWeight(.bold)
 
-                    Text("只读取最近心率、最近血氧和昨夜睡眠时长。数据由 Apple 健康提供，不会上传到服务器。")
+                    Text("只读取心率、血氧、睡眠、步数、步行距离与活动能量摘要。数据由 Apple 健康提供，不会上传到服务器。")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -62,6 +62,24 @@ struct HealthAccessView: View {
                     title: "血氧",
                     value: model.oxygenText,
                     tint: Color("SkyGlow")
+                )
+                healthRow(
+                    symbol: "figure.walk",
+                    title: "今日步数",
+                    value: model.stepsText,
+                    tint: Color("SeaGlass")
+                )
+                healthRow(
+                    symbol: "location.fill",
+                    title: "步行距离",
+                    value: model.distanceText,
+                    tint: Color("SkyGlow")
+                )
+                healthRow(
+                    symbol: "flame.fill",
+                    title: "活动能量",
+                    value: model.energyText,
+                    tint: Color("AuroraCoral")
                 )
             } header: {
                 Text("最近读取结果")
@@ -109,6 +127,9 @@ private final class HealthAccessModel: ObservableObject {
         heartRate: nil,
         sleepHours: nil,
         oxygenSaturation: nil,
+        stepCount: nil,
+        activeEnergy: nil,
+        walkingDistanceKilometers: nil,
         updatedAt: .now
     )
     @Published var isRequesting = false
@@ -179,5 +200,20 @@ private final class HealthAccessModel: ObservableObject {
     var oxygenText: String {
         guard let value = metrics.oxygenSaturation else { return "暂无数据" }
         return "\(Int((value * 100).rounded()))%"
+    }
+
+    var stepsText: String {
+        guard let value = metrics.stepCount else { return "暂无数据" }
+        return Int(value.rounded()).formatted()
+    }
+
+    var distanceText: String {
+        guard let value = metrics.walkingDistanceKilometers else { return "暂无数据" }
+        return "\(value.formatted(.number.precision(.fractionLength(1)))) km"
+    }
+
+    var energyText: String {
+        guard let value = metrics.activeEnergy else { return "暂无数据" }
+        return "\(Int(value.rounded())) 千卡"
     }
 }

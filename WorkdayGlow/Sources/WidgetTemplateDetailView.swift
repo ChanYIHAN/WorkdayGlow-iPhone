@@ -42,7 +42,7 @@ struct WidgetTemplateDetailView: View {
             .padding()
             .padding(.bottom, 24)
         }
-        .background(Color("GalleryCanvas").ignoresSafeArea())
+        .background(AppCanvas())
         .navigationTitle(template.title)
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -94,7 +94,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var installSection: some View {
@@ -113,7 +113,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var healthPermissionSection: some View {
@@ -122,7 +122,7 @@ struct WidgetTemplateDetailView: View {
                 .font(.headline)
                 .foregroundStyle(Color("AuroraCoral"))
 
-            Text("Widget 不能弹出健康授权窗口，请先在主 App 中完成一次授权。只读取心率、睡眠时长和血氧；免费侧载未保留 HealthKit 能力时可改用手动数据。")
+            Text("Widget 不能弹出健康授权窗口，请先在主 App 中完成一次授权。只读取心率、睡眠、血氧、步数、步行距离与活动能量；免费侧载未保留 HealthKit 能力时可改用手动数据。")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
@@ -137,7 +137,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var weatherSourceSection: some View {
@@ -154,7 +154,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var shortcutSetupSection: some View {
@@ -177,7 +177,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var photoSetupSection: some View {
@@ -191,7 +191,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var musicSetupSection: some View {
@@ -205,7 +205,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var exchangeRateSourceSection: some View {
@@ -225,7 +225,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var alphaVantageSetupSection: some View {
@@ -253,7 +253,7 @@ struct WidgetTemplateDetailView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appGlassSurface(cornerRadius: 24)
     }
 
     private var configurationInstruction: String {
@@ -278,6 +278,12 @@ struct WidgetTemplateDetailView: View {
             }
             if template.usesStockMarketData {
                 return "长按组件 →“编辑小组件”，选择“\(style)”，填写 Alpha Vantage Key、股票代码与显示名称。"
+            }
+            if template.category == .planner {
+                return "长按组件 →“编辑小组件”，选择“\(style)”，填写三件事项、时间与专注目标。"
+            }
+            if template.category == .daily {
+                return "长按组件 →“编辑小组件”，选择“\(style)”；日光节律可按所在城市调整日出与日落时间。"
             }
             return "添加后长按并选择“编辑小组件”，把样式设为“\(style)”并填写对应信息。"
         }
@@ -308,6 +314,10 @@ struct WidgetTemplateDetailView: View {
             } else {
                 "桌面实际效果会显示最新日线收盘数据，不是实时行情"
             }
+        case .planner:
+            "桌面与锁屏会显示你在组件配置中填写的日程与专注目标"
+        case .daily:
+            "语录与月相在本地更新；日出日落时间由你手动设置"
         default:
             "桌面实际效果会根据你的上下班时间与收入设置更新"
         }

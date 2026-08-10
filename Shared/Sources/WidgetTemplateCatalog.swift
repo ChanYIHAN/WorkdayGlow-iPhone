@@ -13,6 +13,8 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
     case photos
     case music
     case finance
+    case planner
+    case daily
 
     var id: String { rawValue }
 
@@ -30,6 +32,8 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
         case .photos: "相册"
         case .music: "音乐"
         case .finance: "行情"
+        case .planner: "日程"
+        case .daily: "日常"
         }
     }
 
@@ -47,6 +51,8 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
         case .photos: "photo.on.rectangle.angled"
         case .music: "music.note"
         case .finance: "chart.line.uptrend.xyaxis"
+        case .planner: "checklist"
+        case .daily: "sun.horizon.fill"
         }
     }
 }
@@ -104,6 +110,15 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     case stockQuote
     case watchlistBento
     case dualMarket
+    case stepOrbit
+    case activeBento
+    case recoveryArc
+    case glassAgenda
+    case weekPlanner
+    case focusNow
+    case dailyQuote
+    case moonPhase
+    case solarRhythm
 
     var id: String { rawValue }
 
@@ -145,6 +160,15 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .stockQuote: "单股行情"
         case .watchlistBento: "自选股便当"
         case .dualMarket: "港美双市场"
+        case .stepOrbit: "步数轨道"
+        case .activeBento: "活力便当"
+        case .recoveryArc: "恢复弧线"
+        case .glassAgenda: "玻璃日程"
+        case .weekPlanner: "一周计划"
+        case .focusNow: "专注此刻"
+        case .dailyQuote: "每日一句"
+        case .moonPhase: "月相观测"
+        case .solarRhythm: "日光节律"
         }
     }
 
@@ -186,6 +210,15 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .stockQuote: "突出一只港股或美股的最新收盘表现"
         case .watchlistBento: "三只自选股的收盘价格与涨跌幅"
         case .dualMarket: "港股与美股各选一只，跨市场对照"
+        case .stepOrbit: "步数、距离与目标进度形成轻盈轨道"
+        case .activeBento: "把步数、距离与活动能量排成清晰便当"
+        case .recoveryArc: "结合睡眠与活动，温和回顾今日状态"
+        case .glassAgenda: "三件重要小事，放进通透的日程卡片"
+        case .weekPlanner: "一周重点与下一件事，一眼就能确认"
+        case .focusNow: "把当下的专注目标留在桌面最显眼处"
+        case .dailyQuote: "每天一句克制而温柔的生活提醒"
+        case .moonPhase: "本地计算月相与下一次满月进度"
+        case .solarRhythm: "日出、日落与此刻光线组成一条节律"
         }
     }
 
@@ -197,7 +230,8 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
             .income
         case .weekRhythm, .progressOrbit:
             .rhythm
-        case .healthBento, .sleepRibbon, .oxygenPulse:
+        case .healthBento, .sleepRibbon, .oxygenPulse,
+             .stepOrbit, .activeBento, .recoveryArc:
             .health
         case .weatherNow, .weatherHourly, .weatherMinimal:
             .weather
@@ -215,6 +249,10 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
              .goldSpot, .goldTrend, .metalsDuo,
              .stockQuote, .watchlistBento, .dualMarket:
             .finance
+        case .glassAgenda, .weekPlanner, .focusNow:
+            .planner
+        case .dailyQuote, .moonPhase, .solarRhythm:
+            .daily
         }
     }
 
@@ -256,6 +294,15 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .stockQuote: "chart.line.uptrend.xyaxis"
         case .watchlistBento: "list.bullet.rectangle.fill"
         case .dualMarket: "globe.asia.australia.fill"
+        case .stepOrbit: "figure.walk"
+        case .activeBento: "figure.run"
+        case .recoveryArc: "heart.text.clipboard.fill"
+        case .glassAgenda: "calendar.badge.clock"
+        case .weekPlanner: "calendar.day.timeline.left"
+        case .focusNow: "scope"
+        case .dailyQuote: "quote.opening"
+        case .moonPhase: "moonphase.waxing.gibbous"
+        case .solarRhythm: "sun.horizon.fill"
         }
     }
 
@@ -283,6 +330,10 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
             [.medium]
         case .goldTrend, .watchlistBento, .dualMarket:
             [.medium, .large]
+        case .stepOrbit, .recoveryArc, .focusNow, .dailyQuote, .moonPhase, .solarRhythm:
+            [.small, .medium]
+        case .activeBento, .glassAgenda, .weekPlanner:
+            [.medium, .large]
         }
     }
 
@@ -293,6 +344,8 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
              .focusConsole, .photoPolaroid, .musicVinyl, .musicWave:
             .small
         case .currencyMinimal, .travelConverter, .goldSpot, .stockQuote:
+            .small
+        case .stepOrbit, .recoveryArc, .focusNow, .dailyQuote, .moonPhase, .solarRhythm:
             .small
         default:
             .medium
@@ -317,13 +370,16 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
             default:
                 "港美股行情"
             }
+        case .planner: "日程与专注"
+        case .daily: "每日灵感"
         default: title
         }
     }
 
     var configurationStyleName: String? {
         switch category {
-        case .health, .weather, .love, .time, .tools, .photos, .music, .finance:
+        case .health, .weather, .love, .time, .tools, .photos, .music, .finance,
+             .planner, .daily:
             title
         default:
             nil

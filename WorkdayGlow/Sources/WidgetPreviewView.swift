@@ -27,9 +27,9 @@ struct WidgetPreviewView: View {
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .stroke(Color.white.opacity(0.5), lineWidth: 1)
+                    .stroke(Color.primary.opacity(0.08), lineWidth: 0.75)
             }
-            .shadow(color: Color("PlumInk").opacity(0.08), radius: 18, y: 10)
+            .shadow(color: Color.black.opacity(0.08), radius: 18, y: 10)
         }
         .aspectRatio(previewAspectRatio, contentMode: .fit)
     }
@@ -108,24 +108,26 @@ struct TemplateCategoryStrip: View {
                             .foregroundStyle(
                                 selection == category
                                     ? Color.white
-                                    : Color("PlumInk").opacity(0.78)
+                                    : Color.primary.opacity(0.78)
                             )
                             .padding(.horizontal, 16)
                             .padding(.vertical, 11)
                             .background(
                                 selection == category
-                                    ? AnyShapeStyle(Color("PlumInk"))
-                                    : AnyShapeStyle(Color.white.opacity(0.86)),
+                                    ? AnyShapeStyle(Color.accentColor)
+                                    : AnyShapeStyle(.regularMaterial),
                                 in: Capsule()
                             )
                             .overlay {
                                 if selection != category {
                                     Capsule()
-                                        .stroke(Color("PlumInk").opacity(0.08), lineWidth: 1)
+                                        .stroke(Color.primary.opacity(0.08), lineWidth: 0.75)
                                 }
                             }
+                            .frame(minHeight: AppLayout.minimumTouch)
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(AppCardButtonStyle())
+                    .accessibilityAddTraits(selection == category ? .isSelected : [])
                 }
             }
             .padding(.horizontal)

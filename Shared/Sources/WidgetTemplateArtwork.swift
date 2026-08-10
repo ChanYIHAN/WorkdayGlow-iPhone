@@ -45,6 +45,7 @@ struct WidgetTemplateBackground: View {
                 endPoint: .bottomTrailing
             )
         case .healthBento, .sleepRibbon, .oxygenPulse,
+             .stepOrbit, .activeBento, .recoveryArc,
              .weatherNow, .weatherHourly, .weatherMinimal,
              .loveDays, .loveOrbit,
              .editorialClock, .worldClock, .calendarClock:
@@ -57,6 +58,9 @@ struct WidgetTemplateBackground: View {
              .goldSpot, .goldTrend, .metalsDuo,
              .stockQuote, .watchlistBento, .dualMarket:
             FinanceTemplateBackground(template: template)
+        case .glassAgenda, .weekPlanner, .focusNow,
+             .dailyQuote, .moonPhase, .solarRhythm:
+            EverydayTemplateBackground(template: template)
         }
     }
 }
@@ -92,6 +96,7 @@ struct WidgetTemplateArtwork: View {
             case .afterworkPlan:
                 afterworkPlan
             case .healthBento, .sleepRibbon, .oxygenPulse,
+                 .stepOrbit, .activeBento, .recoveryArc,
                  .weatherNow, .weatherHourly, .weatherMinimal,
                  .loveDays, .loveOrbit,
                  .editorialClock, .worldClock, .calendarClock:
@@ -108,6 +113,13 @@ struct WidgetTemplateArtwork: View {
                  .goldSpot, .goldTrend, .metalsDuo,
                  .stockQuote, .watchlistBento, .dualMarket:
                 FinanceTemplateArtwork(template: template, size: size)
+            case .glassAgenda, .weekPlanner, .focusNow,
+                 .dailyQuote, .moonPhase, .solarRhythm:
+                EverydayTemplateArtwork(
+                    template: template,
+                    size: size,
+                    date: snapshot.date
+                )
             }
         }
         .accessibilityElement(children: .contain)

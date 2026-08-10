@@ -23,6 +23,24 @@ struct LifestyleTemplateBackground: View {
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
+        case .stepOrbit:
+            LinearGradient(
+                colors: [Color("SoftCream"), Color("SeaGlass").opacity(0.34)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        case .activeBento:
+            LinearGradient(
+                colors: [Color("PlumInk"), Color("GlowSurfaceAlt")],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        case .recoveryArc:
+            LinearGradient(
+                colors: [Color("AuroraLavender").opacity(0.72), Color("SkyGlow").opacity(0.72)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
         case .weatherNow:
             LinearGradient(
                 colors: [Color("SkyGlow"), Color("SeaGlass")],
@@ -113,6 +131,12 @@ struct LifestyleTemplateArtwork: View {
                 sleepRibbon
             case .oxygenPulse:
                 oxygenPulse
+            case .stepOrbit:
+                stepOrbit
+            case .activeBento:
+                activeBento
+            case .recoveryArc:
+                recoveryArc
             case .weatherNow:
                 weather.isAvailable
                     ? (size == .small ? AnyView(weatherMinimal) : AnyView(weatherNow))
@@ -295,6 +319,131 @@ struct LifestyleTemplateArtwork: View {
         }
         .padding(size == .small ? 14 : 18)
         .foregroundStyle(.white)
+    }
+
+    private var stepOrbit: some View {
+        HStack(spacing: size == .small ? 10 : 18) {
+            ZStack {
+                Circle()
+                    .stroke(Color("PlumInk").opacity(0.08), lineWidth: 12)
+                Circle()
+                    .trim(from: 0, to: stepProgress)
+                    .stroke(
+                        AngularGradient(
+                            colors: [Color("SeaGlass"), Color("SkyGlow"), Color("AuroraLavender")],
+                            center: .center
+                        ),
+                        style: StrokeStyle(lineWidth: 12, lineCap: .round)
+                    )
+                    .rotationEffect(.degrees(-90))
+
+                VStack(spacing: 1) {
+                    Image(systemName: "figure.walk")
+                        .font(.caption)
+                        .foregroundStyle(Color("SeaGlass"))
+                    Text(compactSteps)
+                        .font(.title3.weight(.black))
+                        .monospacedDigit()
+                }
+            }
+            .frame(width: size == .small ? 104 : 112, height: size == .small ? 104 : 112)
+
+            if size != .small {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("今日步数")
+                        .font(.headline)
+                    Text("目标 10,000 步")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Label(distanceText, systemImage: "point.topleft.down.to.point.bottomright.curvepath")
+                    Label(energyText, systemImage: "flame.fill")
+                }
+                .font(.caption.weight(.semibold))
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: size == .small ? .center : .leading)
+        .padding(size == .small ? 14 : 18)
+        .foregroundStyle(Color("PlumInk"))
+    }
+
+    private var activeBento: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("活力概览")
+                        .font(.headline)
+                    Text("今天的身体已经完成这些")
+                        .font(.caption2)
+                        .foregroundStyle(.white.opacity(0.48))
+                }
+                Spacer()
+                Image(systemName: "figure.run.circle.fill")
+                    .font(.title2)
+                    .foregroundStyle(Color("SeaGlass"))
+            }
+
+            HStack(spacing: 8) {
+                activityMetric(symbol: "figure.walk", value: stepsText, label: "步数", tint: Color("SeaGlass"))
+                activityMetric(symbol: "location.fill", value: distanceText, label: "距离", tint: Color("SkyGlow"))
+                activityMetric(symbol: "flame.fill", value: energyText, label: "活动", tint: Color("AuroraCoral"))
+            }
+
+            if size == .large {
+                HStack(alignment: .bottom, spacing: 7) {
+                    ForEach([0.28, 0.46, 0.39, 0.65, 0.58, 0.82, stepProgress], id: \.self) { value in
+                        Capsule()
+                            .fill(Color("SeaGlass").opacity(0.35 + value * 0.55))
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 24 + 60 * value)
+                    }
+                }
+                .frame(maxHeight: 92)
+                .accessibilityHidden(true)
+            }
+        }
+        .padding(size == .large ? 20 : 17)
+        .foregroundStyle(.white)
+    }
+
+    private var recoveryArc: some View {
+        VStack(alignment: .leading, spacing: size == .small ? 10 : 13) {
+            HStack {
+                Label("今日平衡", systemImage: "heart.text.clipboard.fill")
+                    .font(.caption.weight(.bold))
+                Spacer()
+                Text("仅作生活参考")
+                    .font(.caption2)
+                    .foregroundStyle(Color("PlumInk").opacity(0.42))
+            }
+
+            HStack(spacing: 14) {
+                ZStack {
+                    Circle()
+                        .trim(from: 0.12, to: 0.88)
+                        .stroke(Color.white.opacity(0.28), style: StrokeStyle(lineWidth: 11, lineCap: .round))
+                        .rotationEffect(.degrees(90))
+                    Circle()
+                        .trim(from: 0.12, to: 0.12 + 0.76 * recoveryProgress)
+                        .stroke(Color("PlumInk"), style: StrokeStyle(lineWidth: 11, lineCap: .round))
+                        .rotationEffect(.degrees(90))
+                    Text("\(Int((recoveryProgress * 100).rounded()))")
+                        .font(.title2.weight(.black))
+                        .monospacedDigit()
+                }
+                .frame(width: size == .small ? 92 : 108, height: size == .small ? 92 : 108)
+
+                if size != .small {
+                    VStack(alignment: .leading, spacing: 9) {
+                        Label("睡眠 \(sleepText)", systemImage: "moon.stars.fill")
+                        Label("步数 \(stepsText)", systemImage: "figure.walk")
+                        Label("心率 \(heartRateText)", systemImage: "waveform.path.ecg")
+                    }
+                    .font(.caption.weight(.semibold))
+                }
+            }
+        }
+        .padding(size == .small ? 14 : 18)
+        .foregroundStyle(Color("PlumInk"))
     }
 
     private var weatherNow: some View {
@@ -722,6 +871,24 @@ struct LifestyleTemplateArtwork: View {
         .font(.caption)
     }
 
+    private func activityMetric(symbol: String, value: String, label: String, tint: Color) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Image(systemName: symbol)
+                .foregroundStyle(tint)
+            Text(value)
+                .font(.headline.weight(.bold))
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.65)
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.45))
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(11)
+        .background(Color.white.opacity(0.07), in: RoundedRectangle(cornerRadius: 17, style: .continuous))
+    }
+
     private func oxygenRing(diameter: CGFloat) -> some View {
         ZStack {
             Circle()
@@ -793,6 +960,39 @@ struct LifestyleTemplateArtwork: View {
     private var oxygenText: String {
         guard let oxygen = health.oxygenSaturation else { return "—%" }
         return "\(Int((oxygen * 100).rounded()))%"
+    }
+
+    private var stepsText: String {
+        guard let steps = health.stepCount else { return "—" }
+        return Int(steps.rounded()).formatted()
+    }
+
+    private var compactSteps: String {
+        guard let steps = health.stepCount else { return "—" }
+        if steps >= 1_000 {
+            return "\((steps / 1_000).formatted(.number.precision(.fractionLength(1))))k"
+        }
+        return "\(Int(steps.rounded()))"
+    }
+
+    private var distanceText: String {
+        guard let distance = health.walkingDistanceKilometers else { return "— km" }
+        return "\(distance.formatted(.number.precision(.fractionLength(1)))) km"
+    }
+
+    private var energyText: String {
+        guard let energy = health.activeEnergy else { return "— kcal" }
+        return "\(Int(energy.rounded())) kcal"
+    }
+
+    private var stepProgress: Double {
+        min(max((health.stepCount ?? 0) / 10_000, 0.02), 1)
+    }
+
+    private var recoveryProgress: Double {
+        let sleep = min(max((health.sleepHours ?? 0) / 8, 0), 1)
+        let movement = min(max((health.stepCount ?? 0) / 10_000, 0), 1)
+        return max(0.05, sleep * 0.62 + movement * 0.38)
     }
 
     private var sleepQuality: String {

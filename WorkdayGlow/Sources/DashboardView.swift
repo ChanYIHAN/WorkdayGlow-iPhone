@@ -44,8 +44,8 @@ struct DashboardView: View {
                 }
                 .padding()
             }
-            .background(Color("GalleryCanvas").ignoresSafeArea())
-            .navigationTitle("下班光轨")
+            .background(AppCanvas())
+            .navigationTitle("概览")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Image(systemName: store.settings.theme.symbolName)
@@ -76,7 +76,7 @@ struct DashboardView: View {
             Spacer(minLength: 0)
         }
         .padding()
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .appGlassSurface(cornerRadius: 20)
     }
 }
 
@@ -105,6 +105,6 @@ private struct SummaryCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .appGlassSurface(cornerRadius: 20)
     }
 }

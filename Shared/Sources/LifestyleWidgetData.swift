@@ -4,12 +4,18 @@ struct HealthMetrics: Sendable {
     let heartRate: Double?
     let sleepHours: Double?
     let oxygenSaturation: Double?
+    let stepCount: Double?
+    let activeEnergy: Double?
+    let walkingDistanceKilometers: Double?
     let updatedAt: Date
 
     static let preview = HealthMetrics(
         heartRate: 67,
         sleepHours: 6.9,
         oxygenSaturation: 0.98,
+        stepCount: 6_842,
+        activeEnergy: 386,
+        walkingDistanceKilometers: 4.8,
         updatedAt: .now
     )
 }

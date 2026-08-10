@@ -7,7 +7,7 @@ struct DiscoveryView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 24) {
-                    brandHeader
+                    collectionHero
                     featuredStories
                     TemplateCategoryStrip(selection: $selectedCategory)
 
@@ -19,56 +19,53 @@ struct DiscoveryView: View {
                 }
                 .padding(.bottom, 28)
             }
-            .background(Color("GalleryCanvas").ignoresSafeArea())
+            .background(AppCanvas())
             .navigationDestination(for: WidgetTemplateKind.self) { template in
                 WidgetTemplateDetailView(template: template)
             }
-            .toolbar(.hidden, for: .navigationBar)
+            .navigationTitle("发现")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 
-    private var brandHeader: some View {
-        HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color("AuroraLavender"), Color("SkyGlow"), Color("SeaGlass")],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+    private var collectionHero: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 8) {
+                    SectionBadge(text: "iOS 27 collection")
 
-                Image(systemName: "sparkles")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-            }
-            .frame(width: 44, height: 44)
-            .shadow(color: Color("AuroraLavender").opacity(0.35), radius: 12, y: 6)
+                    Text("让桌面先替你\n看见重要的事")
+                        .font(.largeTitle.weight(.bold))
+                        .fontDesign(.rounded)
+                        .foregroundStyle(.primary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
 
-            VStack(alignment: .leading, spacing: 0) {
-                Text("下班")
-                    .font(.title2)
-                    .fontWeight(.black)
-                + Text("光轨")
-                    .font(.title2)
-                    .fontWeight(.regular)
+                Spacer(minLength: 12)
 
-                Text("把一天过得更有节奏")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                Image(systemName: "sparkles.rectangle.stack.fill")
+                    .font(.system(size: 38, weight: .medium))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(Color("SeaGlass"), Color("AuroraLavender"))
+                    .frame(width: 56, height: 56)
+                    .accessibilityHidden(true)
             }
 
-            Spacer()
+            Text("45 款原创设计 · 19 个组件入口 · 桌面与锁屏")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
 
-            Image(systemName: "person.crop.circle.fill")
-                .font(.title)
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(Color("PlumInk"))
-                .accessibilityLabel("个人设置")
+            HStack(spacing: 8) {
+                GlassTag(title: "健康活动", symbol: "heart.fill", tint: Color("AuroraCoral"))
+                GlassTag(title: "日程专注", symbol: "checklist", tint: Color("SkyGlow"))
+                GlassTag(title: "每日灵感", symbol: "moon.stars.fill", tint: Color("AuroraLavender"))
+            }
+            .lineLimit(1)
+            .minimumScaleFactor(0.78)
         }
+        .padding(20)
+        .appGlassSurface(cornerRadius: 30)
         .padding(.horizontal)
-        .padding(.top, 8)
     }
 
     private var featuredStories: some View {
@@ -121,9 +118,30 @@ struct DiscoveryView: View {
                 title: "汇率、黄金与股票\n清晰看懂",
                 accent: Color("ButterGlow")
             )
+
+            FeaturedStoryCard(
+                template: .activeBento,
+                eyebrow: "活动与恢复",
+                title: "步数、距离与能量\n更完整了",
+                accent: Color("SeaGlass")
+            )
+
+            FeaturedStoryCard(
+                template: .glassAgenda,
+                eyebrow: "日程与专注",
+                title: "只留下今天\n真正重要的事",
+                accent: Color("SkyGlow")
+            )
+
+            FeaturedStoryCard(
+                template: .moonPhase,
+                eyebrow: "每日灵感",
+                title: "月相与日光\n也住进桌面",
+                accent: Color("AuroraLavender")
+            )
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
-        .frame(height: 300)
+        .frame(height: 318)
     }
 
     @ViewBuilder
@@ -165,6 +183,39 @@ struct DiscoveryView: View {
             HStack(spacing: 14) {
                 CompactTemplateNavigationCard(template: .sleepRibbon)
                 CompactTemplateNavigationCard(template: .oxygenPulse)
+            }
+        }
+        .padding(.horizontal)
+
+        VStack(spacing: 16) {
+            TemplateSectionHeader("活动与恢复", subtitle: "步数、距离与活动能量也能一眼看见")
+            TemplateNavigationCard(template: .activeBento)
+
+            HStack(spacing: 14) {
+                CompactTemplateNavigationCard(template: .stepOrbit)
+                CompactTemplateNavigationCard(template: .recoveryArc)
+            }
+        }
+        .padding(.horizontal)
+
+        VStack(spacing: 16) {
+            TemplateSectionHeader("今天的计划", subtitle: "日程清晰，专注也更轻盈")
+            TemplateNavigationCard(template: .glassAgenda)
+
+            HStack(spacing: 14) {
+                CompactTemplateNavigationCard(template: .weekPlanner)
+                CompactTemplateNavigationCard(template: .focusNow)
+            }
+        }
+        .padding(.horizontal)
+
+        VStack(spacing: 16) {
+            TemplateSectionHeader("每日灵感", subtitle: "不联网，也能每天有一点新鲜感")
+            TemplateNavigationCard(template: .dailyQuote)
+
+            HStack(spacing: 14) {
+                CompactTemplateNavigationCard(template: .moonPhase)
+                CompactTemplateNavigationCard(template: .solarRhythm)
             }
         }
         .padding(.horizontal)
@@ -260,9 +311,9 @@ private struct CompactTemplateNavigationCard: View {
                     .lineLimit(2)
             }
             .padding(12)
-            .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+            .appGlassSurface(cornerRadius: 26, interactive: true)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(AppCardButtonStyle())
     }
 }
 
@@ -320,7 +371,7 @@ private struct FeaturedStoryCard: View {
             }
             .padding(.horizontal)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(AppCardButtonStyle())
     }
 }
 
@@ -359,9 +410,9 @@ struct TemplateNavigationCard: View {
                 }
             }
             .padding(14)
-            .background(Color.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 30, style: .continuous))
+            .appGlassSurface(cornerRadius: 30, interactive: true)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(AppCardButtonStyle())
     }
 }
 
@@ -386,6 +437,6 @@ private struct SmallTemplateCard: View {
             }
             .frame(width: 164, alignment: .leading)
         }
-        .buttonStyle(.plain)
+        .buttonStyle(AppCardButtonStyle())
     }
 }

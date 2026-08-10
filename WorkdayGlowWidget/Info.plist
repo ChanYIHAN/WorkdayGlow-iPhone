@@ -21,7 +21,7 @@
     <key>CFBundleVersion</key>
     <string>$(CURRENT_PROJECT_VERSION)</string>
     <key>NSHealthShareUsageDescription</key>
-    <string>用于在健康组件中显示你的最近心率、睡眠时长和血氧摘要。</string>
+    <string>用于在健康组件中显示你的心率、睡眠、血氧、步数、步行距离和活动能量摘要。</string>
     <key>NSExtension</key>
     <dict>
         <key>NSExtensionPointIdentifier</key>

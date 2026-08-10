@@ -5,12 +5,18 @@ enum HealthWidgetStyle: String, AppEnum {
     case bento
     case sleep
     case oxygen
+    case steps
+    case activity
+    case recovery
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "健康样式"
     static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
         .bento: "健康便当",
         .sleep: "睡眠丝带",
-        .oxygen: "血氧脉冲"
+        .oxygen: "血氧脉冲",
+        .steps: "步数轨道",
+        .activity: "活力便当",
+        .recovery: "恢复弧线"
     ]
 
     var template: WidgetTemplateKind {
@@ -18,6 +24,9 @@ enum HealthWidgetStyle: String, AppEnum {
         case .bento: .healthBento
         case .sleep: .sleepRibbon
         case .oxygen: .oxygenPulse
+        case .steps: .stepOrbit
+        case .activity: .activeBento
+        case .recovery: .recoveryArc
         }
     }
 }
@@ -52,11 +61,23 @@ struct HealthWidgetConfigurationIntent: WidgetConfigurationIntent {
     @Parameter(title: "手动血氧（%）", default: 98, inclusiveRange: (50, 100))
     var manualOxygenPercentage: Int
 
+    @Parameter(title: "手动步数", default: 6842, inclusiveRange: (0, 100_000))
+    var manualStepCount: Int
+
+    @Parameter(title: "手动活动能量（千卡）", default: 386, inclusiveRange: (0, 10_000))
+    var manualActiveEnergy: Int
+
+    @Parameter(title: "手动步行距离（公里）", default: 4.8, inclusiveRange: (0, 200))
+    var manualWalkingDistance: Double
+
     var manualMetrics: HealthMetrics {
         HealthMetrics(
             heartRate: Double(manualHeartRate),
             sleepHours: manualSleepHours,
             oxygenSaturation: Double(manualOxygenPercentage) / 100,
+            stepCount: Double(manualStepCount),
+            activeEnergy: Double(manualActiveEnergy),
+            walkingDistanceKilometers: manualWalkingDistance,
             updatedAt: .now
         )
     }

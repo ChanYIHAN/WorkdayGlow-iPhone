@@ -20,6 +20,15 @@ final class HealthDataService {
         if let sleep = HKCategoryType.categoryType(forIdentifier: .sleepAnalysis) {
             result.insert(sleep)
         }
+        if let steps = HKQuantityType.quantityType(forIdentifier: .stepCount) {
+            result.insert(steps)
+        }
+        if let energy = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
+            result.insert(energy)
+        }
+        if let distance = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning) {
+            result.insert(distance)
+        }
 
         return result
     }
@@ -60,6 +69,9 @@ final class HealthDataService {
                 heartRate: nil,
                 sleepHours: nil,
                 oxygenSaturation: nil,
+                stepCount: nil,
+                activeEnergy: nil,
+                walkingDistanceKilometers: nil,
                 updatedAt: referenceDate
             )
         }
@@ -67,13 +79,60 @@ final class HealthDataService {
         let heartRate = await latestHeartRate()
         let oxygen = await latestOxygenSaturation()
         let sleep = await latestSleepDuration(referenceDate: referenceDate)
+        let steps = await todayCumulativeQuantity(
+            identifier: .stepCount,
+            unit: .count(),
+            referenceDate: referenceDate
+        )
+        let energy = await todayCumulativeQuantity(
+            identifier: .activeEnergyBurned,
+            unit: .kilocalorie(),
+            referenceDate: referenceDate
+        )
+        let distance = await todayCumulativeQuantity(
+            identifier: .distanceWalkingRunning,
+            unit: .meterUnit(with: .kilo),
+            referenceDate: referenceDate
+        )
 
         return HealthMetrics(
             heartRate: heartRate,
             sleepHours: sleep,
             oxygenSaturation: oxygen,
+            stepCount: steps,
+            activeEnergy: energy,
+            walkingDistanceKilometers: distance,
             updatedAt: referenceDate
         )
+    }
+
+    private func todayCumulativeQuantity(
+        identifier: HKQuantityTypeIdentifier,
+        unit: HKUnit,
+        referenceDate: Date
+    ) async -> Double? {
+        guard let type = HKQuantityType.quantityType(forIdentifier: identifier) else {
+            return nil
+        }
+        let start = Calendar.autoupdatingCurrent.startOfDay(for: referenceDate)
+        let predicate = HKQuery.predicateForSamples(
+            withStart: start,
+            end: referenceDate,
+            options: .strictStartDate
+        )
+
+        return await withCheckedContinuation { continuation in
+            let query = HKStatisticsQuery(
+                quantityType: type,
+                quantitySamplePredicate: predicate,
+                options: .cumulativeSum
+            ) { _, result, _ in
+                continuation.resume(
+                    returning: result?.sumQuantity()?.doubleValue(for: unit)
+                )
+            }
+            healthStore.execute(query)
+        }
     }
 
     private func latestHeartRate() async -> Double? {

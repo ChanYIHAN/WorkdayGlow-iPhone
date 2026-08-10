@@ -79,7 +79,7 @@ struct SettingsView: View {
                 } header: {
                     Text("健康组件")
                 } footer: {
-                    Text("健康组件只读取最近心率、昨夜睡眠和最近血氧；授权必须在主 App 内完成。")
+                    Text("健康组件只读访问心率、昨夜睡眠、血氧、今日步数、步行距离和活动能量；授权必须在主 App 内完成。")
                 }
 
                 Section {
