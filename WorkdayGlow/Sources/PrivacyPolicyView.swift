@@ -9,7 +9,7 @@ struct PrivacyPolicyView: View {
                         .font(.headline)
                         .foregroundStyle(Color("PlumInk"))
 
-                    Text("下班光轨不包含账号系统、广告、统计 SDK 或自建服务器。你的工作时间、收入、纪念日、日程与手动健康数据保存在设备或 iOS 的小组件配置中。")
+                    Text("奕刻不包含账号系统、广告、统计 SDK 或自建服务器。你的工作时间、收入、纪念日、日程与手动健康数据保存在设备或 iOS 的小组件配置中。")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }

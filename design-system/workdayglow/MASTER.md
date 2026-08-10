@@ -6,7 +6,7 @@
 
 ---
 
-**Project:** WorkdayGlow
+**Project:** 奕刻 · Ekhart Widgets
 **Generated:** 2026-08-10 16:59:22
 **Category:** Luxury/Premium Brand
 **Design Dials:** Variance 6/10 (Balanced / Modern) | Motion 4/10 (Standard) | Density 6/10 (Standard)

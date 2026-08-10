@@ -124,18 +124,18 @@ struct Index {
   @Builder
   private DiscoveryHero() {
     Column({ space: 11 }) {
-      Text('HARMONYOS NATIVE COLLECTION')
+      Text('EKHART WIDGETS')
         .fontSize(11)
         .fontWeight(FontWeight.Bold)
         .fontColor('#176D61')
         .letterSpacing(1)
         .width('100%')
-      Text('让桌面先替你\n看见重要的事')
+      Text('让每一刻\n恰好可见')
         .fontSize(30)
         .fontWeight(FontWeight.Bold)
         .fontColor('#1D1C27')
         .width('100%')
-      Text('100 款原创设计 · ArkUI 主界面 · Form Kit 卡片')
+      Text('奕刻 · 100 款原创设计 · ArkUI 与 Form Kit')
         .fontSize(14)
         .fontColor('#625F6C')
         .width('100%')

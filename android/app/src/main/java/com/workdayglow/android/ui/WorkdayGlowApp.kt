@@ -236,9 +236,9 @@ private fun DiscoveryHero() {
             .padding(22.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text("CROSS-PLATFORM COLLECTION", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
-        Text("让桌面先替你\n看见重要的事", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-        Text("100 款原创设计 · iOS / Android / HarmonyOS", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("EKHART WIDGETS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
+        Text("让每一刻\n恰好可见", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+        Text("奕刻 · 100 款原创设计 · 三端同名目录", color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             HeroTag("健康", Color(0xFFFF8D90))
             HeroTag("日程", Color(0xFF65C7FF))

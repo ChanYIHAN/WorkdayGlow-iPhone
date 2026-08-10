@@ -1,6 +1,6 @@
 {
   "modelVersion": "5.0.0",
-  "description": "WorkdayGlow HarmonyOS native app and Form Kit cards",
+  "description": "Ekhart Widgets HarmonyOS native app and Form Kit cards",
   "dependencies": {},
   "devDependencies": {
     "@ohos/hvigor-ohos-plugin": "5.0.0",

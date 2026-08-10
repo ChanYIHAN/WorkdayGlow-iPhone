@@ -1,7 +1,7 @@
-# WorkdayGlow · 下班光轨
+# 奕刻 · Ekhart Widgets
 
-[![Build unsigned IPA](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-unsigned-ipa.yml/badge.svg)](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-unsigned-ipa.yml)
-[![Build Android APK](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-android.yml/badge.svg)](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-android.yml)
+[![Build Ekhart unsigned IPA](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-unsigned-ipa.yml/badge.svg)](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-unsigned-ipa.yml)
+[![Build Ekhart Android APK](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-android.yml/badge.svg)](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-android.yml)
 ![iOS 17+](https://img.shields.io/badge/iOS-17%2B-111111?logo=apple)
 ![Android 9+](https://img.shields.io/badge/Android-9%2B-3DDC84?logo=android&logoColor=white)
 ![HarmonyOS](https://img.shields.io/badge/HarmonyOS-ArkTS-EA3323)
@@ -11,7 +11,7 @@
 
 项目不包含自建服务器、账号系统、广告、统计 SDK 或付费能力。三端共享同一套内容目录与设计语言，同时保留各自平台的原生交互、字体、动态配色、圆角和桌面组件规范。
 
-> 当前主版本：iOS `0.7.0`、Android `0.1.0`。iOS 与 Android 已通过 GitHub Actions 构建；HarmonyOS 已提供 ArkTS 源码工程，首次 HAP 编译需要 DevEco Studio 和 HarmonyOS SDK。
+> **让每一刻，恰好可见。** 当前主版本：iOS `0.7.1`、Android/HarmonyOS `0.1.1`。iOS 与 Android 使用 GitHub Actions 构建；HarmonyOS 已提供 ArkTS 源码工程，首次 HAP 编译需要 DevEco Studio 和 HarmonyOS SDK。
 
 ## 项目状态
 
@@ -58,22 +58,22 @@
 ### iPhone：GitHub Actions + Sideloadly
 
 1. 打开仓库的 [Actions](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions) 页面。
-2. 选择 **Build unsigned IPA**，点击 **Run workflow**。
-3. 构建完成后，在运行记录底部下载 `WorkdayGlow-unsigned-ipa`。
-4. 解压得到 `WorkdayGlow-unsigned.ipa`。
+2. 选择 **Build Ekhart unsigned IPA**，点击 **Run workflow**。
+3. 构建完成后，在运行记录底部下载 `EkhartWidgets-unsigned-ipa`。
+4. 解压得到 `EkhartWidgets-unsigned.ipa`。
 5. 从 [Sideloadly 官网](https://sideloadly.io) 安装软件，将 IPA 拖入并使用自己的 Apple ID 签名。
 6. 不要启用 `Remove app extensions / PlugIns`，否则 Widget 扩展会被移除。
-7. 安装后先启动一次主应用，再回到桌面添加“下班光轨”组件。
+7. 安装后先启动一次“奕刻”，再回到桌面添加“奕刻”组件。
 
 免费 Apple ID 的 Personal Team 描述文件通常只有 7 天有效期。Sideloadly 自动刷新仍要求电脑定期运行，并能通过 USB 或同一局域网发现 iPhone。若 HealthKit 能力在免费重签过程中被移除，可把健康组件的数据来源改为“手动填写”。
 
 ### Android：下载并安装 APK
 
-1. 打开 [Actions](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions)，选择 **Build Android APK**。
-2. 点击 **Run workflow**，构建完成后下载 `WorkdayGlow-Android-debug`。
+1. 打开 [Actions](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions)，选择 **Build Ekhart Android APK**。
+2. 点击 **Run workflow**，构建完成后下载 `EkhartWidgets-Android-debug`。
 3. 解压得到 `app-debug.apk`，传到 Android 手机。
 4. 按系统提示允许当前文件管理器“安装未知应用”，然后安装 APK。
-5. 长按桌面空白处，在系统组件列表中添加 WorkdayGlow“今日活力”。
+5. 长按桌面空白处，在系统组件列表中添加“奕刻 · 今日活力”。
 
 Debug APK 适合个人测试，不是 Google Play 正式发布包。覆盖安装时应保持相同的 application ID 和签名。
 
@@ -93,9 +93,9 @@ hvigorw --mode project -p product=default -p buildMode=debug assembleApp
 
 ## 添加和配置 iOS 小组件
 
-1. 先打开一次“下班光轨”。
+1. 先打开一次“奕刻”。
 2. 回到主屏幕，长按空白处并添加小组件。
-3. 搜索“下班光轨”，选择模板与尺寸。
+3. 搜索“奕刻”，选择模板与尺寸。
 4. 添加后长按组件，选择“编辑小组件”。
 5. 根据组件填写城市、纪念日、日程、币种、股票代码、图片或快捷指令名称。
 
@@ -186,8 +186,8 @@ gradle :app:assembleDebug
 
 仓库包含两个可手动触发的 GitHub Actions 工作流：
 
-- [`Build unsigned IPA`](.github/workflows/build-unsigned-ipa.yml)：在 macOS runner 上生成 Xcode 工程、关闭代码签名并打包 IPA。
-- [`Build Android APK`](.github/workflows/build-android.yml)：在 Ubuntu runner 上使用 Java 17 和 Gradle 8.11.1 生成 Debug APK。
+- [`Build Ekhart unsigned IPA`](.github/workflows/build-unsigned-ipa.yml)：在 macOS runner 上生成 Xcode 工程、关闭代码签名并打包 IPA。
+- [`Build Ekhart Android APK`](.github/workflows/build-android.yml)：在 Ubuntu runner 上使用 Java 17 和 Gradle 8.11.1 生成 Debug APK。
 
 构建产物保存在对应运行记录底部的 **Artifacts** 区域，不会提交进 Git 仓库。
 
@@ -209,4 +209,4 @@ gradle :app:assembleDebug
 
 ---
 
-WorkdayGlow 目前以个人侧载、设计验证和跨平台组件研究为目标。欢迎通过 Issue 记录兼容性问题、数据源限制和新组件建议。
+奕刻（Ekhart Widgets）目前以个人侧载、设计验证和跨平台组件研究为目标。欢迎通过 Issue 记录兼容性问题、数据源限制和新组件建议。

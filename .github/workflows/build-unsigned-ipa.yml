@@ -1,4 +1,4 @@
-name: Build unsigned IPA
+name: Build Ekhart unsigned IPA
 
 on:
   workflow_dispatch:
@@ -39,11 +39,11 @@ jobs:
           rm -rf Payload
           mkdir Payload
           cp -R "$APP_PATH" Payload/
-          ditto -c -k --sequesterRsrc --keepParent Payload WorkdayGlow-unsigned.ipa
+          ditto -c -k --sequesterRsrc --keepParent Payload EkhartWidgets-unsigned.ipa
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: WorkdayGlow-unsigned-ipa
-          path: WorkdayGlow-unsigned.ipa
+          name: EkhartWidgets-unsigned-ipa
+          path: EkhartWidgets-unsigned.ipa
           if-no-files-found: error

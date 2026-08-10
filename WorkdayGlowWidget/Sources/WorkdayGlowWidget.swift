@@ -89,7 +89,7 @@ struct WorkdayGlowWidget: Widget {
                     entry.settings.theme.palette.backgroundGradient
                 }
         }
-        .configurationDisplayName("下班光轨")
+        .configurationDisplayName("奕刻")
         .description("查看距离下班的时间、今日进度、预计收入和发薪倒计时。")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()

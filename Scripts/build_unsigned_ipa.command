@@ -4,7 +4,7 @@ set -euo pipefail
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 BUILD_DIR="$PROJECT_DIR/build"
 PAYLOAD_DIR="$PROJECT_DIR/Payload"
-IPA_PATH="$PROJECT_DIR/WorkdayGlow-unsigned.ipa"
+IPA_PATH="$PROJECT_DIR/EkhartWidgets-unsigned.ipa"
 
 cd "$PROJECT_DIR"
 

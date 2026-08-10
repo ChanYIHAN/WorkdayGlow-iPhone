@@ -45,7 +45,7 @@ extension CurrencyCode: AppEnum {
 }
 
 struct WorkdayConfigurationIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "设置下班光轨"
+    static var title: LocalizedStringResource = "设置奕刻"
     static var description = IntentDescription("设置上下班时间、收入估算和组件主题。")
 
     @Parameter(title: "上班小时", default: 9)

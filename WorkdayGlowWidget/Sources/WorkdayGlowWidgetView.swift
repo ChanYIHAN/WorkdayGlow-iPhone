@@ -185,7 +185,7 @@ struct WorkdayGlowWidgetView: View {
 
     private var statusHeader: some View {
         HStack {
-            Label("下班光轨", systemImage: entry.settings.theme.symbolName)
+            Label("奕刻", systemImage: entry.settings.theme.symbolName)
                 .font(.caption)
                 .fontWeight(.semibold)
                 .foregroundStyle(.white.opacity(0.58))

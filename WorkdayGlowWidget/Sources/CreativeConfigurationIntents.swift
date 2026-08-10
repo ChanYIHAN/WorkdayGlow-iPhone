@@ -25,7 +25,7 @@ enum UtilityWidgetStyle: String, AppEnum {
 struct UtilityWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "设置快捷工具"
     static var description = IntentDescription(
-        "填写系统快捷指令名称。点击组件按钮时，下班光轨会把它交给“快捷指令”App 运行。"
+        "填写系统快捷指令名称。点击组件按钮时，奕刻会把它交给“快捷指令”App 运行。"
     )
 
     @Parameter(title: "样式", default: .deck)

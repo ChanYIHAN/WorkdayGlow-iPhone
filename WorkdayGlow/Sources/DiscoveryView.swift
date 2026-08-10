@@ -32,9 +32,9 @@ struct DiscoveryView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 8) {
-                    SectionBadge(text: "iOS 27 collection")
+                    SectionBadge(text: "EKHART WIDGETS")
 
-                    Text("让桌面先替你\n看见重要的事")
+                    Text("让每一刻\n恰好可见")
                         .font(.largeTitle.weight(.bold))
                         .fontDesign(.rounded)
                         .foregroundStyle(.primary)
@@ -51,7 +51,7 @@ struct DiscoveryView: View {
                     .accessibilityHidden(true)
             }
 
-            Text("100 款原创设计 · 20 个组件入口 · 桌面与锁屏")
+            Text("奕刻 · 100 款原创设计 · 桌面与锁屏")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 

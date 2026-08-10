@@ -67,7 +67,7 @@ struct DashboardView: View {
                 Text("把节奏放到桌面")
                     .font(.headline)
 
-                Text("添加“下班光轨”后，长按小组件并选择“编辑小组件”，填写上下班时间和收入信息。")
+                Text("添加“奕刻”后，长按小组件并选择“编辑小组件”，填写上下班时间和收入信息。")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

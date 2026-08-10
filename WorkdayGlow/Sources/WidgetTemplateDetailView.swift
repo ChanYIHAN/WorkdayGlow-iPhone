@@ -103,7 +103,7 @@ struct WidgetTemplateDetailView: View {
                 .font(.headline)
 
             instructionRow(number: 1, text: "在主屏幕长按空白处，点击“添加小组件”。")
-            instructionRow(number: 2, text: "搜索“下班光轨”，选择“\(template.widgetDisplayName)”。")
+            instructionRow(number: 2, text: "搜索“奕刻”，选择“\(template.widgetDisplayName)”。")
             instructionRow(number: 3, text: configurationInstruction)
 
             Text("iOS 暂不允许 App 直接替你把组件放上桌面，这是系统的隐私限制。")
