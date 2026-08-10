@@ -1,205 +1,212 @@
-# 下班光轨 · iPhone 设计版
+# WorkdayGlow · 下班光轨
 
-一个本地优先的 SwiftUI 应用与 WidgetKit 桌面小组件，最低支持 iOS 17。项目不包含自建服务器、账号、广告、统计 SDK 或付费能力。
+[![Build unsigned IPA](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-unsigned-ipa.yml/badge.svg)](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-unsigned-ipa.yml)
+[![Build Android APK](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-android.yml/badge.svg)](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions/workflows/build-android.yml)
+![iOS 17+](https://img.shields.io/badge/iOS-17%2B-111111?logo=apple)
+![Android 9+](https://img.shields.io/badge/Android-9%2B-3DDC84?logo=android&logoColor=white)
+![HarmonyOS](https://img.shields.io/badge/HarmonyOS-ArkTS-EA3323)
+![Templates](https://img.shields.io/badge/Widget%20Templates-100-6C63FF)
 
-## 已实现
+一个本地优先、跨 iOS、Android 与 HarmonyOS 的设计型桌面组件项目。组件库围绕健康、天气、倒计时、时间、工具、相册、音乐、汇率、黄金、港美股和日程等场景，共提供 **100 款中文视觉模板**。
 
-- 原生大标题、全局搜索、Liquid Glass/Material 卡片、精选故事与 Bento 模板画廊
-- 发现、组件库、快捷工具、概览、设置五个原生 Tab
-- 实时下班倒计时、今日工作进度、今日预计收入、距离发薪日
-- 100 款可选视觉模板，对应 20 个真实 WidgetKit 组件入口
-- Apple 健康：心率、睡眠、血氧、今日步数、步行距离与活动能量，支持自动读取与手动备用
-- 天气：当前天气、未来六小时、极简天气，使用免费的 Open-Meteo
-- 恋爱纪念日：在一起天数、下一个周年倒计时
-- 时间：编辑部时钟、世界时间、日历时钟
-- 日程与专注：玻璃日程、一周计划、专注此刻，可手动填写三件重要小事
-- 每日灵感：每日一句、月相观测、日光节律，支持桌面与锁屏
-- 快捷工具：灵动控制台、快捷开关、专注控制舱，通过 Apple 快捷指令执行
-- 相册：拍立得记忆、胶片时刻、三格相册，支持从“文件”选择 1–3 张图片
-- 音乐：黑胶唱片、玻璃播放器、声波胶囊，支持封面和 Apple Music 分享链接
-- 行情：汇率、黄金、金银对照、单股、自选股与港美双市场，采用延迟参考数据
-- 小、中、大三种尺寸，并按模板提供合适的尺寸组合
-- 极光、暮色、海盐三套主题
-- 隐私模式
-- 工作日、上下班时间、月薪、币种与发薪日设置
-- App Intent 小组件配置，不依赖付费 App Group
-- GitHub Actions 未签名 IPA 构建流程
+项目不包含自建服务器、账号系统、广告、统计 SDK 或付费能力。三端共享同一套内容目录与设计语言，同时保留各自平台的原生交互、字体、动态配色、圆角和桌面组件规范。
 
-## 组件目录：100 款设计
+> 当前主版本：iOS `0.7.0`、Android `0.1.0`。iOS 与 Android 已通过 GitHub Actions 构建；HarmonyOS 已提供 ArkTS 源码工程，首次 HAP 编译需要 DevEco Studio 和 HarmonyOS SDK。
 
-| 分类 | 组件风格 | 尺寸 |
-| --- | --- | --- |
-| 光轨倒计时 | 深色极光、综合信息 | 小 / 中 / 大 |
-| 极简倒计时 | 奶油留白、强调数字 | 小 / 中 |
-| 收入便当 | 深色 Bento 数据卡 | 中 / 大 |
-| 本周节奏 | 一周工作与休息节奏 | 中 / 大 |
-| 进度轨道 | 双圆环进度 | 小 / 中 |
-| 发薪月历 | 发薪日高亮月历 | 中 / 大 |
-| 今晚提案 | 明亮、轻松的下班提醒 | 小 / 中 |
-| 健康 | 健康便当 / 睡眠丝带 / 血氧脉冲 / 步数轨道 / 活力便当 / 恢复弧线 | 小 / 中 / 大 |
-| 天气 | 天气画布 / 逐时天气 / 极简天气 | 小 / 中 |
-| 恋爱 | 恋爱天数 / 纪念日轨道 | 小 / 中 |
-| 时间 | 编辑部时钟 / 世界时间 / 日历时钟 | 小 / 中 |
-| 工具 | 灵动控制台 / 快捷开关 / 专注控制舱 | 小 / 中 |
-| 相册 | 拍立得记忆 / 胶片时刻 / 三格相册 | 小 / 中 / 大 |
-| 音乐 | 黑胶唱片 / 玻璃播放器 / 声波胶囊 | 小 / 中 |
-| 行情 | 极简汇率 / 汇率矩阵 / 旅行换算 / 黄金现货 / 金价曲线 / 金银双卡 / 单股行情 / 自选股便当 / 港美双市场 | 小 / 中 / 大 |
-| 日程 | 玻璃日程 / 一周计划 / 专注此刻 | 小 / 中 / 大 / 锁屏 |
-| 日常 | 每日一句 / 月相观测 / 日光节律 | 小 / 中 / 锁屏 |
-| 灵感合集 | 新增健康、天气、时间、工具、照片、音乐、行情、日程与生活等 55 款设计 | 小 / 中 / 大 |
+## 项目状态
 
-为了避免 WidgetKit 选择器被大量近似入口挤满，同类设计会共用一个组件入口。新增 55 款统一放在“灵感合集”入口中；添加后长按组件，选择“编辑小组件”，即可切换视觉样式。日程与每日灵感还提供锁屏内联、圆形和矩形尺寸。
+| 平台 | 主应用 | 桌面组件 | 数据能力 | 构建状态 |
+| --- | --- | --- | --- | --- |
+| iOS 17+ | SwiftUI 五栏应用、搜索与 100 款画廊 | 20 个 WidgetKit 入口，覆盖小/中/大与部分锁屏尺寸 | HealthKit、Open-Meteo、ECB、Alpha Vantage、本地数据与手动备用 | 可生成未签名 IPA |
+| Android 9+ | Jetpack Compose、Material 3、动态配色与 100 款画廊 | 1 个可调整尺寸的 Glance“今日活力”组件 | Health Connect 权限与依赖框架已预留；当前组件使用展示数据 | 可生成 Debug APK |
+| HarmonyOS | ArkUI 五栏应用、搜索与 100 款画廊 | 1 个多尺寸“今日活力”Form Kit 服务卡片 | 当前使用展示数据，等待真机 API 接入 | 源码完成，待 DevEco Studio 验证 |
 
-## 数据来源与隐私
+这里的“100 款”指三端统一的视觉模板目录，不代表系统组件选择器中会出现 100 个独立入口。iOS 将相近设计合并到 20 个 WidgetKit 入口，并通过“编辑小组件”切换具体样式；Android 与 HarmonyOS 当前各实现了一个原生桌面卡片，后续会逐步扩展原生入口与实时数据。
 
-- 健康组件经用户授权后直接在设备上只读查询 HealthKit，不上传健康数据。
-- 血氧是否有记录取决于兼容设备、Apple Watch 型号和所在地区。
-- 天气组件只把你手动填写的城市名称发送给 Open-Meteo，不申请定位权限；界面保留 Open-Meteo 署名。
-- 快捷工具只按名称调用 Apple“快捷指令”，不读取系统连接状态，也不使用私有设置接口。
-- 相册图片、音乐封面、音乐链接、工作、收入、纪念日、日程、专注目标与手动健康值只保存在本机或 iOS 小组件配置中。
-- 每日语录与月相在本机生成；月相是日常展示用的近似计算。
-- 汇率使用欧洲中央银行（ECB）公开的每日参考汇率，不需要密钥。
-- 黄金与港美股使用 Alpha Vantage；组件会把你填写的 API Key、品种或股票代码发送给该服务。行情是延迟参考值或最新收盘数据，不是实时交易报价。
-- 完整说明见 [PRIVACY.md](PRIVACY.md)。
+## 100 款组件目录
 
-## 免费签名模式的设计取舍
+| 分类 | 数量 | 代表设计 |
+| --- | ---: | --- |
+| 健康 | 13 | 健康便当、睡眠丝带、血氧脉冲、心率区间、睡眠阶段、饮水花园 |
+| 天气 | 8 | 天气画布、逐时天气、降雨雷达、空气质量、一周天气、晨昏预报 |
+| 恋爱 | 5 | 恋爱天数、纪念日轨道、双人相框、情书便签、下次约会 |
+| 时间 | 8 | 编辑部时钟、世界时间、翻页时钟、文字时钟、专注时钟、时区长条 |
+| 工具 | 8 | 灵动控制台、快捷开关、电量面板、二维码入口、快捷便签、应用启动台 |
+| 相册 | 7 | 拍立得记忆、胶片时刻、照片叠层、宽幅记忆、手帐拼贴 |
+| 音乐 | 7 | 黑胶唱片、玻璃播放器、声波胶囊、专辑陈列架、歌词摘录 |
+| 行情与财务 | 15 | 汇率矩阵、旅行换算、黄金现货、港美双市场、市场热力图、预算圆环 |
+| 日程 | 10 | 玻璃日程、一周计划、习惯打卡、番茄专注、月度总览、项目里程碑 |
+| 日常 | 7 | 每日一句、月相观测、日光节律、今日肯定、感恩提问 |
+| 下班倒计时 | 5 | 光轨倒计时、极简倒计时、今晚提案、假期倒计时、周末倒计时 |
+| 收入 | 4 | 收入便当、发薪月历、本月收入进度、加班收益估算 |
+| 节奏 | 3 | 本周节奏、进度轨道、年度进度 |
+| **合计** | **100** | 六类响应式构图：Orbit、Bento、Timeline、Poster、Gauge、List |
 
-免费 Apple ID 不支持 App Group，所以主应用与小组件不能使用标准共享容器。
+## 设计特点
 
-- 主应用里的设置用于应用内概览。
-- 添加桌面小组件后，长按小组件并选择“编辑小组件”，再填写一次小组件设置。
-- 小组件设置由 iOS 的 App Intents / WidgetKit 保存，不需要 App Group。
-- 除天气、汇率、黄金和股票查询外，数据都在本机处理。
+- 苹果风的空间层次、玻璃材质、柔和渐变和大面积留白，不逐像素复制任何第三方产品。
+- Android 使用 Material 3 语义色、动态配色、48dp 触控区域和 Glance 原生组件能力。
+- HarmonyOS 使用 ArkUI/ArkTS 与 Form Kit，并遵循服务卡片的尺寸和刷新限制。
+- 小、中、大尺寸采用不同信息密度，而不是简单缩放同一张卡片。
+- 支持浅色与深色语义配色；核心状态同时使用文字、图标与颜色表达。
+- 100 项长列表采用原生惰性布局，保持搜索、筛选和滚动性能。
 
-这是为了让组件可以使用免费 Apple ID 签名。Apple 对 Personal Team 的描述文件仍设有 7 天有效期；Sideloadly 的自动刷新只是让电脑在到期前自动重新签名。
+设计令牌和平台差异说明位于 [`design-system/workdayglow`](design-system/workdayglow)。
 
-HealthKit 是受签名能力保护的系统框架。工程已经给主 App 和 Widget 扩展配置 HealthKit entitlement，但“未签名 IPA → Sideloadly 免费重签”是否保留该能力，取决于实际生成的描述文件和签名工具，无法在 Windows 端静态保证：
+## 快速安装
 
-- 安装成功且能弹出 Apple 健康授权时，可使用“自动读取 Apple 健康”。
-- 如果授权按钮报错、组件无数据或侧载工具移除了该能力，长按健康组件 →“编辑小组件”→ 把“数据来源”设为“手动填写”。
-- 有 Mac 时，使用 Xcode 和 Personal Team 直接运行到自己的 iPhone，更适合验证 HealthKit 能力。
+### iPhone：GitHub Actions + Sideloadly
 
-## 方案 A：没有 Mac，用 GitHub Actions 构建
+1. 打开仓库的 [Actions](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions) 页面。
+2. 选择 **Build unsigned IPA**，点击 **Run workflow**。
+3. 构建完成后，在运行记录底部下载 `WorkdayGlow-unsigned-ipa`。
+4. 解压得到 `WorkdayGlow-unsigned.ipa`。
+5. 从 [Sideloadly 官网](https://sideloadly.io) 安装软件，将 IPA 拖入并使用自己的 Apple ID 签名。
+6. 不要启用 `Remove app extensions / PlugIns`，否则 Widget 扩展会被移除。
+7. 安装后先启动一次主应用，再回到桌面添加“下班光轨”组件。
 
-1. 新建一个 GitHub 仓库。
-2. 把本目录里的所有内容上传到仓库根目录，包括 `.github`。
-3. 打开仓库的 `Actions` 页面。
-4. 选择 `Build unsigned IPA`。
-5. 点击 `Run workflow`。
-6. 构建成功后，在运行记录底部下载 `WorkdayGlow-unsigned-ipa`。
-7. 解压得到 `WorkdayGlow-unsigned.ipa`。
+免费 Apple ID 的 Personal Team 描述文件通常只有 7 天有效期。Sideloadly 自动刷新仍要求电脑定期运行，并能通过 USB 或同一局域网发现 iPhone。若 HealthKit 能力在免费重签过程中被移除，可把健康组件的数据来源改为“手动填写”。
 
-GitHub Actions 会使用 macOS/Xcode 构建，但不会写入任何 Apple 账号或签名。
+### Android：下载并安装 APK
 
-公开仓库使用标准 GitHub-hosted runner 不计费；私有仓库会消耗账号方案包含的 Actions 免费分钟。本流程设置了 20 分钟超时，通常一次构建可落在免费额度内，但运行前仍建议查看 GitHub 的 Actions 使用量。若账号没有设置付款方式，免费额度用完后任务会被阻止，而不是自动扣费。
+1. 打开 [Actions](https://github.com/ChanYIHAN/WorkdayGlow-iPhone/actions)，选择 **Build Android APK**。
+2. 点击 **Run workflow**，构建完成后下载 `WorkdayGlow-Android-debug`。
+3. 解压得到 `app-debug.apk`，传到 Android 手机。
+4. 按系统提示允许当前文件管理器“安装未知应用”，然后安装 APK。
+5. 长按桌面空白处，在系统组件列表中添加 WorkdayGlow“今日活力”。
 
-## 方案 B：有 Mac，本地构建
+Debug APK 适合个人测试，不是 Google Play 正式发布包。覆盖安装时应保持相同的 application ID 和签名。
 
-安装当前稳定版 Xcode 和 XcodeGen：
+### HarmonyOS：DevEco Studio 构建
+
+1. 安装 [DevEco Studio](https://developer.huawei.com/consumer/cn/deveco-studio/)。
+2. 在 DevEco Studio 中打开仓库的 `harmony` 目录。
+3. 按 IDE 提示安装匹配的 HarmonyOS SDK 并同步 Hvigor。
+4. 配置模拟器、真机和签名后运行 `entry` 模块。
+5. 也可以在配置完成的终端中执行：
+
+```text
+hvigorw --mode project -p product=default -p buildMode=debug assembleApp
+```
+
+公开 GitHub runner 默认不包含 DevEco Studio、HarmonyOS SDK 与个人签名材料，因此仓库暂不自动生成 HAP。
+
+## 添加和配置 iOS 小组件
+
+1. 先打开一次“下班光轨”。
+2. 回到主屏幕，长按空白处并添加小组件。
+3. 搜索“下班光轨”，选择模板与尺寸。
+4. 添加后长按组件，选择“编辑小组件”。
+5. 根据组件填写城市、纪念日、日程、币种、股票代码、图片或快捷指令名称。
+
+主要配置方式：
+
+- 健康：先在主应用“设置”中申请 Apple 健康授权，也可以选择手动数据。
+- 天气：手动填写城市名称，不申请持续定位权限。
+- 工具：填写 Apple“快捷指令”中对应操作的名称。
+- 相册：先把照片存入“文件”，再从组件编辑界面选择 1–3 张图片。
+- 音乐：填写歌名、歌手、Apple Music 分享链接和可选封面。
+- 汇率：选择基准币种、目标币种与金额，无需 API Key。
+- 黄金与港美股：填写 Alpha Vantage API Key 和品种/股票代码。
+- 灵感合集：在同一个组件入口中切换新增的 55 款设计。
+
+## 数据来源与能力边界
+
+### iOS
+
+- 健康数据通过用户授权后从 HealthKit 只读查询，不上传健康记录。
+- 天气使用 Open-Meteo；只发送用户填写的城市名称，不申请定位权限。
+- 汇率使用欧洲中央银行公开的每日参考汇率。
+- 黄金和港美股使用 Alpha Vantage 的延迟参考值或最新收盘数据；免费接口有调用频率限制。
+- 快捷工具通过 Apple“快捷指令”执行。普通 App 无法直接读取或切换所有系统连接状态。
+- 音乐组件是内容入口，不读取系统实时播放状态，也不模拟实时播放器控制。
+- 相册图片、纪念日、工作设置、日程和手动数据保存在设备或 Widget 配置中。
+
+### Android 与 HarmonyOS
+
+- 已完成 100 款本地模板目录、搜索、筛选、预览与原生桌面卡片基础工程。
+- Android 已声明 Health Connect 依赖和权限入口，但尚未完成用户授权、数据读取与桌面组件刷新链路。
+- 天气、健康、行情、相册和音乐目前为展示数据；接入正式 API 前不应视为实时结果。
+
+行情内容仅用于界面展示与个人参考，不构成投资建议。完整隐私说明见 [PRIVACY.md](PRIVACY.md)。
+
+## 本地开发
+
+### iOS
+
+需要 macOS、当前稳定版 Xcode 与 XcodeGen：
 
 ```bash
 brew install xcodegen
+zsh Scripts/generate_project.command
 ```
 
-在项目目录执行：
+生成未签名 IPA：
 
 ```bash
 zsh Scripts/build_unsigned_ipa.command
 ```
 
-完成后会在项目根目录生成 `WorkdayGlow-unsigned.ipa`。
+iOS 最低版本为 iOS 17。HealthKit 等受签名能力保护的功能，建议使用 Xcode 和自己的 Personal Team 在真机验证。
 
-如果只想在 Xcode 中预览：
+### Android
+
+使用 Android Studio 打开 `android` 目录，等待 Gradle 同步后运行 `app`。命令行构建与 CI 相同：
 
 ```bash
-zsh Scripts/generate_project.command
+cd android
+gradle :app:assembleDebug
 ```
 
-## 使用 Sideloadly 安装
+当前配置为 Java 17、Gradle 8.11.1、compileSdk 36、targetSdk 35、minSdk 28。
 
-1. 只从 `https://sideloadly.io` 下载 Sideloadly。
-2. macOS 直接安装 Sideloadly；Windows 需要按其说明安装网页版 iTunes 与 iCloud，不要使用 Microsoft Store 版本。
-3. 用 USB 连接 iPhone，并在手机上选择“信任此电脑”。
-4. 将 `WorkdayGlow-unsigned.ipa` 拖入 Sideloadly。
-5. 使用你的免费 Apple ID 签名安装。
-6. 保持同一个 Apple ID 和同一个 Bundle ID，以便覆盖刷新并尽量保留本地数据。
-7. 启用 Sideloadly 的 `Automatic App Refreshing`。
-8. 不要启用 `Remove app extensions / PlugIns`；桌面小组件就在扩展包中，移除后只剩主应用。
-9. 配置 Wi-Fi sideloading，并让 Sideloadly Daemon 在电脑后台运行。
+### HarmonyOS
 
-自动刷新要求电脑能够通过同一局域网或 USB 发现 iPhone。免费签名本质上仍然是 7 天，电脑未运行、设备长期不在同一网络或刷新失败时，应用仍可能过期。
+使用 DevEco Studio 打开 `harmony`。不同版本 IDE 可能会升级 Hvigor 插件或工程配置，请以本机安装的 HarmonyOS SDK 建议为准。
 
-首次安装后，较新的 iOS 版本可能要求在“设置 → 隐私与安全性 → 开发者模式”中启用开发者模式。
-
-## 添加和设置小组件
-
-1. 先打开一次“下班光轨”应用。
-2. 回到主屏幕，长按空白处并添加小组件。
-3. 搜索“下班光轨”。
-4. 选择喜欢的模板与尺寸。
-5. 添加后长按小组件，选择“编辑小组件”。
-6. 根据组件填写配置：
-   - 下班类：上班/下班时间、工作日、收入、发薪日、币种和主题。
-   - 健康类：视觉样式、Apple 健康或手动数据来源。
-   - 天气类：城市名称和视觉样式。
-   - 恋爱类：开始日期、双方称呼和视觉样式。
-   - 时间类：视觉样式和世界时间城市。
-   - 工具类：视觉样式以及四条系统快捷指令的名称。
-   - 相册类：视觉样式、从“文件”选择的一至三张照片和照片文字。
-   - 音乐类：视觉样式、歌名、歌手、Apple Music 分享链接和可选封面。
-   - 汇率类：基准币种、目标币种、换算金额和视觉样式，无需密钥。
-   - 黄金类：在 Alpha Vantage 免费申请 API Key，粘贴到组件设置并选择视觉样式。
-   - 港美股类：填写 Alpha Vantage API Key，以及股票代码和显示名称；港股代码示例为 `0700.HKG`，美股示例为 `AAPL`。
-   - 日程类：填写三件重要小事、时间、专注分钟和目标，再选择玻璃日程、一周计划或专注此刻。
-   - 每日灵感类：选择每日一句、月相观测或日光节律；日出日落时间可手动调整。
-
-健康组件第一次使用前，请打开主 App →“设置”→“Apple 健康授权”。Widget 扩展不能自行弹出系统健康授权窗口。
-
-## 设置行情组件
-
-1. 汇率组件可直接使用，数据来自 ECB 的每日参考汇率。
-2. 黄金或港美股组件先到 [Alpha Vantage](https://www.alphavantage.co/support/#api-key) 申请免费 API Key。
-3. 把组件添加到桌面，长按 →“编辑小组件”，粘贴 API Key。
-4. 股票代码按 Alpha Vantage 的格式填写；美股例如 `AAPL`、`NVDA`，港股例如 `0700.HKG`。
-5. 免费接口有调用频率限制，因此组件按较低频率刷新并使用本机缓存；显示内容仅供参考，不构成投资建议。
-
-## 设置快捷工具
-
-iOS 不允许普通 App 直接切换 Wi-Fi、蓝牙、蜂窝数据和飞行模式，因此本项目使用 Apple 官方“快捷指令”作为执行桥梁：
-
-1. 打开系统“快捷指令”App，新建四条快捷指令。
-2. 名称分别设为 `切换 Wi-Fi`、`切换蓝牙`、`切换蜂窝数据`、`切换飞行模式`。
-3. 每条快捷指令加入对应的“设置”动作，并把动作设为“切换”。
-4. 在“下班光轨”主 App 的“工具”页先测试四个按钮。
-5. 添加“快捷工具”组件；如果使用了不同名称，长按组件 →“编辑小组件”修改。
-
-工具组件不会读取这些系统开关的当前状态，因此图标用于快速入口，不代表系统实时开关状态。
-
-## 设置相册与音乐
-
-- 相册：在系统相册选择图片 → 分享 →“存储到文件”，然后长按“相册记忆”组件 →“编辑小组件”，选择一至三张图片。
-- 音乐：在 Apple Music 打开歌曲、专辑或歌单 → 分享 → 复制链接，再粘贴到“音乐播放器”组件设置中。
-- 音乐组件是设计化的内容入口，不读取系统当前播放状态，也不伪装成实时播放控制器。
-
-## 安全提醒
-
-- Sideloadly 和爱思助手都不是 Apple 官方工具。
-- 第三方工具需要处理设备通信和签名过程，不应称为 Apple 官方认可的分发方式。
-- 建议只从工具官方网站下载；不要使用来源不明的重打包版本。
-- 可以为自签名单独准备一个 Apple ID，避免把主要 Apple ID 输入不可信软件。
-- 不要向任何人提供验证码、恢复密钥或设备解锁密码。
+更多平台差异、构建方式和实现范围见 [PLATFORMS.md](PLATFORMS.md)。
 
 ## 项目结构
 
 ```text
-WorkdayGlow/Sources          主应用
-WorkdayGlowWidget/Sources    WidgetKit 与 App Intent 配置
-Shared/Sources               计算逻辑和视觉组件
-Shared/Resources             颜色与隐私清单
-android                      Kotlin、Jetpack Compose 与 Glance 工程
-harmony                      ArkTS、ArkUI 与 Form Kit 卡片工程
-Configuration               Bundle ID 配置
-.github/workflows            未签名 IPA 云端构建
+.
+├─ WorkdayGlow/Sources          iOS SwiftUI 主应用
+├─ WorkdayGlowWidget/Sources    WidgetKit、App Intents 与桌面组件
+├─ Shared/Sources               iOS 共享模型、计算逻辑与 100 款视觉目录
+├─ Shared/Resources             iOS 颜色、资源与隐私清单
+├─ android                      Kotlin、Compose、Material 3 与 Glance 工程
+├─ harmony                      ArkTS、ArkUI、Stage 模型与 Form Kit 工程
+├─ design-system/workdayglow    三端设计系统与平台覆盖规则
+├─ Configuration               iOS Bundle ID 与构建配置
+├─ Scripts                     Xcode 工程生成和 IPA 打包脚本
+└─ .github/workflows            iOS IPA 与 Android APK 云端构建
 ```
 
-Android 与 HarmonyOS 的当前进度、构建方式和平台差异见 [PLATFORMS.md](PLATFORMS.md)。
+## 持续集成
+
+仓库包含两个可手动触发的 GitHub Actions 工作流：
+
+- [`Build unsigned IPA`](.github/workflows/build-unsigned-ipa.yml)：在 macOS runner 上生成 Xcode 工程、关闭代码签名并打包 IPA。
+- [`Build Android APK`](.github/workflows/build-android.yml)：在 Ubuntu runner 上使用 Java 17 和 Gradle 8.11.1 生成 Debug APK。
+
+构建产物保存在对应运行记录底部的 **Artifacts** 区域，不会提交进 Git 仓库。
+
+## 隐私与安全
+
+- 不包含广告、账号系统、统计 SDK 或自建数据服务。
+- 不要把 Apple ID、验证码、恢复密钥、Alpha Vantage API Key 或签名文件提交到 GitHub。
+- Sideloadly 与其他侧载工具不是 Apple 官方分发渠道，只应从官方网站下载。
+- 如果只用于个人安装，可以为侧载单独准备 Apple ID，降低主要账号风险。
+- 第三方行情与天气服务受各自的使用条款、限流和可用性约束。
+
+## 下一阶段
+
+- 将 Android 的 Health Connect 授权、心率、睡眠、步数和血氧读取接入桌面组件。
+- 为 Android 增加天气、倒计时、相册、音乐和行情类 Glance 组件入口。
+- 在 DevEco Studio 中完成 HarmonyOS HAP 构建验证与真机服务卡片测试。
+- 为 Android 与 HarmonyOS 接入天气、汇率和行情缓存层。
+- 补充三端实际设备截图、自动化 UI 测试与正式发布签名流程。
+
+---
+
+WorkdayGlow 目前以个人侧载、设计验证和跨平台组件研究为目标。欢迎通过 Issue 记录兼容性问题、数据源限制和新组件建议。
