@@ -1,5 +1,6 @@
 package com.workdayglow.android.widget
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
@@ -20,7 +21,6 @@ import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
-import androidx.glance.layout.defaultWeight
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxHeight
@@ -46,8 +46,9 @@ class WorkdayGlowWidget : GlanceAppWidget() {
     )
 
     override suspend fun provideGlance(context: android.content.Context, id: GlanceId) {
+        val openAppIntent = Intent(context, MainActivity::class.java)
         provideContent {
-            WorkdayGlowWidgetContent(LocalSize.current.width >= 220.dp)
+            WorkdayGlowWidgetContent(LocalSize.current.width >= 220.dp, openAppIntent)
         }
     }
 }
@@ -57,7 +58,7 @@ class WorkdayGlowWidgetReceiver : GlanceAppWidgetReceiver() {
 }
 
 @Composable
-private fun WorkdayGlowWidgetContent(isWide: Boolean) {
+private fun WorkdayGlowWidgetContent(isWide: Boolean, openAppIntent: Intent) {
     val white = ColorProvider(Color.White)
     val secondary = ColorProvider(Color(0xFFA8A4B4))
     val coral = ColorProvider(Color(0xFFFF8D90))
@@ -70,12 +71,12 @@ private fun WorkdayGlowWidgetContent(isWide: Boolean) {
             .background(ColorProvider(Color(0xFF1D1C27)))
             .cornerRadius(28.dp)
             .appWidgetBackground()
-            .clickable(actionStartActivity<MainActivity>())
+            .clickable(actionStartActivity(openAppIntent))
             .padding(16.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("今日活力", style = TextStyle(color = white, fontSize = 17.sp, fontWeight = FontWeight.Bold))
-            Spacer(GlanceModifier.defaultWeight())
+            Spacer(GlanceModifier.width(12.dp))
             Text("72%", style = TextStyle(color = mint, fontSize = 13.sp, fontWeight = FontWeight.Bold))
         }
 
@@ -92,7 +93,7 @@ private fun WorkdayGlowWidgetContent(isWide: Boolean) {
         } else {
             Text("6,842", style = TextStyle(color = coral, fontSize = 28.sp, fontWeight = FontWeight.Bold))
             Text("今日步数", style = TextStyle(color = secondary, fontSize = 12.sp))
-            Spacer(GlanceModifier.defaultWeight())
+            Spacer(GlanceModifier.height(8.dp))
             Text("4.8 km · 386 千卡", style = TextStyle(color = white, fontSize = 12.sp))
         }
     }
@@ -102,7 +103,7 @@ private fun WorkdayGlowWidgetContent(isWide: Boolean) {
 private fun Metric(value: String, label: String, tint: ColorProvider) {
     Box(
         modifier = GlanceModifier
-            .defaultWeight()
+            .width(64.dp)
             .fillMaxHeight()
             .background(ColorProvider(Color(0xFF2B2938)))
             .cornerRadius(16.dp)
