@@ -19,7 +19,7 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
     var id: String { rawValue }
 
     var title: String {
-        switch self {
+        return switch self {
         case .featured: "精选"
         case .countdown: "下班"
         case .income: "收入"
@@ -38,7 +38,7 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
     }
 
     var symbolName: String {
-        switch self {
+        return switch self {
         case .featured: "sparkles"
         case .countdown: "hourglass"
         case .income: "banknote.fill"
@@ -65,7 +65,7 @@ enum WidgetArtworkSize: String, CaseIterable, Identifiable, Sendable {
     var id: String { rawValue }
 
     var title: String {
-        switch self {
+        return switch self {
         case .small: "小号"
         case .medium: "中号"
         case .large: "大号"
@@ -179,7 +179,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
 
     var title: String {
         if let metadata = expansionMetadata { return metadata.title }
-        switch self {
+        return switch self {
         case .workdayRail: "光轨倒计时"
         case .minimalCountdown: "极简倒计时"
         case .incomeBento: "收入便当"
@@ -231,7 +231,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
 
     var subtitle: String {
         if let metadata = expansionMetadata { return metadata.subtitle }
-        switch self {
+        return switch self {
         case .workdayRail: "下班、收入与发薪日，一眼看全"
         case .minimalCountdown: "克制的留白，只保留最重要的时间"
         case .incomeBento: "把今日收入与发薪进度装进便当格"
@@ -283,7 +283,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
 
     var category: WidgetTemplateCategory {
         if let metadata = expansionMetadata { return metadata.category }
-        switch self {
+        return switch self {
         case .workdayRail, .minimalCountdown, .afterworkPlan:
             .countdown
         case .incomeBento, .paydayCalendar:
@@ -320,7 +320,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
 
     var symbolName: String {
         if let metadata = expansionMetadata { return metadata.symbolName }
-        switch self {
+        return switch self {
         case .workdayRail: "sparkles.rectangle.stack.fill"
         case .minimalCountdown: "textformat.size"
         case .incomeBento: "square.grid.2x2.fill"
@@ -372,7 +372,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
 
     var supportedSizes: [WidgetArtworkSize] {
         if let metadata = expansionMetadata { return metadata.layout.supportedSizes }
-        switch self {
+        return switch self {
         case .workdayRail:
             [.small, .medium, .large]
         case .minimalCountdown, .progressOrbit, .afterworkPlan:
@@ -406,7 +406,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
 
     var preferredPreviewSize: WidgetArtworkSize {
         if let metadata = expansionMetadata { return metadata.layout.preferredSize }
-        switch self {
+        return switch self {
         case .progressOrbit, .afterworkPlan, .oxygenPulse, .weatherMinimal,
              .loveOrbit, .editorialClock, .calendarClock, .shortcutStack,
              .focusConsole, .photoPolaroid, .musicVinyl, .musicWave:
@@ -422,7 +422,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
 
     var widgetDisplayName: String {
         if expansionMetadata != nil { return "灵感合集" }
-        switch category {
+        return switch category {
         case .health: "健康状态"
         case .weather: "天气预报"
         case .love: "恋爱纪念日"
