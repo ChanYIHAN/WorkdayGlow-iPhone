@@ -119,10 +119,66 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     case dailyQuote
     case moonPhase
     case solarRhythm
+    case hydrationBloom
+    case stressBalance
+    case standRhythm
+    case mindfulMinutes
+    case cycleWellness
+    case heartZones
+    case sleepStages
+    case airQuality
+    case rainRadar
+    case sunriseForecast
+    case weeklyWeather
+    case pollenCare
+    case couplePhoto
+    case loveLetters
+    case nextDate
+    case flipClock
+    case wordClock
+    case focusClock
+    case countdownEvent
+    case timezoneStrip
+    case batteryPanel
+    case storageMeter
+    case qrLauncher
+    case quickNotes
+    case appLauncher
+    case photoStack
+    case memoryDate
+    case panoramicPhoto
+    case scrapbook
+    case albumShelf
+    case lyricsCard
+    case nowPlayingMinimal
+    case playlistCover
+    case cryptoPair
+    case portfolioPulse
+    case marketHeatmap
+    case budgetRing
+    case savingsGoal
+    case expenseSnapshot
+    case habitTracker
+    case pomodoroBoard
+    case taskPriority
+    case meetingCountdown
+    case monthOverview
+    case studyPlan
+    case projectMilestone
+    case affirmation
+    case gratitudePrompt
+    case zodiacDay
+    case festivalCountdown
+    case vacationCountdown
+    case weekendCountdown
+    case salaryProgress
+    case overtimeEarnings
+    case yearProgress
 
     var id: String { rawValue }
 
     var title: String {
+        if let metadata = expansionMetadata { return metadata.title }
         switch self {
         case .workdayRail: "光轨倒计时"
         case .minimalCountdown: "极简倒计时"
@@ -169,10 +225,12 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .dailyQuote: "每日一句"
         case .moonPhase: "月相观测"
         case .solarRhythm: "日光节律"
+        default: rawValue
         }
     }
 
     var subtitle: String {
+        if let metadata = expansionMetadata { return metadata.subtitle }
         switch self {
         case .workdayRail: "下班、收入与发薪日，一眼看全"
         case .minimalCountdown: "克制的留白，只保留最重要的时间"
@@ -219,10 +277,12 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .dailyQuote: "每天一句克制而温柔的生活提醒"
         case .moonPhase: "本地计算月相与下一次满月进度"
         case .solarRhythm: "日出、日落与此刻光线组成一条节律"
+        default: "原创桌面信息卡片"
         }
     }
 
     var category: WidgetTemplateCategory {
+        if let metadata = expansionMetadata { return metadata.category }
         switch self {
         case .workdayRail, .minimalCountdown, .afterworkPlan:
             .countdown
@@ -253,10 +313,13 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
             .planner
         case .dailyQuote, .moonPhase, .solarRhythm:
             .daily
+        default:
+            .daily
         }
     }
 
     var symbolName: String {
+        if let metadata = expansionMetadata { return metadata.symbolName }
         switch self {
         case .workdayRail: "sparkles.rectangle.stack.fill"
         case .minimalCountdown: "textformat.size"
@@ -303,10 +366,12 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
         case .dailyQuote: "quote.opening"
         case .moonPhase: "moonphase.waxing.gibbous"
         case .solarRhythm: "sun.horizon.fill"
+        default: "sparkles.rectangle.stack.fill"
         }
     }
 
     var supportedSizes: [WidgetArtworkSize] {
+        if let metadata = expansionMetadata { return metadata.layout.supportedSizes }
         switch self {
         case .workdayRail:
             [.small, .medium, .large]
@@ -334,10 +399,13 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
             [.small, .medium]
         case .activeBento, .glassAgenda, .weekPlanner:
             [.medium, .large]
+        default:
+            [.small, .medium]
         }
     }
 
     var preferredPreviewSize: WidgetArtworkSize {
+        if let metadata = expansionMetadata { return metadata.layout.preferredSize }
         switch self {
         case .progressOrbit, .afterworkPlan, .oxygenPulse, .weatherMinimal,
              .loveOrbit, .editorialClock, .calendarClock, .shortcutStack,
@@ -353,6 +421,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     }
 
     var widgetDisplayName: String {
+        if expansionMetadata != nil { return "灵感合集" }
         switch category {
         case .health: "健康状态"
         case .weather: "天气预报"

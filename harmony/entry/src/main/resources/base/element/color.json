@@ -1,0 +1,11 @@
+{
+  "color": [
+    { "name": "start_window_background", "value": "#F6F6FA" },
+    { "name": "page_background", "value": "#F6F6FA" },
+    { "name": "plum_ink", "value": "#1D1C27" },
+    { "name": "sea_glass", "value": "#36D5B1" },
+    { "name": "sky_glow", "value": "#65C7FF" },
+    { "name": "lavender", "value": "#AD91ED" },
+    { "name": "coral", "value": "#FF8D90" }
+  ]
+}

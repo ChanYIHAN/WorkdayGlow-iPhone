@@ -7,7 +7,7 @@
 - 原生大标题、全局搜索、Liquid Glass/Material 卡片、精选故事与 Bento 模板画廊
 - 发现、组件库、快捷工具、概览、设置五个原生 Tab
 - 实时下班倒计时、今日工作进度、今日预计收入、距离发薪日
-- 45 款可选视觉模板，对应 19 个真实 WidgetKit 组件入口
+- 100 款可选视觉模板，对应 20 个真实 WidgetKit 组件入口
 - Apple 健康：心率、睡眠、血氧、今日步数、步行距离与活动能量，支持自动读取与手动备用
 - 天气：当前天气、未来六小时、极简天气，使用免费的 Open-Meteo
 - 恋爱纪念日：在一起天数、下一个周年倒计时
@@ -25,7 +25,7 @@
 - App Intent 小组件配置，不依赖付费 App Group
 - GitHub Actions 未签名 IPA 构建流程
 
-## 组件目录：45 款设计
+## 组件目录：100 款设计
 
 | 分类 | 组件风格 | 尺寸 |
 | --- | --- | --- |
@@ -46,8 +46,9 @@
 | 行情 | 极简汇率 / 汇率矩阵 / 旅行换算 / 黄金现货 / 金价曲线 / 金银双卡 / 单股行情 / 自选股便当 / 港美双市场 | 小 / 中 / 大 |
 | 日程 | 玻璃日程 / 一周计划 / 专注此刻 | 小 / 中 / 大 / 锁屏 |
 | 日常 | 每日一句 / 月相观测 / 日光节律 | 小 / 中 / 锁屏 |
+| 灵感合集 | 新增健康、天气、时间、工具、照片、音乐、行情、日程与生活等 55 款设计 | 小 / 中 / 大 |
 
-为了避免 WidgetKit 选择器被大量近似入口挤满，同类设计会共用一个组件入口。添加后长按组件，选择“编辑小组件”，即可切换同分类的视觉样式。日程与每日灵感还提供锁屏内联、圆形和矩形尺寸。
+为了避免 WidgetKit 选择器被大量近似入口挤满，同类设计会共用一个组件入口。新增 55 款统一放在“灵感合集”入口中；添加后长按组件，选择“编辑小组件”，即可切换视觉样式。日程与每日灵感还提供锁屏内联、圆形和矩形尺寸。
 
 ## 数据来源与隐私
 
@@ -195,6 +196,10 @@ WorkdayGlow/Sources          主应用
 WorkdayGlowWidget/Sources    WidgetKit 与 App Intent 配置
 Shared/Sources               计算逻辑和视觉组件
 Shared/Resources             颜色与隐私清单
+android                      Kotlin、Jetpack Compose 与 Glance 工程
+harmony                      ArkTS、ArkUI 与 Form Kit 卡片工程
 Configuration               Bundle ID 配置
 .github/workflows            未签名 IPA 云端构建
 ```
+
+Android 与 HarmonyOS 的当前进度、构建方式和平台差异见 [PLATFORMS.md](PLATFORMS.md)。

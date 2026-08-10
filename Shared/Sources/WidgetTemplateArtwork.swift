@@ -61,6 +61,8 @@ struct WidgetTemplateBackground: View {
         case .glassAgenda, .weekPlanner, .focusNow,
              .dailyQuote, .moonPhase, .solarRhythm:
             EverydayTemplateBackground(template: template)
+        default:
+            ExpansionTemplateBackground(template: template)
         }
     }
 }
@@ -120,6 +122,8 @@ struct WidgetTemplateArtwork: View {
                     size: size,
                     date: snapshot.date
                 )
+            default:
+                ExpansionTemplateArtwork(template: template, size: size)
             }
         }
         .accessibilityElement(children: .contain)

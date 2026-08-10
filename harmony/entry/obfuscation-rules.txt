@@ -1,0 +1,3 @@
+# Keep Form Kit entry points discoverable.
+-keep ./src/main/ets/form/**
+-keep ./src/main/ets/pages/WidgetCard.ets

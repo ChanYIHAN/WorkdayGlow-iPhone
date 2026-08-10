@@ -63,6 +63,8 @@ struct RootTabView: View {
             }
         case "tools":
             selectedTab = .tools
+        case "widgets":
+            selectedTab = .widgets
         case "open":
             selectedTab = .widgets
             guard let destination = value("url"), !destination.isEmpty else { return }

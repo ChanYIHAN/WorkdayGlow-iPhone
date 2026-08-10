@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">下班光轨</string>
+    <string name="widget_name">下班光轨 · 今日活力</string>
+    <string name="widget_description">步数、距离、活动能量与今日进度</string>
+</resources>

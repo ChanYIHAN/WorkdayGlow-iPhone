@@ -51,7 +51,7 @@ struct DiscoveryView: View {
                     .accessibilityHidden(true)
             }
 
-            Text("45 款原创设计 · 19 个组件入口 · 桌面与锁屏")
+            Text("100 款原创设计 · 20 个组件入口 · 桌面与锁屏")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 
