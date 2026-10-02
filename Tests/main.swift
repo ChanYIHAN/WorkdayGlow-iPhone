@@ -19,6 +19,8 @@ precondition(WidgetTemplateKind.allCases.count == 200)
 precondition(Set(WidgetTemplateKind.allCases.map(\.title)).count == 200)
 for template in WidgetTemplateKind.allCases {
     precondition(!template.title.isEmpty && !template.subtitle.isEmpty && !template.supportedSizes.isEmpty)
+    precondition(template.design.metrics.count == 3 && template.design.palette.count == 5)
+    precondition((0...1).contains(template.design.progress))
 }
 precondition(WidgetTemplateKind.templates(for: .learning).count == 22)
 precondition(VocabularySeed.words.count == 40)
