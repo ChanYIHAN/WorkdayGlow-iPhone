@@ -24,10 +24,12 @@ class VocabularyTest {
         assertTrue(VocabularyImport.parse("x".repeat(81) + "|too long").isEmpty())
     }
     @Test fun allTemplatesAreUniqueAndLearningThemesArePresent() {
-        assertEquals(150, WidgetCatalog.templates.size)
-        assertEquals(150, WidgetCatalog.templates.map { it.id }.toSet().size)
-        assertEquals(150, WidgetCatalog.templates.map { it.title }.toSet().size)
-        assertEquals(20, WidgetCatalog.templates.count { it.category == WidgetCategory.Learning })
+        assertEquals(200, WidgetCatalog.templates.size)
+        assertEquals(200, WidgetCatalog.templates.map { it.id }.toSet().size)
+        assertEquals(200, WidgetCatalog.templates.map { it.title }.toSet().size)
+        assertEquals(22, WidgetCatalog.templates.count { it.category == WidgetCategory.Learning })
+        assertEquals(200, AtelierCatalog.designs.size)
+        assertEquals(WidgetCatalog.templates.map { it.title }.toSet(), AtelierCatalog.designs.keys)
         assertEquals(40, vocabularySeed.size)
     }
 }

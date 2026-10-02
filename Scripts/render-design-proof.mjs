@@ -1,0 +1,35 @@
+import fs from 'node:fs';
+const data = JSON.parse(fs.readFileSync('content/designs.json','utf8'));
+const names = {countdown:'倒计时',income:'收入',rhythm:'周期',health:'健康',weather:'天气',love:'情侣',time:'时间',tools:'工具',photos:'相册',music:'音乐',finance:'财务',planner:'日程',daily:'日常',learning:'学习'};
+const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+function svg(d) {
+  const [bg,bg2,ink,accent,muted]=d.palette;
+  const txt=(s,x,y,size=12,color=ink,serif=false)=>`<text x="${x}" y="${y}" fill="${color}" font-size="${size}" font-family="${serif?'Georgia,SimSun':'system-ui,Microsoft YaHei'}">${esc(s)}</text>`;
+  const line=(x1,y1,x2,y2)=>`<path d="M${x1} ${y1}L${x2} ${y2}" stroke="${muted}" stroke-opacity=".35"/>`;
+  const metrics=d.metrics.map((m,i)=>txt(m.label,22+i*94,131,9,muted)+txt(m.value,22+i*94,151,12)).join('');
+  const headline=txt(d.value,22,79,d.value.length>16?18:25,ink,d.layout==='editorial');
+  const caption=txt(d.caption.length>24?d.caption.slice(0,23)+'…':d.caption,22,101,10,muted);
+  let art='';
+  if (['orbit','dial'].includes(d.layout)) {
+    const ring=d.layout==='dial'?Array.from({length:36},(_,i)=>{const a=i*Math.PI/18;return line(65+Math.sin(a)*38,94+Math.cos(a)*38,65+Math.sin(a)*(i%3?35:31),94+Math.cos(a)*(i%3?35:31));}).join('')+`<path d="M65 94L80 76M65 94L50 85" stroke="${accent}" stroke-width="2"/>`:`<circle cx="65" cy="94" r="36" fill="none" stroke="${ink}" stroke-opacity=".08" stroke-width="6"/><circle cx="65" cy="94" r="36" fill="none" stroke="${accent}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${226*d.progress} 226" transform="rotate(-90 65 94)"/><circle cx="65" cy="94" r="24" fill="none" stroke="${accent}" stroke-opacity=".35" stroke-width="3"/>`;
+    art=ring+txt(d.value,121,91,d.value.length>10?17:23)+txt(d.metrics[0].label+' · '+d.metrics[0].value,121,114,10,muted);
+  } else if(d.layout==='list') {
+    art=d.rows.map((m,i)=>txt('0'+(i+1),22,69+i*32,9,accent)+txt(m.label,48,69+i*32,11)+txt(m.value,170,69+i*32,12)+line(22,79+i*32,286,79+i*32)).join('');
+  } else if(d.layout==='bento') {
+    art=`<rect x="18" y="48" width="174" height="106" rx="12" fill="${ink}" fill-opacity=".04"/>`+txt(d.value,28,89,d.value.length>12?17:23)+txt(d.metrics[2].label+' · '+d.metrics[2].value,28,115,10,muted)+d.metrics.slice(0,2).map((m,i)=>txt(m.label,210,64+i*52,9,muted)+txt(m.value,210,84+i*52,13)).join('');
+  } else if(d.layout==='ticket') {
+    art=headline+`<path d="M22 106H286" stroke="${muted}" stroke-opacity=".4" stroke-dasharray="2 4"/>`+metrics;
+  } else if(d.layout==='constellation') {
+    art=headline+Array.from({length:21},(_,i)=>`<circle cx="${26+Math.floor(i/3)*22}" cy="${104+i%3*15}" r="3.5" fill="${accent}" opacity="${i<d.progress*21?1:0.18}"/>`).join('')+txt(d.metrics[0].value,206,124,12,muted);
+  } else if(['waveform','timeline'].includes(d.layout)) {
+    art=headline+d.series.map((v,i)=>`<rect x="${22+i*38}" y="${149-v*43}" width="23" height="${v*43}" rx="${d.layout==='waveform'?10:3}" fill="${accent}" opacity="${.3+v*.6}"/>`).join('');
+  } else if(d.layout==='mosaic') {
+    art=[0,1,2].map((i)=>`<svg x="${22+i*89}" y="48" width="${i===0?84:78}" height="82" viewBox="0 0 84 82"><rect width="84" height="82" rx="10" fill="${accent}" opacity="${.25+i*.1}"/><circle cx="55" cy="22" r="10" fill="${bg}"/><path d="M-5 85V63Q18 21 47 55Q64 38 90 64V85Z" fill="${ink}" opacity=".2"/></svg>`).join('')+txt(d.value,22,151,16,ink,true);
+  } else if(d.layout==='gauge') {
+    art=headline+caption+`<rect x="22" y="125" width="264" height="5" rx="2.5" fill="${ink}" opacity=".1"/><rect x="22" y="125" width="${264*d.progress}" height="5" rx="2.5" fill="${accent}"/>`+txt(d.metrics[0].label+' · '+d.metrics[0].value,22,152,10,muted);
+  } else { art=line(22,48,50,48)+headline+caption+(d.layout==='editorial'?line(22,115,286,115)+metrics:''); }
+  return `<svg role="img" aria-label="${esc(d.title)}设计校样" viewBox="0 0 308 190" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${d.id}"><stop stop-color="${bg}"/><stop offset="1" stop-color="${bg2}"/></linearGradient></defs><rect width="308" height="190" rx="23" fill="url(#${d.id})"/>${txt(d.eyebrow,22,28,9,muted)}${art}${txt(d.title,22,174,10)}${txt('EKHART',243,174,8,muted)}</svg>`;
+}
+const cards=data.map(d=>`<article data-category="${d.category}" data-key="${esc(d.title+' '+d.subtitle+' '+d.id)}">${svg(d)}<h2>${d.title}</h2><p>${esc(d.subtitle)}</p><small>${names[d.category]} · ${d.layout} · ${d.id}</small></article>`).join('\n');
+fs.writeFileSync('design-system/workdayglow/preview.html',`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>奕刻 · 200 款设计校样</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f4ef;color:#263b35;font:15px/1.6 system-ui,"Microsoft YaHei",sans-serif}header,main{max-width:1400px;margin:auto;padding:32px}h1{font-size:42px;letter-spacing:-1px;line-height:1.3;margin:12px 0}header p{max-width:760px;color:#586a62}nav{display:flex;gap:8px;flex-wrap:wrap}button,input{border:1px solid #d4ded6;border-radius:22px;background:#fff;padding:10px 16px;font:inherit;color:inherit}button{cursor:pointer}button[aria-pressed=true]{background:#234f42;color:#fff}input{width:min(460px,100%);margin:18px 0}main{padding-top:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(292px,1fr));gap:28px}article svg{display:block;width:100%;box-shadow:0 8px 20px #263b3509;border:1px solid #fff8;border-radius:23px}h2{font-size:16px;font-weight:600;margin:12px 0 2px}article p{font-size:12px;color:#586a62;margin:0}small{font-size:10px;color:#66776f}article[hidden]{display:none}@media(max-width:500px){header,main{padding:20px}h1{font-size:32px}}@media(prefers-reduced-motion:no-preference){article{animation:arrive .35s ease-out both}@keyframes arrive{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}}</style><header><small>EKHART · ATELIER 200</small><h1>让每一刻，恰好可见。</h1><p>200 款，14 个类别。低饱和色板、细刻度与充足留白。此页为共享设计规格校样，包含示例数据与程序化窗景；并非原生应用运行截图。</p><nav><button aria-pressed="true" data-filter="all">全部 200</button>${Object.entries(names).map(([c,n])=>`<button aria-pressed="false" data-filter="${c}">${n} ${data.filter(d=>d.category===c).length}</button>`).join('')}</nav><input aria-label="搜索组件" placeholder="搜索名称、场景或标识"><span id="count" aria-live="polite">200 款</span></header><main>${cards}</main><script>let selected='all';const input=document.querySelector('input');function filter(){const q=input.value.trim().toLowerCase();let count=0;document.querySelectorAll('article').forEach(card=>{card.hidden=!((selected==='all'||card.dataset.category===selected)&&card.dataset.key.toLowerCase().includes(q));if(!card.hidden)count++});document.getElementById('count').textContent=count+' 款'}document.querySelectorAll('button').forEach(b=>b.onclick=()=>{selected=b.dataset.filter;document.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));filter()});input.oninput=filter;</script></html>`);
+console.log('Rendered 200 design proofs.');

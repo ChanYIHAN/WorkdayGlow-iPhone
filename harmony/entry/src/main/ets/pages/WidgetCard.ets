@@ -26,14 +26,14 @@ struct WidgetCard {
         Text(`${this.progress}%`)
           .fontSize(14)
           .fontWeight(FontWeight.Bold)
-          .fontColor('#36D5B1')
+          .fontColor('#A8CFC3')
       }
       .width('100%')
 
       Row({ space: 9 }) {
-        this.Metric(this.steps, '步数', '#FF8D90')
-        this.Metric(this.distance, '距离', '#36D5B1')
-        this.Metric(this.energy, '能量', '#AD91ED')
+        this.Metric(this.steps, '步数', '#D9B4C8')
+        this.Metric(this.distance, '距离', '#A8CFC3')
+        this.Metric(this.energy, '能量', '#D9C6E4')
       }
       .layoutWeight(1)
     }
@@ -41,7 +41,7 @@ struct WidgetCard {
     .height('100%')
     .padding(18)
     .borderRadius(28)
-    .linearGradient({ angle: 135, colors: [['#1D1C27', 0.0], ['#34314A', 1.0]] })
+    .linearGradient({ angle: 135, colors: [['#202B3A', 0.0], ['#303B50', 1.0]] })
     .onClick(() => {
       postCardAction(this, {
         action: 'router',

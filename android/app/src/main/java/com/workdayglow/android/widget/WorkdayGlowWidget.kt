@@ -60,15 +60,15 @@ class WorkdayGlowWidgetReceiver : GlanceAppWidgetReceiver() {
 @Composable
 private fun WorkdayGlowWidgetContent(isWide: Boolean, openAppIntent: Intent) {
     val white = ColorProvider(Color.White)
-    val secondary = ColorProvider(Color(0xFFA8A4B4))
-    val coral = ColorProvider(Color(0xFFFF8D90))
-    val mint = ColorProvider(Color(0xFF5FE0C2))
-    val lavender = ColorProvider(Color(0xFFCAB8FF))
+    val secondary = ColorProvider(Color(0xFFBFC6CF))
+    val coral = ColorProvider(Color(0xFFD9B4C8))
+    val mint = ColorProvider(Color(0xFFA8CFC3))
+    val lavender = ColorProvider(Color(0xFFD9C6E4))
 
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
-            .background(ColorProvider(Color(0xFF1D1C27)))
+            .background(ColorProvider(Color(0xFF202B3A)))
             .cornerRadius(28.dp)
             .appWidgetBackground()
             .clickable(actionStartActivity(openAppIntent))
@@ -105,7 +105,7 @@ private fun Metric(value: String, label: String, tint: ColorProvider) {
         modifier = GlanceModifier
             .width(64.dp)
             .fillMaxHeight()
-            .background(ColorProvider(Color(0xFF2B2938)))
+            .background(ColorProvider(Color(0xFF303B50)))
             .cornerRadius(16.dp)
             .padding(10.dp),
         contentAlignment = Alignment.CenterStart
@@ -114,7 +114,7 @@ private fun Metric(value: String, label: String, tint: ColorProvider) {
             Box(GlanceModifier.size(8.dp).background(tint).cornerRadius(4.dp)) {}
             Spacer(GlanceModifier.height(8.dp))
             Text(value, style = TextStyle(color = ColorProvider(Color.White), fontSize = 16.sp, fontWeight = FontWeight.Bold))
-            Text(label, style = TextStyle(color = ColorProvider(Color(0xFFA8A4B4)), fontSize = 10.sp))
+            Text(label, style = TextStyle(color = ColorProvider(Color(0xFFBFC6CF)), fontSize = 10.sp))
         }
     }
 }

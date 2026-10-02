@@ -21,6 +21,8 @@ enum VocabularyWidgetStyle: String, CaseIterable, AppEnum {
     case readingNote
     case examSprint
     case languagePassport
+    case wordTicket
+    case readingEditorial
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "学习卡样式"
     static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
         .wordDaily: "每日单词",
@@ -42,7 +44,9 @@ enum VocabularyWidgetStyle: String, CaseIterable, AppEnum {
         .wordGoal: "每日词汇目标",
         .readingNote: "阅读摘录",
         .examSprint: "考试冲刺",
-        .languagePassport: "语言护照"
+        .languagePassport: "语言护照",
+        .wordTicket: "词汇随身签",
+        .readingEditorial: "阅读扉页"
     ]
     var template: WidgetTemplateKind { WidgetTemplateKind(rawValue: rawValue) ?? .wordDaily }
 }

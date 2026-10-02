@@ -244,7 +244,7 @@ struct LifestyleTemplateArtwork: View {
 
                 Text(sleepText)
                     .font(size == .small ? .title : .largeTitle)
-                    .fontWeight(.black)
+                    .fontWeight(.semibold)
                     .fontDesign(.rounded)
                     .foregroundStyle(.white)
 
@@ -455,7 +455,7 @@ struct LifestyleTemplateArtwork: View {
                     .foregroundStyle(Color("PlumInk").opacity(0.55))
 
                 Text("\(Int(weather.temperature.rounded()))°")
-                    .font(.system(size: 58, weight: .black, design: .rounded))
+                    .font(.system(size: 58, weight: .semibold, design: .rounded))
                     .fontWidth(.condensed)
                     .foregroundStyle(.white)
                     .shadow(color: Color("PlumInk").opacity(0.12), radius: 12, y: 8)
@@ -546,7 +546,7 @@ struct LifestyleTemplateArtwork: View {
                     Spacer()
 
                     Text("\(Int(weather.temperature.rounded()))°")
-                        .font(.system(size: 54, weight: .black, design: .rounded))
+                        .font(.system(size: 54, weight: .semibold, design: .rounded))
                         .fontWidth(.condensed)
 
                     Text(weather.weatherCode.weatherDescription)
@@ -561,7 +561,7 @@ struct LifestyleTemplateArtwork: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         Text("\(Int(weather.temperature.rounded()))°")
-                            .font(.system(size: 58, weight: .black, design: .rounded))
+                            .font(.system(size: 58, weight: .semibold, design: .rounded))
                             .fontWidth(.condensed)
                         Text("体感 \(Int(weather.apparentTemperature.rounded()))°")
                             .font(.caption)
@@ -622,7 +622,7 @@ struct LifestyleTemplateArtwork: View {
 
                 HStack(alignment: .firstTextBaseline, spacing: 5) {
                     Text("\(daysTogether)")
-                        .font(.system(size: 45, weight: .black, design: .rounded))
+                        .font(.system(size: 45, weight: .semibold, design: .rounded))
                         .fontWidth(.condensed)
                         .monospacedDigit()
                     Text("天")
@@ -656,7 +656,7 @@ struct LifestyleTemplateArtwork: View {
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text("\(daysTogether)")
-                    .font(.system(size: 48, weight: .black, design: .rounded))
+                    .font(.system(size: 48, weight: .semibold, design: .rounded))
                     .fontWidth(.condensed)
                     .monospacedDigit()
                 Text("天")
@@ -691,7 +691,7 @@ struct LifestyleTemplateArtwork: View {
                             .foregroundStyle(.white.opacity(0.48))
                         Text("\(daysUntilAnniversary) 天")
                             .font(.title)
-                            .fontWeight(.black)
+                            .fontWeight(.semibold)
                             .fontDesign(.rounded)
                         Text("已经一起走过 \(daysTogether) 天")
                             .font(.caption)
@@ -711,7 +711,7 @@ struct LifestyleTemplateArtwork: View {
             HStack {
                 Text(date.formatted(.dateTime.weekday(.wide)))
                     .font(.caption)
-                    .fontWeight(.black)
+                    .fontWeight(.semibold)
                     .tracking(1.4)
                 Spacer()
                 Text(date.formatted(.dateTime.month().day()))
@@ -722,7 +722,7 @@ struct LifestyleTemplateArtwork: View {
             Spacer(minLength: 0)
 
             Text(date, style: .time)
-                .font(.system(size: size == .small ? 45 : 64, weight: .black, design: .rounded))
+                .font(.system(size: size == .small ? 45 : 64, weight: .semibold, design: .rounded))
                 .fontWidth(.condensed)
                 .monospacedDigit()
                 .minimumScaleFactor(0.55)
@@ -730,7 +730,7 @@ struct LifestyleTemplateArtwork: View {
 
             Text("MAKE TIME YOURS")
                 .font(.caption2)
-                .fontWeight(.black)
+                .fontWeight(.semibold)
                 .tracking(2)
                 .foregroundStyle(Color("RoseGlow"))
         }
@@ -784,7 +784,7 @@ struct LifestyleTemplateArtwork: View {
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.45))
                 Text(timeText(for: city.timeZoneIdentifier))
-                    .font(.system(size: 38, weight: .black, design: .rounded))
+                    .font(.system(size: 38, weight: .semibold, design: .rounded))
                     .fontWidth(.condensed)
                     .monospacedDigit()
                 Text(dayRelation(for: city.timeZoneIdentifier))
@@ -800,7 +800,7 @@ struct LifestyleTemplateArtwork: View {
         VStack(alignment: .leading, spacing: size == .small ? 8 : 12) {
             HStack(alignment: .firstTextBaseline) {
                 Text(date.formatted(.dateTime.day()))
-                    .font(.system(size: size == .small ? 48 : 56, weight: .black, design: .rounded))
+                    .font(.system(size: size == .small ? 48 : 56, weight: .semibold, design: .rounded))
                     .fontWidth(.condensed)
                 VStack(alignment: .leading, spacing: 0) {
                     Text(date.formatted(.dateTime.month(.wide)))
@@ -903,7 +903,7 @@ struct LifestyleTemplateArtwork: View {
             VStack(spacing: 0) {
                 Text(oxygenText.replacingOccurrences(of: "%", with: ""))
                     .font(.title)
-                    .fontWeight(.black)
+                    .fontWeight(.semibold)
                     .monospacedDigit()
                 Text("%")
                     .font(.caption2)
@@ -940,7 +940,7 @@ struct LifestyleTemplateArtwork: View {
                     .foregroundStyle(Color("RoseGlow"))
                 Text("\(daysUntilAnniversary)")
                     .font(.title2)
-                    .fontWeight(.black)
+                    .fontWeight(.semibold)
                     .monospacedDigit()
             }
         }

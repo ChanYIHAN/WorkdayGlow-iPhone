@@ -7,20 +7,21 @@ enum ExpansionTemplateLayout: String, Sendable {
     case poster
     case gauge
     case list
+    case dial, ticket, constellation, waveform, mosaic, editorial
 
     var supportedSizes: [WidgetArtworkSize] {
         switch self {
-        case .bento, .timeline, .list:
+        case .bento, .timeline, .list, .ticket, .constellation, .waveform, .mosaic:
             [.medium, .large]
-        case .orbit, .poster, .gauge:
+        case .orbit, .poster, .gauge, .dial, .editorial:
             [.small, .medium]
         }
     }
 
     var preferredSize: WidgetArtworkSize {
         switch self {
-        case .orbit, .poster, .gauge: .small
-        case .bento, .timeline, .list: .medium
+        case .orbit, .poster, .gauge, .dial, .editorial: .small
+        case .bento, .timeline, .list, .ticket, .constellation, .waveform, .mosaic: .medium
         }
     }
 }

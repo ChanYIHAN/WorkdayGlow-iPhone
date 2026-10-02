@@ -219,7 +219,7 @@ private fun WidgetGalleryScreen(showDiscoveryHero: Boolean, opaque: Boolean, onS
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text("150 款原创模板", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                    Text("200 款原创模板", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                     Text("三端同名目录 · 原生桌面组件", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Spacer(Modifier.weight(1f))
@@ -255,7 +255,7 @@ private fun DiscoveryHero() {
     ) {
         Text("EKHART WIDGETS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
         Text("让每一刻\n恰好可见", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-        Text("奕刻 · 150 款原创设计 · 三端同名目录", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("奕刻 · 200 款原创设计 · 三端同名目录", color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             HeroTag("健康", Color(0xFFFF8D90))
             HeroTag("日程", Color(0xFF65C7FF))
@@ -290,8 +290,8 @@ private fun WidgetTemplateCard(template: WidgetTemplate, modifier: Modifier = Mo
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            WidgetVisual(template)
-            if (template.sampleValue.isNotEmpty()) Text(if (template.category == WidgetCategory.Learning) "点击开始学习 · 可导入个人词库" else "本地示例 · 暂无实时数据", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            AtelierArtwork(template)
+            Text(if (template.category == WidgetCategory.Learning) "点击开始学习 · 可导入个人词库" else "本地示例 · 暂无实时数据", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(template.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
@@ -304,135 +304,6 @@ private fun WidgetTemplateCard(template: WidgetTemplate, modifier: Modifier = Mo
                     )
                 }
                 Text(template.category.title, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelMedium)
-            }
-        }
-    }
-}
-
-@Composable
-private fun WidgetVisual(template: WidgetTemplate) {
-    val palettes = listOf(
-        listOf(Color(0xFFF7F1E8), Color(0xFF7CE1C8)),
-        listOf(Color(0xFF1D1C27), Color(0xFF34314A)),
-        listOf(Color(0xFF65C7FF), Color(0xFFAD91ED)),
-        listOf(Color(0xFF191824), Color(0xFF4A3E78)),
-        listOf(Color(0xFFFFE27D), Color(0xFFFF9E9F)),
-        listOf(Color(0xFFAD91ED), Color(0xFFFF8D90))
-    )
-    val colors = palettes[template.palette % palettes.size]
-    val dark = template.palette == 1 || template.palette == 3
-    val text = if (dark) Color.White else Color(0xFF1D1C27)
-    val shape = RoundedCornerShape(24.dp)
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(174.dp)
-            .clip(shape)
-            .background(Brush.linearGradient(colors))
-            .padding(17.dp)
-    ) {
-        when (template.layout) {
-            WidgetLayout.Orbit -> OrbitPreview(template.title, text, template.sampleValue)
-            WidgetLayout.Bento -> BentoPreview(template.title, text, template.sampleValue)
-            WidgetLayout.Timeline -> TimelinePreview(template.title, text, template.sampleValue)
-            WidgetLayout.Poster -> PosterPreview(template.title, template.category, text, template.sampleValue)
-            WidgetLayout.Gauge -> GaugePreview(template.title, text, template.sampleValue)
-            WidgetLayout.List -> ListPreview(template.title, text, template.sampleValue)
-        }
-    }
-}
-
-@Composable
-private fun OrbitPreview(title: String, text: Color, value: String = "") {
-    Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
-        Canvas(Modifier.size(118.dp)) {
-            drawArc(text.copy(alpha = 0.12f), -90f, 360f, false, style = Stroke(13.dp.toPx()))
-            drawArc(Color(0xFF5FE0C2), -90f, 260f, false, style = Stroke(13.dp.toPx(), cap = StrokeCap.Round))
-            val inset = 21.dp.toPx()
-            drawArc(Color(0xFFCAB8FF), -90f, 176f, false, topLeft = Offset(inset, inset), size = Size(size.width - inset * 2, size.height - inset * 2), style = Stroke(8.dp.toPx(), cap = StrokeCap.Round))
-        }
-        Column(Modifier.padding(start = 18.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
-            Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
-            Text(value.ifEmpty { "72%" }, color = text, fontWeight = FontWeight.Black, fontSize = 30.sp)
-            Text("今日状态", color = text.copy(alpha = 0.58f))
-        }
-    }
-}
-
-@Composable
-private fun BentoPreview(title: String, text: Color, value: String = "") {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
-        Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(9.dp)) {
-            (if (value.isEmpty()) listOf("6,842" to "今日", "4.8 km" to "距离", "386" to "能量") else listOf(value to "示例", "每日" to "节奏", "本地" to "数据")).forEachIndexed { index, item ->
-                Column(
-                    Modifier
-                        .weight(1f)
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(text.copy(alpha = 0.08f))
-                        .padding(11.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Box(Modifier.size(9.dp).clip(CircleShape).background(listOf(Color(0xFFFF8D90), Color(0xFF5FE0C2), Color(0xFFAD91ED))[index]))
-                    Text(item.first, color = text, fontWeight = FontWeight.Bold, maxLines = 1)
-                    Text(item.second, color = text.copy(alpha = 0.56f), fontSize = 11.sp)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun TimelinePreview(title: String, text: Color, value: String = "") {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
-        Text(if (value.isEmpty()) title else "$title · $value", color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
-        Row(Modifier.fillMaxWidth().height(92.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Bottom) {
-            listOf(0.38f, 0.62f, 0.48f, 0.82f, 1f, 0.66f, 0.52f).forEachIndexed { index, value ->
-                Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(Modifier.fillMaxWidth().height((68 * value).dp).clip(CircleShape).background(if (index == 4) Color(0xFF5FE0C2) else text.copy(alpha = 0.22f)))
-                    Text("一二三四五六日"[index].toString(), color = text.copy(alpha = 0.55f), fontSize = 10.sp)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun PosterPreview(title: String, category: WidgetCategory, text: Color, value: String = "") {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
-        Row { Text(category.title, color = text.copy(alpha = 0.56f), fontWeight = FontWeight.Bold) }
-        Column {
-            Text(if (value.isNotEmpty()) value else if (category == WidgetCategory.Time) "09:41" else "TODAY", color = text, fontWeight = FontWeight.Black, fontSize = 34.sp)
-            Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-        }
-    }
-}
-
-@Composable
-private fun GaugePreview(title: String, text: Color, value: String = "") {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(13.dp)) {
-        Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
-        Text(value.ifEmpty { "72%" }, color = text, fontWeight = FontWeight.Black, fontSize = 38.sp)
-        Box(Modifier.fillMaxWidth().height(12.dp).clip(CircleShape).background(text.copy(alpha = 0.12f))) {
-            Box(Modifier.fillMaxWidth(0.72f).fillMaxSize().clip(CircleShape).background(Color(0xFF5FE0C2)))
-        }
-        Text("正在稳稳向目标靠近", color = text.copy(alpha = 0.58f))
-    }
-}
-
-@Composable
-private fun ListPreview(title: String, text: Color, value: String = "") {
-    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
-        (if (value.isEmpty()) listOf("09:30  第一项", "14:00  第二项", "19:30  今日状态") else listOf(value, "可搭配个人内容", "本地示例")).forEachIndexed { index, row ->
-            Row(
-                Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(12.dp)).background(text.copy(alpha = 0.08f)).padding(horizontal = 11.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(Modifier.size(8.dp).clip(CircleShape).background(listOf(Color(0xFF65C7FF), Color(0xFFAD91ED), Color(0xFF5FE0C2))[index]))
-                Text(row, color = text, modifier = Modifier.padding(start = 9.dp), fontSize = 13.sp)
             }
         }
     }

@@ -1,4 +1,5 @@
 import { widgetCategories, WidgetCategory, widgetTemplates, WidgetTemplate, WidgetLayout } from '../model/WidgetCatalog';
+import { AtelierArtwork } from './AtelierArtwork';
 import { VocabularyStudy } from './VocabularyStudy';
 PersistentStorage.persistProp('glassOpaque', false);
 PersistentStorage.persistProp('glassMotion', true);
@@ -76,7 +77,7 @@ struct Index {
 
           Row() {
             Column({ space: 3 }) {
-              Text('150 款原创模板')
+              Text('200 款原创模板')
                 .fontSize(22)
                 .fontWeight(FontWeight.Bold)
                 .fontColor('#1D1C27')
@@ -109,7 +110,7 @@ struct Index {
             }.width('100%')
             Text('桌面服务卡片遵循系统刷新规则；动效在应用内播放。')
           } else {
-            Text('150 款视觉模板 · 学习进度保存在本机')
+            Text('200 款视觉模板 · 学习进度保存在本机')
             Button('查看学习进度').height(48).onClick(() => { this.selectedTab = 2; })
           }
         }
@@ -163,7 +164,7 @@ struct Index {
         .fontWeight(FontWeight.Bold)
         .fontColor('#1D1C27')
         .width('100%')
-      Text('奕刻 · 150 款原创设计 · ArkUI 与 Form Kit')
+      Text('奕刻 · 200 款原创设计 · ArkUI 与 Form Kit')
         .fontSize(14)
         .fontColor('#625F6C')
         .width('100%')
@@ -196,126 +197,22 @@ struct Index {
 struct WidgetGalleryCard {
   @Prop item: WidgetTemplate;
   @StorageLink('glassOpaque') private opaque: boolean = false;
-
-  private get isDark(): boolean {
-    return this.item.palette === 1 || this.item.palette === 3;
-  }
-
   build() {
-    Column({ space: 11 }) {
-      Column({ space: 12 }) {
-        Row() {
-          Text(this.item.title)
-            .fontSize(19)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
-          Blank()
-          Text(this.item.category)
-            .fontSize(11)
-            .fontWeight(FontWeight.Bold)
-            .fontColor(this.isDark ? '#B7B2C8' : '#625F6C')
-        }
-        if (this.item.layout === WidgetLayout.Poster) {
-          Column({ space: 8 }) {
-            Text(this.item.sampleValue ? this.item.sampleValue! : 'TODAY')
-              .fontSize(30).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
-              .maxLines(2).textOverflow({ overflow: TextOverflow.Ellipsis })
-            Text(this.item.subtitle).fontSize(12).fontColor(this.isDark ? '#D0CCDF' : '#625F6C').maxLines(2)
-          }.width('100%').alignItems(HorizontalAlign.Start)
-        } else if (this.item.layout === WidgetLayout.Orbit) {
-          Row({ space: 16 }) {
-            Progress({ value: 72, total: 100, type: ProgressType.Ring }).width(82).height(82).color('#36D5B1')
-            Text(this.item.sampleValue ? this.item.sampleValue! : '72%')
-              .fontSize(23).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27').maxLines(2)
-          }
-        } else if (this.item.layout === WidgetLayout.Gauge) {
-          Text(this.item.sampleValue ? this.item.sampleValue! : '72%')
-            .fontSize(30).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27').width('100%')
-          Progress({ value: 72, total: 100, type: ProgressType.Linear }).width('100%').color('#36D5B1')
-        } else if (this.item.layout === WidgetLayout.List) {
-          Column({ space: 8 }) {
-            Text(this.item.sampleValue ? this.item.sampleValue! : '今日三件事').fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
-            Text('01 · 先完成一小步').fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
-            Text('02 · 为自己留些时间').fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
-          }.width('100%').alignItems(HorizontalAlign.Start)
-        } else if (this.item.layout === WidgetLayout.Timeline) {
-          Row({ space: 8 }) {
-            ForEach([32, 48, 40, 62, 72, 54, 44], (value: number, index: number) => {
-              Column({ space: 4 }) {
-                Column().width('100%').height(value).borderRadius(8).backgroundColor(index === 4 ? '#36D5B1' : '#70FFFFFF')
-                Text(['一', '二', '三', '四', '五', '六', '日'][index]).fontSize(10).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
-              }.layoutWeight(1)
-            }, (value: number, index: number) => index.toString())
-          }.height(90).alignItems(VerticalAlign.Bottom)
-        } else {
-          Row({ space: 9 }) {
-            this.Metric(this.item.sampleValue ? this.item.sampleValue! : '6,842', this.item.sampleValue ? '示例' : '今日', '#FF8D90')
-            this.Metric('72%', '进度', '#36D5B1')
-            this.Metric('良好', '状态', '#AD91ED')
-          }
-        }
-      }
-      .width('100%')
-      .height(170)
-      .padding(17)
-      .borderRadius(24)
-      .linearGradient({
-        angle: 135,
-        colors: [[palettes[this.item.palette][0], 0.0], [palettes[this.item.palette][1], 1.0]]
-      })
-
-      if (this.item.sampleValue) {
-        Text(this.item.category === WidgetCategory.Learning ? '点击开始学习 · 可导入个人词库' : '本地示例 · 暂无实时数据')
-          .fontSize(11).fontColor('#625F6C').width('100%')
-      }
-
+    Column({ space: 10 }) {
+      AtelierArtwork({ item: this.item })
+      Text(this.item.category === WidgetCategory.Learning ? '可导入个人词库 · 本机保存学习进度' : '场景设计预览 · 示例数据')
+        .fontSize(11).fontColor('#625F6C').width('100%')
       Row() {
         Column({ space: 3 }) {
-          Text(this.item.title)
-            .fontSize(17)
-            .fontWeight(FontWeight.Bold)
-            .fontColor('#1D1C27')
-          Text(this.item.subtitle)
-            .fontSize(12)
-            .fontColor('#6F6C79')
-            .maxLines(1)
-            .textOverflow({ overflow: TextOverflow.Ellipsis })
-        }
-        Blank()
-        Text(this.item.category)
-          .fontSize(12)
-          .fontWeight(FontWeight.Bold)
-          .fontColor('#176D61')
-      }
-      .width('100%')
-      .alignItems(VerticalAlign.Center)
-    }
-    .width('100%')
-    .padding(13)
-    .borderRadius(28)
-    .backgroundColor(this.opaque ? '#FFFFFF' : '#BFFFFFFF')
-    .backgroundBlurStyle(this.opaque ? BlurStyle.NONE : BlurStyle.Thick)
-    .border({ width: 1, color: '#CCFFFFFF' })
-    .shadow({ radius: 16, color: '#120F2440', offsetY: 6 })
-  }
-
-  @Builder
-  private Metric(value: string, label: string, accent: string) {
-    Column({ space: 5 }) {
-      Circle().width(9).height(9).fill(accent)
-      Blank()
-      Text(value)
-        .fontSize(17)
-        .fontWeight(FontWeight.Bold)
-        .fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
-      Text(label)
-        .fontSize(11)
-        .fontColor(this.isDark ? '#A8A4B4' : '#625F6C')
-    }
-    .layoutWeight(1)
-    .height('100%')
-    .padding(11)
-    .borderRadius(16)
-    .backgroundColor(this.isDark ? '#18FFFFFF' : '#14FFFFFF')
+          Text(this.item.title).fontSize(17).fontWeight(FontWeight.Medium).fontColor('#1D1C27')
+          Text(this.item.subtitle).fontSize(12).fontColor('#6F6C79').maxLines(2)
+        }.layoutWeight(1).alignItems(HorizontalAlign.Start)
+        Text(this.item.category).fontSize(11).fontColor('#176D61')
+      }.width('100%')
+    }.width('100%').padding(13).borderRadius(28)
+      .backgroundColor(this.opaque ? '#FFFFFF' : '#BFFFFFFF')
+      .backgroundBlurStyle(this.opaque ? BlurStyle.NONE : BlurStyle.Thick)
+      .border({ width: 1, color: '#CCFFFFFF' })
+      .shadow({ radius: 14, color: '#100F2440', offsetY: 5 })
   }
 }

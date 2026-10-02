@@ -27,9 +27,9 @@ struct WidgetPreviewView: View {
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .stroke(Color.primary.opacity(0.08), lineWidth: 0.75)
+                    .stroke(LinearGradient(colors: [.white.opacity(0.55), Color.primary.opacity(0.06)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 0.75)
             }
-            .shadow(color: Color.black.opacity(0.08), radius: 18, y: 10)
+            .shadow(color: Color.black.opacity(0.06), radius: 14, y: 6)
         }
         .aspectRatio(previewAspectRatio, contentMode: .fit)
     }

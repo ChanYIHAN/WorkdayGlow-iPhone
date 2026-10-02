@@ -228,6 +228,57 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     case soundtrackDay
     case memoryCapsule
 
+    case departureTicket
+    case eveningHorizon
+    case holidayWindow
+    case incomeLedger
+    case paydayTicket
+    case hourlyValue
+    case seasonCompass
+    case weekDots
+    case monthRibbon
+    case recoveryGarden
+    case walkMap
+    case sleepMoon
+    case pulseRibbon
+    case activityReceipt
+    case skyWindow
+    case windCompass
+    case rainRibbon
+    case weatherTicket
+    case togetherConstellation
+    case anniversaryTicket
+    case littlePromise
+    case lovePostmark
+    case quietDial
+    case timezoneTicket
+    case dayArc
+    case minuteTypography
+    case shortcutRosette
+    case connectionBento
+    case batteryDial
+    case noteReceipt
+    case galleryWindow
+    case contactSheet
+    case memoryPostcard
+    case photoEditorial
+    case vinylSleeve
+    case musicRibbon
+    case playlistTicket
+    case albumMosaic
+    case budgetLedger
+    case exchangeTicket
+    case marketRibbon
+    case savingsConstellation
+    case dayItinerary
+    case focusDial
+    case habitConstellation
+    case morningLetter
+    case moonConstellation
+    case teaReceipt
+    case wordTicket
+    case readingEditorial
+
     var id: String { rawValue }
 
     var title: String {

@@ -405,7 +405,7 @@ struct WidgetTemplateArtwork: View {
 
                     Text("今晚\n不加班")
                         .font(.title2)
-                        .fontWeight(.black)
+                        .fontWeight(.semibold)
                         .fontDesign(.rounded)
                         .lineSpacing(-2)
 
@@ -426,13 +426,13 @@ struct WidgetTemplateArtwork: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("TONIGHT")
                             .font(.caption2)
-                            .fontWeight(.black)
+                            .fontWeight(.semibold)
                             .tracking(2)
                             .foregroundStyle(Color("PlumInk").opacity(0.5))
 
                         Text(snapshot.status == .finished ? "现在就去生活" : "今晚准时下班")
                             .font(.title2)
-                            .fontWeight(.black)
+                            .fontWeight(.semibold)
                             .fontDesign(.rounded)
 
                         Text("散步、看电影，或者什么都不做。")
@@ -606,7 +606,7 @@ private struct CountdownTypography: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .font(.system(size: size, weight: .black, design: .rounded))
+            .font(.system(size: size, weight: .semibold, design: .rounded))
             .fontWidth(.condensed)
             .monospacedDigit()
             .minimumScaleFactor(0.55)

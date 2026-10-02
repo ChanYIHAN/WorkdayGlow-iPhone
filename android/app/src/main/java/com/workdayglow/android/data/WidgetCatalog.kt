@@ -7,7 +7,7 @@ enum class WidgetCategory(val title: String) {
     Planner("日程"), Daily("日常"), Learning("学习")
 }
 
-enum class WidgetLayout { Orbit, Bento, Timeline, Poster, Gauge, List }
+enum class WidgetLayout { Orbit, Bento, Timeline, Poster, Gauge, List, Dial, Ticket, Constellation, Waveform, Mosaic, Editorial }
 
 data class WidgetTemplate(
     val id: String,
@@ -37,7 +37,7 @@ object WidgetCatalog {
         addGroup(WidgetCategory.Planner, "把重要的事放在最容易看见的位置", "玻璃日程", "一周计划", "专注此刻", "习惯打卡", "番茄专注", "优先级看板", "会议倒计时", "月度总览", "学习计划", "项目里程碑")
         addGroup(WidgetCategory.Daily, "每天一点新鲜感", "每日一句", "月相观测", "日光节律", "今日肯定", "感恩提问", "星座日签", "节日倒计时")
         addAll(expandedTemplates)
-    }.also { check(it.size == 150) { "Widget catalog must contain exactly 150 templates" } }
+    }.also { check(it.size == 200) { "Widget catalog must contain exactly 200 templates" } }
 
     private fun MutableList<WidgetTemplate>.addGroup(
         category: WidgetCategory,
