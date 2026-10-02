@@ -58,6 +58,36 @@ enum CollectionWidgetStyle: String, CaseIterable, AppEnum {
     case salaryProgress
     case overtimeEarnings
     case yearProgress
+    case packingList
+    case flightBoard
+    case jetlagClock
+    case tripBudget
+    case tripJournal
+    case commutePlan
+    case cityWishlist
+    case weekendRoute
+    case breathingGuide
+    case eyeRest
+    case stretchBreak
+    case walkInvitation
+    case moodJournal
+    case sleepRitual
+    case waterSchedule
+    case digitalSunset
+    case todayThree
+    case deepWork
+    case weeklyReflection
+    case readingGoal
+    case ideaInbox
+    case deadlineRail
+    case homeReset
+    case skillJourney
+    case dailyPoem
+    case coffeeMoment
+    case petCompanion
+    case colorMood
+    case soundtrackDay
+    case memoryCapsule
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "灵感合集样式"
     static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
@@ -115,7 +145,37 @@ enum CollectionWidgetStyle: String, CaseIterable, AppEnum {
         .weekendCountdown: "周末倒计时",
         .salaryProgress: "本月收入进度",
         .overtimeEarnings: "加班收益估算",
-        .yearProgress: "年度进度"
+        .yearProgress: "年度进度",
+        .packingList: "旅行清单",
+        .flightBoard: "航班便签",
+        .jetlagClock: "时差对照",
+        .tripBudget: "旅途预算",
+        .tripJournal: "旅途一页",
+        .commutePlan: "通勤计划",
+        .cityWishlist: "城市愿望",
+        .weekendRoute: "周末路线",
+        .breathingGuide: "呼吸节拍",
+        .eyeRest: "护眼休息",
+        .stretchBreak: "伸展间歇",
+        .walkInvitation: "散步邀请",
+        .moodJournal: "心情记录",
+        .sleepRitual: "晚安仪式",
+        .waterSchedule: "饮水时段",
+        .digitalSunset: "数字日落",
+        .todayThree: "今日三件事",
+        .deepWork: "深度工作",
+        .weeklyReflection: "周末复盘",
+        .readingGoal: "阅读目标",
+        .ideaInbox: "灵感收件箱",
+        .deadlineRail: "截止时间轴",
+        .homeReset: "居家整理",
+        .skillJourney: "技能旅程",
+        .dailyPoem: "诗意日签",
+        .coffeeMoment: "咖啡时刻",
+        .petCompanion: "桌面伙伴",
+        .colorMood: "今日色彩",
+        .soundtrackDay: "今日配乐",
+        .memoryCapsule: "记忆胶囊"
     ]
 
     var template: WidgetTemplateKind {
@@ -125,7 +185,7 @@ enum CollectionWidgetStyle: String, CaseIterable, AppEnum {
 
 struct CollectionWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "设置灵感合集"
-    static var description = IntentDescription("从新增的 55 款原创设计中选择一款。")
+    static var description = IntentDescription("从新增的 85 款原创设计中选择一款。")
 
     @Parameter(title: "样式", default: .hydrationBloom)
     var style: CollectionWidgetStyle
@@ -176,7 +236,7 @@ struct CollectionWidget: Widget {
             .widgetURL(URL(string: "workdayglow://widgets"))
         }
         .configurationDisplayName("灵感合集")
-        .description("健康、效率、生活、照片、音乐与行情等 55 款原创桌面设计。")
+        .description("健康、效率、生活、照片、音乐与行情等 85 款原创桌面设计。")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
     }

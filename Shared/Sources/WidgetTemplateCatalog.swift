@@ -15,6 +15,7 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
     case finance
     case planner
     case daily
+    case learning
 
     var id: String { rawValue }
 
@@ -34,6 +35,7 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
         case .finance: "行情"
         case .planner: "日程"
         case .daily: "日常"
+        case .learning: "学习"
         }
     }
 
@@ -53,6 +55,7 @@ enum WidgetTemplateCategory: String, CaseIterable, Identifiable, Sendable {
         case .finance: "chart.line.uptrend.xyaxis"
         case .planner: "checklist"
         case .daily: "sun.horizon.fill"
+        case .learning: "character.book.closed.fill"
         }
     }
 }
@@ -174,6 +177,56 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     case salaryProgress
     case overtimeEarnings
     case yearProgress
+    case wordDaily
+    case wordFlip
+    case wordReview
+    case wordProgress
+    case wordStreak
+    case wordRoots
+    case wordExample
+    case wordSynonyms
+    case wordPhrase
+    case wordSpelling
+    case wordListening
+    case wordTravel
+    case wordWork
+    case wordIELTS
+    case wordCET
+    case wordMistakes
+    case wordGoal
+    case readingNote
+    case examSprint
+    case languagePassport
+    case packingList
+    case flightBoard
+    case jetlagClock
+    case tripBudget
+    case tripJournal
+    case commutePlan
+    case cityWishlist
+    case weekendRoute
+    case breathingGuide
+    case eyeRest
+    case stretchBreak
+    case walkInvitation
+    case moodJournal
+    case sleepRitual
+    case waterSchedule
+    case digitalSunset
+    case todayThree
+    case deepWork
+    case weeklyReflection
+    case readingGoal
+    case ideaInbox
+    case deadlineRail
+    case homeReset
+    case skillJourney
+    case dailyPoem
+    case coffeeMoment
+    case petCompanion
+    case colorMood
+    case soundtrackDay
+    case memoryCapsule
 
     var id: String { rawValue }
 
@@ -421,6 +474,7 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     }
 
     var widgetDisplayName: String {
+        if category == .learning { return "词汇学习" }
         if expansionMetadata != nil { return "灵感合集" }
         return switch category {
         case .health: "健康状态"
@@ -446,7 +500,8 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     }
 
     var configurationStyleName: String? {
-        switch category {
+        if expansionMetadata != nil { return title }
+        return switch category {
         case .health, .weather, .love, .time, .tools, .photos, .music, .finance,
              .planner, .daily:
             title
@@ -456,23 +511,23 @@ enum WidgetTemplateKind: String, CaseIterable, Identifiable, Hashable, Sendable 
     }
 
     var usesHealthData: Bool {
-        category == .health
+        category == .health && expansionMetadata == nil
     }
 
     var usesWeatherData: Bool {
-        category == .weather
+        category == .weather && expansionMetadata == nil
     }
 
     var usesShortcutBridge: Bool {
-        category == .tools
+        category == .tools && expansionMetadata == nil
     }
 
     var usesPhotoFile: Bool {
-        category == .photos
+        category == .photos && expansionMetadata == nil
     }
 
     var usesMusicLink: Bool {
-        category == .music
+        category == .music && expansionMetadata == nil
     }
 
     var usesExchangeRates: Bool {

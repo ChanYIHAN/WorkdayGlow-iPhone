@@ -1,6 +1,9 @@
 name: Build Ekhart unsigned IPA
 
 on:
+  push:
+    branches: [main, "codex/**"]
+  pull_request:
   workflow_dispatch:
 
 jobs:

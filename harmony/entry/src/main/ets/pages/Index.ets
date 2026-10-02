@@ -1,4 +1,7 @@
-import { widgetCategories, WidgetCategory, widgetTemplates, WidgetTemplate } from '../model/WidgetCatalog';
+import { widgetCategories, WidgetCategory, widgetTemplates, WidgetTemplate, WidgetLayout } from '../model/WidgetCatalog';
+import { VocabularyStudy } from './VocabularyStudy';
+PersistentStorage.persistProp('glassOpaque', false);
+PersistentStorage.persistProp('glassMotion', true);
 
 const palettes: string[][] = [
   ['#F7F1E8', '#7CE1C8'],
@@ -12,6 +15,11 @@ const palettes: string[][] = [
 @Entry
 @Component
 struct Index {
+  @Watch('openStudy') @StorageLink('openLearning') private openLearning: boolean = false;
+  private openStudy(): void { if (this.openLearning) { this.selectedTab = 2; this.openLearning = false; } }
+  aboutToAppear(): void { this.openStudy(); }
+  @StorageLink('glassOpaque') private opaque: boolean = false;
+  @StorageLink('glassMotion') private motion: boolean = true;
   @State private query: string = '';
   @State private selectedCategory: WidgetCategory = WidgetCategory.Featured;
   @State private selectedTab: number = 0;
@@ -29,12 +37,14 @@ struct Index {
     Column() {
       Scroll() {
         Column({ space: 16 }) {
-          Text(this.selectedTab === 1 ? '组件库' : '发现')
+          Text(['发现', '组件库', '学习', '概览', '设置'][this.selectedTab])
             .fontSize(38)
             .fontWeight(FontWeight.Bold)
             .fontColor('#1D1C27')
             .width('100%')
 
+          if (this.selectedTab <= 1) {
+          Button('开始背单词').height(48).onClick(() => { this.selectedTab = 2; })
           if (this.selectedTab === 0) {
             this.DiscoveryHero()
           }
@@ -57,7 +67,7 @@ struct Index {
                   .padding({ left: 18, right: 18 })
                   .borderRadius(24)
                   .backgroundColor(this.selectedCategory === category ? '#1D1C27' : '#EFFFFFFF')
-                  .onClick(() => { this.selectedCategory = category; })
+                  .onClick(() => { animateTo({ duration: this.motion ? 220 : 0 }, () => { this.selectedCategory = category; }); })
               }, (category: WidgetCategory) => category)
             }
           }
@@ -66,7 +76,7 @@ struct Index {
 
           Row() {
             Column({ space: 3 }) {
-              Text('100 款原创模板')
+              Text('150 款原创模板')
                 .fontSize(22)
                 .fontWeight(FontWeight.Bold)
                 .fontColor('#1D1C27')
@@ -84,8 +94,24 @@ struct Index {
           .alignItems(VerticalAlign.Center)
 
           ForEach(this.filteredTemplates, (item: WidgetTemplate) => {
-            WidgetGalleryCard({ item: item })
+            WidgetGalleryCard({ item: item }).onClick(() => { if (item.category === WidgetCategory.Learning) this.selectedTab = 2; })
           }, (item: WidgetTemplate) => item.id)
+          } else if (this.selectedTab === 2) {
+            VocabularyStudy()
+          } else if (this.selectedTab === 4) {
+            Row() {
+              Text('使用不透明背景').layoutWeight(1)
+              Toggle({ type: ToggleType.Switch, isOn: this.opaque }).onChange((value: boolean) => { this.opaque = value; })
+            }.width('100%')
+            Row() {
+              Text('轻量动效').layoutWeight(1)
+              Toggle({ type: ToggleType.Switch, isOn: this.motion }).onChange((value: boolean) => { this.motion = value; })
+            }.width('100%')
+            Text('桌面服务卡片遵循系统刷新规则；动效在应用内播放。')
+          } else {
+            Text('150 款视觉模板 · 学习进度保存在本机')
+            Button('查看学习进度').height(48).onClick(() => { this.selectedTab = 2; })
+          }
         }
         .width('100%')
         .padding({ left: 18, right: 18, top: 16, bottom: 28 })
@@ -94,7 +120,7 @@ struct Index {
       .scrollBar(BarState.Off)
 
       Row() {
-        ForEach(['发现', '组件', '工具', '概览', '设置'], (tab: string, index: number) => {
+        ForEach(['发现', '组件', '学习', '概览', '设置'], (tab: string, index: number) => {
           Column({ space: 5 }) {
             Circle()
               .width(8)
@@ -108,17 +134,19 @@ struct Index {
           .layoutWeight(1)
           .height(58)
           .justifyContent(FlexAlign.Center)
-          .onClick(() => { this.selectedTab = index; })
+          .onClick(() => { animateTo({ duration: this.motion ? 220 : 0, curve: Curve.EaseInOut }, () => { this.selectedTab = index; }); })
         })
       }
       .width('100%')
       .padding({ left: 10, right: 10, bottom: 4 })
-      .backgroundColor('#F5FFFFFF')
+      .borderRadius(30)
+      .backgroundColor(this.opaque ? '#FFFFFF' : '#BFFFFFFF')
+      .backgroundBlurStyle(this.opaque ? BlurStyle.NONE : BlurStyle.Thick)
       .border({ width: { top: 0.5 }, color: '#22000000' })
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F6F6FA')
+    .linearGradient({ angle: 135, colors: [['#F6F6FA', 0], ['#E5F6F2', 0.45], ['#EDE7FA', 1]] })
   }
 
   @Builder
@@ -135,7 +163,7 @@ struct Index {
         .fontWeight(FontWeight.Bold)
         .fontColor('#1D1C27')
         .width('100%')
-      Text('奕刻 · 100 款原创设计 · ArkUI 与 Form Kit')
+      Text('奕刻 · 150 款原创设计 · ArkUI 与 Form Kit')
         .fontSize(14)
         .fontColor('#625F6C')
         .width('100%')
@@ -167,6 +195,7 @@ struct Index {
 @Component
 struct WidgetGalleryCard {
   @Prop item: WidgetTemplate;
+  @StorageLink('glassOpaque') private opaque: boolean = false;
 
   private get isDark(): boolean {
     return this.item.palette === 1 || this.item.palette === 3;
@@ -186,10 +215,44 @@ struct WidgetGalleryCard {
             .fontWeight(FontWeight.Bold)
             .fontColor(this.isDark ? '#B7B2C8' : '#625F6C')
         }
-        Row({ space: 9 }) {
-          this.Metric('6,842', '今日', '#FF8D90')
-          this.Metric('72%', '进度', '#36D5B1')
-          this.Metric('良好', '状态', '#AD91ED')
+        if (this.item.layout === WidgetLayout.Poster) {
+          Column({ space: 8 }) {
+            Text(this.item.sampleValue ? this.item.sampleValue! : 'TODAY')
+              .fontSize(30).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+              .maxLines(2).textOverflow({ overflow: TextOverflow.Ellipsis })
+            Text(this.item.subtitle).fontSize(12).fontColor(this.isDark ? '#D0CCDF' : '#625F6C').maxLines(2)
+          }.width('100%').alignItems(HorizontalAlign.Start)
+        } else if (this.item.layout === WidgetLayout.Orbit) {
+          Row({ space: 16 }) {
+            Progress({ value: 72, total: 100, type: ProgressType.Ring }).width(82).height(82).color('#36D5B1')
+            Text(this.item.sampleValue ? this.item.sampleValue! : '72%')
+              .fontSize(23).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27').maxLines(2)
+          }
+        } else if (this.item.layout === WidgetLayout.Gauge) {
+          Text(this.item.sampleValue ? this.item.sampleValue! : '72%')
+            .fontSize(30).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27').width('100%')
+          Progress({ value: 72, total: 100, type: ProgressType.Linear }).width('100%').color('#36D5B1')
+        } else if (this.item.layout === WidgetLayout.List) {
+          Column({ space: 8 }) {
+            Text(this.item.sampleValue ? this.item.sampleValue! : '今日三件事').fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+            Text('01 · 先完成一小步').fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+            Text('02 · 为自己留些时间').fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+          }.width('100%').alignItems(HorizontalAlign.Start)
+        } else if (this.item.layout === WidgetLayout.Timeline) {
+          Row({ space: 8 }) {
+            ForEach([32, 48, 40, 62, 72, 54, 44], (value: number, index: number) => {
+              Column({ space: 4 }) {
+                Column().width('100%').height(value).borderRadius(8).backgroundColor(index === 4 ? '#36D5B1' : '#70FFFFFF')
+                Text(['一', '二', '三', '四', '五', '六', '日'][index]).fontSize(10).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+              }.layoutWeight(1)
+            }, (value: number, index: number) => index.toString())
+          }.height(90).alignItems(VerticalAlign.Bottom)
+        } else {
+          Row({ space: 9 }) {
+            this.Metric(this.item.sampleValue ? this.item.sampleValue! : '6,842', this.item.sampleValue ? '示例' : '今日', '#FF8D90')
+            this.Metric('72%', '进度', '#36D5B1')
+            this.Metric('良好', '状态', '#AD91ED')
+          }
         }
       }
       .width('100%')
@@ -200,6 +263,11 @@ struct WidgetGalleryCard {
         angle: 135,
         colors: [[palettes[this.item.palette][0], 0.0], [palettes[this.item.palette][1], 1.0]]
       })
+
+      if (this.item.sampleValue) {
+        Text(this.item.category === WidgetCategory.Learning ? '点击开始学习 · 可导入个人词库' : '本地示例 · 暂无实时数据')
+          .fontSize(11).fontColor('#625F6C').width('100%')
+      }
 
       Row() {
         Column({ space: 3 }) {
@@ -225,8 +293,10 @@ struct WidgetGalleryCard {
     .width('100%')
     .padding(13)
     .borderRadius(28)
-    .backgroundColor('#EFFFFFFF')
-    .border({ width: 0.5, color: '#18000000' })
+    .backgroundColor(this.opaque ? '#FFFFFF' : '#BFFFFFFF')
+    .backgroundBlurStyle(this.opaque ? BlurStyle.NONE : BlurStyle.Thick)
+    .border({ width: 1, color: '#CCFFFFFF' })
+    .shadow({ radius: 16, color: '#120F2440', offsetY: 6 })
   }
 
   @Builder

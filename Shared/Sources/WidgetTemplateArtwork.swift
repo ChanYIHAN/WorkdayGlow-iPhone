@@ -77,53 +77,57 @@ struct WidgetTemplateArtwork: View {
 
     var body: some View {
         Group {
-            switch template {
-            case .workdayRail:
-                WorkdayHeroCard(
-                    settings: settings,
-                    snapshot: snapshot,
-                    density: size == .small ? .compact : .regular,
-                    showsStats: size != .small
-                )
-            case .minimalCountdown:
-                minimalCountdown
-            case .incomeBento:
-                incomeBento
-            case .weekRhythm:
-                weekRhythm
-            case .progressOrbit:
-                progressOrbit
-            case .paydayCalendar:
-                paydayCalendar
-            case .afterworkPlan:
-                afterworkPlan
-            case .healthBento, .sleepRibbon, .oxygenPulse,
-                 .stepOrbit, .activeBento, .recoveryArc,
-                 .weatherNow, .weatherHourly, .weatherMinimal,
-                 .loveDays, .loveOrbit,
-                 .editorialClock, .worldClock, .calendarClock:
-                LifestyleTemplateArtwork(
-                    template: template,
-                    size: size,
-                    date: snapshot.date
-                )
-            case .controlDeck, .shortcutStack, .focusConsole,
-                 .photoPolaroid, .photoFilmstrip, .photoMosaic,
-                 .musicVinyl, .musicGlass, .musicWave:
-                CreativeTemplateArtwork(template: template, size: size)
-            case .currencyMinimal, .currencyMatrix, .travelConverter,
-                 .goldSpot, .goldTrend, .metalsDuo,
-                 .stockQuote, .watchlistBento, .dualMarket:
-                FinanceTemplateArtwork(template: template, size: size)
-            case .glassAgenda, .weekPlanner, .focusNow,
-                 .dailyQuote, .moonPhase, .solarRhythm:
-                EverydayTemplateArtwork(
-                    template: template,
-                    size: size,
-                    date: snapshot.date
-                )
-            default:
-                ExpansionTemplateArtwork(template: template, size: size)
+            if template.category == .learning {
+                VocabularyArtwork(template: template, word: VocabularySeed.words[0], size: size)
+            } else {
+                switch template {
+                case .workdayRail:
+                    WorkdayHeroCard(
+                        settings: settings,
+                        snapshot: snapshot,
+                        density: size == .small ? .compact : .regular,
+                        showsStats: size != .small
+                    )
+                case .minimalCountdown:
+                    minimalCountdown
+                case .incomeBento:
+                    incomeBento
+                case .weekRhythm:
+                    weekRhythm
+                case .progressOrbit:
+                    progressOrbit
+                case .paydayCalendar:
+                    paydayCalendar
+                case .afterworkPlan:
+                    afterworkPlan
+                case .healthBento, .sleepRibbon, .oxygenPulse,
+                     .stepOrbit, .activeBento, .recoveryArc,
+                     .weatherNow, .weatherHourly, .weatherMinimal,
+                     .loveDays, .loveOrbit,
+                     .editorialClock, .worldClock, .calendarClock:
+                    LifestyleTemplateArtwork(
+                        template: template,
+                        size: size,
+                        date: snapshot.date
+                    )
+                case .controlDeck, .shortcutStack, .focusConsole,
+                     .photoPolaroid, .photoFilmstrip, .photoMosaic,
+                     .musicVinyl, .musicGlass, .musicWave:
+                    CreativeTemplateArtwork(template: template, size: size)
+                case .currencyMinimal, .currencyMatrix, .travelConverter,
+                     .goldSpot, .goldTrend, .metalsDuo,
+                     .stockQuote, .watchlistBento, .dualMarket:
+                    FinanceTemplateArtwork(template: template, size: size)
+                case .glassAgenda, .weekPlanner, .focusNow,
+                     .dailyQuote, .moonPhase, .solarRhythm:
+                    EverydayTemplateArtwork(
+                        template: template,
+                        size: size,
+                        date: snapshot.date
+                    )
+                default:
+                    ExpansionTemplateArtwork(template: template, size: size)
+                }
             }
         }
         .accessibilityElement(children: .contain)

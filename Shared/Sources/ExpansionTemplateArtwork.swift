@@ -313,7 +313,8 @@ struct ExpansionTemplateArtwork: View {
     }
 
     private var primaryValue: String {
-        switch metadata.category {
+        if let value = template.sampleValue { return value }
+        return switch metadata.category {
         case .health: "7,480"
         case .weather: "23°"
         case .love: "520 天"

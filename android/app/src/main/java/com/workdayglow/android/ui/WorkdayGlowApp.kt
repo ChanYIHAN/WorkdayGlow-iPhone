@@ -47,6 +47,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.Button
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -79,19 +84,25 @@ private data class AppTab(val title: String, val icon: ImageVector)
 private val appTabs = listOf(
     AppTab("发现", Icons.Rounded.Home),
     AppTab("组件", Icons.Rounded.Widgets),
-    AppTab("工具", Icons.Rounded.Bolt),
+    AppTab("学习", Icons.Rounded.Bolt),
     AppTab("概览", Icons.Rounded.Analytics),
     AppTab("设置", Icons.Rounded.Tune)
 )
 
 @Composable
-fun WorkdayGlowApp() {
-    var selectedTab by remember { mutableIntStateOf(0) }
+fun WorkdayGlowApp(studyLaunchId: Int = 0) {
+    val prefs = LocalContext.current.getSharedPreferences("appearance", android.content.Context.MODE_PRIVATE)
+    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    var opaque by remember { mutableStateOf(prefs.getBoolean("opaque", false)) }
+    var motion by remember { mutableStateOf(prefs.getBoolean("motion", true)) }
+
+    androidx.compose.runtime.LaunchedEffect(studyLaunchId) { if (studyLaunchId > 0) selectedTab = 2 }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+        modifier = Modifier.background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.background, MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f), MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f)))),
+        containerColor = Color.Transparent,
         bottomBar = {
-            NavigationBar(modifier = Modifier.navigationBarsPadding()) {
+            NavigationBar(containerColor = Color.Transparent, modifier = Modifier.navigationBarsPadding().padding(horizontal = 12.dp, vertical = 6.dp).liquidGlass(30, opaque)) {
                 appTabs.forEachIndexed { index, tab ->
                     NavigationBarItem(
                         selected = selectedTab == index,
@@ -105,15 +116,20 @@ fun WorkdayGlowApp() {
     ) { innerPadding ->
         AnimatedContent(
             targetState = selectedTab,
-            transitionSpec = { fadeIn(tween(220)) togetherWith fadeOut(tween(160)) },
+            transitionSpec = { fadeIn(tween(if (motion) 220 else 0)) togetherWith fadeOut(tween(if (motion) 160 else 0)) },
             label = "tab content",
             modifier = Modifier.padding(innerPadding)
         ) { tab ->
             when (tab) {
-                0, 1 -> WidgetGalleryScreen(showDiscoveryHero = tab == 0)
-                2 -> PlaceholderScreen("快捷工具", "通过系统快捷方式与深层链接打开常用操作", Icons.Rounded.Bolt)
+                0, 1 -> WidgetGalleryScreen(showDiscoveryHero = tab == 0, opaque = opaque, onStudy = { selectedTab = 2 })
+                2 -> VocabularyStudy(opaque, motion)
                 3 -> PlaceholderScreen("今日概览", "下班、活动、日程与行情摘要", Icons.Rounded.Analytics)
-                else -> PlaceholderScreen("设置", "主题、隐私、健康授权与数据来源", Icons.Rounded.Settings)
+                else -> Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                    Text("外观与动效", style = MaterialTheme.typography.headlineLarge)
+                    Row(verticalAlignment = Alignment.CenterVertically) { Text("使用不透明背景", Modifier.weight(1f)); Switch(checked = opaque, onCheckedChange = { opaque = it; prefs.edit().putBoolean("opaque", it).apply() }) }
+                    Row(verticalAlignment = Alignment.CenterVertically) { Text("轻量动效", Modifier.weight(1f)); Switch(checked = motion, onCheckedChange = { motion = it; prefs.edit().putBoolean("motion", it).apply() }) }
+                    Text("玻璃风格使用原生渐变、通透底色与反光边缘。桌面卡片受系统刷新限制，动画在应用中播放。")
+                }
             }
         }
     }
@@ -135,7 +151,7 @@ private fun PlaceholderScreen(title: String, subtitle: String, icon: ImageVector
 }
 
 @Composable
-private fun WidgetGalleryScreen(showDiscoveryHero: Boolean) {
+private fun WidgetGalleryScreen(showDiscoveryHero: Boolean, opaque: Boolean, onStudy: () -> Unit) {
     var query by remember { mutableStateOf("") }
     var category by remember { mutableStateOf(WidgetCategory.Featured) }
     val templates = remember(query, category) {
@@ -164,6 +180,7 @@ private fun WidgetGalleryScreen(showDiscoveryHero: Boolean) {
                 )
 
                 if (showDiscoveryHero) DiscoveryHero()
+                Button(onClick = onStudy) { Text("开始背单词 · 本地词库与间隔复习") }
 
                 OutlinedTextField(
                     value = query,
@@ -202,7 +219,7 @@ private fun WidgetGalleryScreen(showDiscoveryHero: Boolean) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text("100 款原创模板", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                    Text("150 款原创模板", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                     Text("三端同名目录 · 原生桌面组件", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Spacer(Modifier.weight(1f))
@@ -211,7 +228,7 @@ private fun WidgetGalleryScreen(showDiscoveryHero: Boolean) {
         }
 
         items(templates, key = { it.id }) { template ->
-            WidgetTemplateCard(template, Modifier.padding(horizontal = 20.dp))
+            WidgetTemplateCard(template, Modifier.padding(horizontal = 20.dp), opaque, onStudy)
         }
     }
 }
@@ -238,7 +255,7 @@ private fun DiscoveryHero() {
     ) {
         Text("EKHART WIDGETS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
         Text("让每一刻\n恰好可见", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-        Text("奕刻 · 100 款原创设计 · 三端同名目录", color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("奕刻 · 150 款原创设计 · 三端同名目录", color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             HeroTag("健康", Color(0xFFFF8D90))
             HeroTag("日程", Color(0xFF65C7FF))
@@ -261,17 +278,20 @@ private fun HeroTag(text: String, tint: Color) {
 }
 
 @Composable
-private fun WidgetTemplateCard(template: WidgetTemplate, modifier: Modifier = Modifier) {
+private fun WidgetTemplateCard(template: WidgetTemplate, modifier: Modifier = Modifier, opaque: Boolean = false, onStudy: () -> Unit = {}) {
     Card(
         modifier = modifier
             .fillMaxWidth()
+            .liquidGlass(28, opaque)
+            .then(if (template.category == WidgetCategory.Learning) Modifier.clickable(onClick = onStudy) else Modifier)
             .semantics { contentDescription = "${template.title}，${template.subtitle}" },
         shape = RoundedCornerShape(28.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             WidgetVisual(template)
+            if (template.sampleValue.isNotEmpty()) Text(if (template.category == WidgetCategory.Learning) "点击开始学习 · 可导入个人词库" else "本地示例 · 暂无实时数据", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(template.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
@@ -313,18 +333,18 @@ private fun WidgetVisual(template: WidgetTemplate) {
             .padding(17.dp)
     ) {
         when (template.layout) {
-            WidgetLayout.Orbit -> OrbitPreview(template.title, text)
-            WidgetLayout.Bento -> BentoPreview(template.title, text)
-            WidgetLayout.Timeline -> TimelinePreview(template.title, text)
-            WidgetLayout.Poster -> PosterPreview(template.title, template.category, text)
-            WidgetLayout.Gauge -> GaugePreview(template.title, text)
-            WidgetLayout.List -> ListPreview(template.title, text)
+            WidgetLayout.Orbit -> OrbitPreview(template.title, text, template.sampleValue)
+            WidgetLayout.Bento -> BentoPreview(template.title, text, template.sampleValue)
+            WidgetLayout.Timeline -> TimelinePreview(template.title, text, template.sampleValue)
+            WidgetLayout.Poster -> PosterPreview(template.title, template.category, text, template.sampleValue)
+            WidgetLayout.Gauge -> GaugePreview(template.title, text, template.sampleValue)
+            WidgetLayout.List -> ListPreview(template.title, text, template.sampleValue)
         }
     }
 }
 
 @Composable
-private fun OrbitPreview(title: String, text: Color) {
+private fun OrbitPreview(title: String, text: Color, value: String = "") {
     Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
         Canvas(Modifier.size(118.dp)) {
             drawArc(text.copy(alpha = 0.12f), -90f, 360f, false, style = Stroke(13.dp.toPx()))
@@ -334,18 +354,18 @@ private fun OrbitPreview(title: String, text: Color) {
         }
         Column(Modifier.padding(start = 18.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
             Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
-            Text("72%", color = text, fontWeight = FontWeight.Black, fontSize = 30.sp)
+            Text(value.ifEmpty { "72%" }, color = text, fontWeight = FontWeight.Black, fontSize = 30.sp)
             Text("今日状态", color = text.copy(alpha = 0.58f))
         }
     }
 }
 
 @Composable
-private fun BentoPreview(title: String, text: Color) {
+private fun BentoPreview(title: String, text: Color, value: String = "") {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
         Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(9.dp)) {
-            listOf("6,842" to "今日", "4.8 km" to "距离", "386" to "能量").forEachIndexed { index, item ->
+            (if (value.isEmpty()) listOf("6,842" to "今日", "4.8 km" to "距离", "386" to "能量") else listOf(value to "示例", "每日" to "节奏", "本地" to "数据")).forEachIndexed { index, item ->
                 Column(
                     Modifier
                         .weight(1f)
@@ -365,9 +385,9 @@ private fun BentoPreview(title: String, text: Color) {
 }
 
 @Composable
-private fun TimelinePreview(title: String, text: Color) {
+private fun TimelinePreview(title: String, text: Color, value: String = "") {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
-        Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
+        Text(if (value.isEmpty()) title else "$title · $value", color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
         Row(Modifier.fillMaxWidth().height(92.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Bottom) {
             listOf(0.38f, 0.62f, 0.48f, 0.82f, 1f, 0.66f, 0.52f).forEachIndexed { index, value ->
                 Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -380,21 +400,21 @@ private fun TimelinePreview(title: String, text: Color) {
 }
 
 @Composable
-private fun PosterPreview(title: String, category: WidgetCategory, text: Color) {
+private fun PosterPreview(title: String, category: WidgetCategory, text: Color, value: String = "") {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         Row { Text(category.title, color = text.copy(alpha = 0.56f), fontWeight = FontWeight.Bold) }
         Column {
-            Text(if (category == WidgetCategory.Time) "09:41" else "TODAY", color = text, fontWeight = FontWeight.Black, fontSize = 34.sp)
+            Text(if (value.isNotEmpty()) value else if (category == WidgetCategory.Time) "09:41" else "TODAY", color = text, fontWeight = FontWeight.Black, fontSize = 34.sp)
             Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 20.sp)
         }
     }
 }
 
 @Composable
-private fun GaugePreview(title: String, text: Color) {
+private fun GaugePreview(title: String, text: Color, value: String = "") {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(13.dp)) {
         Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
-        Text("72%", color = text, fontWeight = FontWeight.Black, fontSize = 38.sp)
+        Text(value.ifEmpty { "72%" }, color = text, fontWeight = FontWeight.Black, fontSize = 38.sp)
         Box(Modifier.fillMaxWidth().height(12.dp).clip(CircleShape).background(text.copy(alpha = 0.12f))) {
             Box(Modifier.fillMaxWidth(0.72f).fillMaxSize().clip(CircleShape).background(Color(0xFF5FE0C2)))
         }
@@ -403,10 +423,10 @@ private fun GaugePreview(title: String, text: Color) {
 }
 
 @Composable
-private fun ListPreview(title: String, text: Color) {
+private fun ListPreview(title: String, text: Color, value: String = "") {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(title, color = text, fontWeight = FontWeight.Bold, fontSize = 19.sp)
-        listOf("09:30  第一项", "14:00  第二项", "19:30  今日状态").forEachIndexed { index, row ->
+        (if (value.isEmpty()) listOf("09:30  第一项", "14:00  第二项", "19:30  今日状态") else listOf(value, "可搭配个人内容", "本地示例")).forEachIndexed { index, row ->
             Row(
                 Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(12.dp)).background(text.copy(alpha = 0.08f)).padding(horizontal = 11.dp),
                 verticalAlignment = Alignment.CenterVertically

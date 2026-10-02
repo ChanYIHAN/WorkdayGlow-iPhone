@@ -41,19 +41,7 @@ extension View {
         cornerRadius: CGFloat = AppLayout.cardRadius,
         interactive: Bool = false
     ) -> some View {
-        #if compiler(>=6.2)
-        if #available(iOS 26.0, *) {
-            let glass: Glass = interactive ? .regular.interactive() : .regular
-            self.glassEffect(
-                glass,
-                in: .rect(cornerRadius: cornerRadius)
-            )
-        } else {
-            fallbackGlassSurface(cornerRadius: cornerRadius)
-        }
-        #else
-        fallbackGlassSurface(cornerRadius: cornerRadius)
-        #endif
+        modifier(AccessibleGlassSurface(cornerRadius: cornerRadius, interactive: interactive))
     }
 
     func fallbackGlassSurface(cornerRadius: CGFloat) -> some View {
@@ -61,8 +49,36 @@ extension View {
             .background(.regularMaterial, in: RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .stroke(Color.primary.opacity(0.07), lineWidth: 0.75)
+                    .stroke(LinearGradient(colors: [.white.opacity(0.65), .primary.opacity(0.06), .white.opacity(0.22)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
             }
+            .shadow(color: .black.opacity(0.06), radius: 14, y: 6)
+    }
+}
+
+private struct AccessibleGlassSurface: ViewModifier {
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    let cornerRadius: CGFloat
+    let interactive: Bool
+
+    @ViewBuilder
+    func body(content: Content) -> some View {
+        if reduceTransparency {
+            content.background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: cornerRadius))
+        } else {
+        #if compiler(>=6.2)
+        if #available(iOS 26.0, *) {
+            let glass: Glass = interactive ? .regular.interactive() : .regular
+            content.glassEffect(
+                glass,
+                in: .rect(cornerRadius: cornerRadius)
+            )
+        } else {
+            content.fallbackGlassSurface(cornerRadius: cornerRadius)
+        }
+        #else
+        content.fallbackGlassSurface(cornerRadius: cornerRadius)
+        #endif
+        }
     }
 }
 
