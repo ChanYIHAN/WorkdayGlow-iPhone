@@ -1,4 +1,4 @@
-import { widgetCategories, WidgetCategory, widgetTemplates, WidgetTemplate } from '../model/WidgetCatalog';
+import { widgetCategories, WidgetCategory, widgetTemplates, WidgetTemplate, WidgetLayout } from '../model/WidgetCatalog';
 import { VocabularyStudy } from './VocabularyStudy';
 PersistentStorage.persistProp('glassOpaque', false);
 PersistentStorage.persistProp('glassMotion', true);
@@ -215,10 +215,44 @@ struct WidgetGalleryCard {
             .fontWeight(FontWeight.Bold)
             .fontColor(this.isDark ? '#B7B2C8' : '#625F6C')
         }
-        Row({ space: 9 }) {
-          this.Metric(this.item.sampleValue ? this.item.sampleValue! : '6,842', this.item.sampleValue ? '示例' : '今日', '#FF8D90')
-          this.Metric('72%', '进度', '#36D5B1')
-          this.Metric('良好', '状态', '#AD91ED')
+        if (this.item.layout === WidgetLayout.Poster) {
+          Column({ space: 8 }) {
+            Text(this.item.sampleValue ? this.item.sampleValue! : 'TODAY')
+              .fontSize(30).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+              .maxLines(2).textOverflow({ overflow: TextOverflow.Ellipsis })
+            Text(this.item.subtitle).fontSize(12).fontColor(this.isDark ? '#D0CCDF' : '#625F6C').maxLines(2)
+          }.width('100%').alignItems(HorizontalAlign.Start)
+        } else if (this.item.layout === WidgetLayout.Orbit) {
+          Row({ space: 16 }) {
+            Progress({ value: 72, total: 100, type: ProgressType.Ring }).width(82).height(82).color('#36D5B1')
+            Text(this.item.sampleValue ? this.item.sampleValue! : '72%')
+              .fontSize(23).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27').maxLines(2)
+          }
+        } else if (this.item.layout === WidgetLayout.Gauge) {
+          Text(this.item.sampleValue ? this.item.sampleValue! : '72%')
+            .fontSize(30).fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27').width('100%')
+          Progress({ value: 72, total: 100, type: ProgressType.Linear }).width('100%').color('#36D5B1')
+        } else if (this.item.layout === WidgetLayout.List) {
+          Column({ space: 8 }) {
+            Text(this.item.sampleValue ? this.item.sampleValue! : '今日三件事').fontWeight(FontWeight.Bold).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+            Text('01 · 先完成一小步').fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+            Text('02 · 为自己留些时间').fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+          }.width('100%').alignItems(HorizontalAlign.Start)
+        } else if (this.item.layout === WidgetLayout.Timeline) {
+          Row({ space: 8 }) {
+            ForEach([32, 48, 40, 62, 72, 54, 44], (value: number, index: number) => {
+              Column({ space: 4 }) {
+                Column().width('100%').height(value).borderRadius(8).backgroundColor(index === 4 ? '#36D5B1' : '#70FFFFFF')
+                Text(['一', '二', '三', '四', '五', '六', '日'][index]).fontSize(10).fontColor(this.isDark ? '#FFFFFF' : '#1D1C27')
+              }.layoutWeight(1)
+            }, (value: number, index: number) => index.toString())
+          }.height(90).alignItems(VerticalAlign.Bottom)
+        } else {
+          Row({ space: 9 }) {
+            this.Metric(this.item.sampleValue ? this.item.sampleValue! : '6,842', this.item.sampleValue ? '示例' : '今日', '#FF8D90')
+            this.Metric('72%', '进度', '#36D5B1')
+            this.Metric('良好', '状态', '#AD91ED')
+          }
         }
       }
       .width('100%')
@@ -229,6 +263,11 @@ struct WidgetGalleryCard {
         angle: 135,
         colors: [[palettes[this.item.palette][0], 0.0], [palettes[this.item.palette][1], 1.0]]
       })
+
+      if (this.item.sampleValue) {
+        Text(this.item.category === WidgetCategory.Learning ? '点击开始学习 · 可导入个人词库' : '本地示例 · 暂无实时数据')
+          .fontSize(11).fontColor('#625F6C').width('100%')
+      }
 
       Row() {
         Column({ space: 3 }) {
@@ -254,7 +293,7 @@ struct WidgetGalleryCard {
     .width('100%')
     .padding(13)
     .borderRadius(28)
-.backgroundColor(this.opaque ? '#FFFFFF' : '#BFFFFFFF')
+    .backgroundColor(this.opaque ? '#FFFFFF' : '#BFFFFFFF')
     .backgroundBlurStyle(this.opaque ? BlurStyle.NONE : BlurStyle.Thick)
     .border({ width: 1, color: '#CCFFFFFF' })
     .shadow({ radius: 16, color: '#120F2440', offsetY: 6 })

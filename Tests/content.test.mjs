@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { stripTypeScriptTypes } from 'node:module';
 const read = file => fs.readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
 const additions = JSON.parse(read('content/expansion-150.json'));
 const words = JSON.parse(read('content/words.json'));
@@ -48,4 +49,24 @@ test('word content has unique keys, meanings and original examples', () => {
 
 test('generated source files match shared content', () => {
   execFileSync(process.execPath, [fileURLToPath(new URL('../Scripts/sync-content.mjs', import.meta.url)), '--check'], { stdio: 'pipe' });
+});
+
+test('HarmonyOS review logic follows the same intervals and import rules', async () => {
+  const js = stripTypeScriptTypes(read('harmony/entry/src/main/ets/model/Vocabulary.ets'));
+  const { gradeReview, parseVocabulary } = await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);
+  const now = 1_000_000;
+  let review = { word: 'test', level: 0, due: 0, attempts: 0 };
+  for (const [index, days] of [1, 3, 7, 14, 30, 30].entries()) {
+    review = gradeReview(review, true, now);
+    assert.equal(review.level, Math.min(index + 1, 5));
+    assert.equal(review.due, now + days * 86_400_000);
+  }
+  review = gradeReview(review, false, now);
+  assert.equal(review.level, 0);
+  assert.equal(review.due, now + 60_000);
+  assert.equal(review.attempts, 7);
+  const words = parseVocabulary('Test|测试|Example\ninvalid\ntest\t更新\tNew example\nempty|\n');
+  assert.equal(words.length, 1);
+  assert.equal(words[0].meaning, '更新');
+  assert.equal(parseVocabulary('x'.repeat(81) + '|too long').length, 0);
 });

@@ -27,7 +27,9 @@ object VocabularyImport {
 class VocabularyRepository(context: Context) {
     private val prefs = context.applicationContext.getSharedPreferences("vocabulary", Context.MODE_PRIVATE)
     fun words(): List<VocabularyWord> = runCatching {
-        val json = JSONArray(prefs.getString("words", null) ?: return vocabularySeed)
+        val json = JSONArray(prefs.getString("words", null) ?: JSONArray().also { seed ->
+            vocabularySeed.forEach { seed.put(JSONObject().put("word", it.word).put("meaning", it.meaning).put("example", it.example)) }
+        }.toString())
         (0 until json.length()).map {
             val item = json.getJSONObject(it)
             VocabularyWord(item.getString("word"), item.getString("meaning"), item.optString("example"))

@@ -60,7 +60,7 @@ Swift 复习/导入/目录测试在 macOS CI 执行；Android 执行 `gradle :ap
 | Android 9+ | Jetpack Compose、Material 3、动态配色与 150 款画廊 | 今日活力 + 可翻面的 Glance 词汇学习组件 | Health Connect 权限与依赖框架已预留；当前组件使用展示数据 | 可生成 Debug APK |
 | HarmonyOS | ArkUI 五栏应用、搜索与 150 款画廊 | 今日活力 + 每日单词 Form Kit 服务卡片 | 当前使用展示数据，等待真机 API 接入 | 源码完成，待 DevEco Studio 验证 |
 
-这里的“150 款”指三端统一的视觉模板目录，不代表系统组件选择器中会出现 150 个独立入口。iOS 将相近设计合并到 20 个 WidgetKit 入口，并通过“编辑小组件”切换具体样式；Android 与 HarmonyOS 当前各实现了两个原生桌面卡片，后续会逐步扩展原生入口与实时数据。
+这里的“150 款”指三端统一的视觉模板目录，不代表系统组件选择器中会出现 150 个独立入口。iOS 将相近设计合并到 21 个 WidgetKit 入口，并通过“编辑小组件”切换具体样式；Android 与 HarmonyOS 当前各实现了两个原生桌面卡片，后续会逐步扩展原生入口与实时数据。
 
 ## 150 款组件目录
 
@@ -89,7 +89,7 @@ Swift 复习/导入/目录测试在 macOS CI 执行；Android 执行 `gradle :ap
 - HarmonyOS 使用背景模糊、玻璃卡片与轻量属性动画，基于 ArkUI/ArkTS 与 Form Kit，并遵循服务卡片的尺寸和刷新限制。
 - 小、中、大尺寸采用不同信息密度，而不是简单缩放同一张卡片。
 - 支持浅色与深色语义配色；核心状态同时使用文字、图标与颜色表达。
-- 150 项长列表采用原生惰性布局，保持搜索、筛选和滚动性能。
+- iOS 与 Android 画廊使用原生惰性布局；鸿蒙按搜索与分类过滤渲染，长目录的真机滚动性能仍待验证。
 
 设计令牌和平台差异说明位于 [`design-system/workdayglow`](design-system/workdayglow)。
 

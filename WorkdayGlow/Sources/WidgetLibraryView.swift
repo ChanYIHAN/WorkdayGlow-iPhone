@@ -62,7 +62,7 @@ struct WidgetLibraryView: View {
 
             Spacer()
 
-            Text("13 类")
+            Text("\(WidgetTemplateCategory.allCases.count - 1) 类")
                 .font(.caption.weight(.bold))
                 .foregroundStyle(Color.accentColor)
                 .padding(.horizontal, 10)
