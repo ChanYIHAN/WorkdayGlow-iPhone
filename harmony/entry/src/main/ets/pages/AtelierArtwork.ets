@@ -3,7 +3,7 @@ import { AtelierDesign, DesignMetric, designFor } from '../model/AtelierDesign';
 
 @Component
 export struct AtelierArtwork {
-  item: WidgetTemplate;
+  @Prop item: WidgetTemplate;
   private get design(): AtelierDesign { return designFor(this.item.title); }
 
   @Builder

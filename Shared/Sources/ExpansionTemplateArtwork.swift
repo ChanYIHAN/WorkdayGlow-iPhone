@@ -114,7 +114,7 @@ struct ExpansionTemplateArtwork: View {
     private var bento: some View {
         HStack(spacing: 8) {
             VStack(alignment: .leading, spacing: 6) {
-                headline(design.value)
+                Text(design.value).font(.system(size: compact ? 22 : 24, weight: .semibold, design: .rounded)).lineLimit(1).minimumScaleFactor(0.65)
                 Text(design.metrics[0].label).font(.caption2).foregroundStyle(muted)
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading).padding(12).background(.white.opacity(0.16), in: RoundedRectangle(cornerRadius: 15))
             if !compact {
