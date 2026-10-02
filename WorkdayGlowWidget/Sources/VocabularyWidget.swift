@@ -73,7 +73,7 @@ struct VocabularyWidget: Widget {
                 .widgetURL(URL(string: "workdayglow://learning"))
         }
         .configurationDisplayName("词汇学习")
-        .description("20 种学习主题；每日入门词、自定义词义和交互翻面。完整间隔复习请进入应用。")
+        .description("22 种学习主题；每日入门词、自定义词义和交互翻面。完整间隔复习请进入应用。")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
     }

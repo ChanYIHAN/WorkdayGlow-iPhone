@@ -23,7 +23,8 @@ export enum WidgetLayout {
   Timeline = 'timeline',
   Poster = 'poster',
   Gauge = 'gauge',
-  List = 'list'
+  List = 'list',
+  Dial = 'dial', Ticket = 'ticket', Constellation = 'constellation', Waveform = 'waveform', Mosaic = 'mosaic', Editorial = 'editorial'
 }
 
 export interface WidgetTemplate {

@@ -89,6 +89,55 @@ enum CollectionWidgetStyle: String, CaseIterable, AppEnum {
     case soundtrackDay
     case memoryCapsule
 
+    case departureTicket
+    case eveningHorizon
+    case holidayWindow
+    case incomeLedger
+    case paydayTicket
+    case hourlyValue
+    case seasonCompass
+    case weekDots
+    case monthRibbon
+    case recoveryGarden
+    case walkMap
+    case sleepMoon
+    case pulseRibbon
+    case activityReceipt
+    case skyWindow
+    case windCompass
+    case rainRibbon
+    case weatherTicket
+    case togetherConstellation
+    case anniversaryTicket
+    case littlePromise
+    case lovePostmark
+    case quietDial
+    case timezoneTicket
+    case dayArc
+    case minuteTypography
+    case shortcutRosette
+    case connectionBento
+    case batteryDial
+    case noteReceipt
+    case galleryWindow
+    case contactSheet
+    case memoryPostcard
+    case photoEditorial
+    case vinylSleeve
+    case musicRibbon
+    case playlistTicket
+    case albumMosaic
+    case budgetLedger
+    case exchangeTicket
+    case marketRibbon
+    case savingsConstellation
+    case dayItinerary
+    case focusDial
+    case habitConstellation
+    case morningLetter
+    case moonConstellation
+    case teaReceipt
+
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "灵感合集样式"
     static var caseDisplayRepresentations: [Self: DisplayRepresentation] = [
         .hydrationBloom: "饮水花园",
@@ -175,7 +224,55 @@ enum CollectionWidgetStyle: String, CaseIterable, AppEnum {
         .petCompanion: "桌面伙伴",
         .colorMood: "今日色彩",
         .soundtrackDay: "今日配乐",
-        .memoryCapsule: "记忆胶囊"
+        .memoryCapsule: "记忆胶囊",
+        .departureTicket: "下班车票",
+        .eveningHorizon: "傍晚地平线",
+        .holidayWindow: "假日窗口",
+        .incomeLedger: "收入账页",
+        .paydayTicket: "发薪凭笺",
+        .hourlyValue: "时薪刻度",
+        .seasonCompass: "四季罗盘",
+        .weekDots: "一周点阵",
+        .monthRibbon: "月份丝带",
+        .recoveryGarden: "恢复花园",
+        .walkMap: "步行足迹",
+        .sleepMoon: "月下睡眠",
+        .pulseRibbon: "脉搏丝带",
+        .activityReceipt: "活动小票",
+        .skyWindow: "天空之窗",
+        .windCompass: "风向罗盘",
+        .rainRibbon: "雨量丝带",
+        .weatherTicket: "出门天气签",
+        .togetherConstellation: "相伴星图",
+        .anniversaryTicket: "纪念日票根",
+        .littlePromise: "小小约定",
+        .lovePostmark: "心动邮戳",
+        .quietDial: "静谧表盘",
+        .timezoneTicket: "时区登机牌",
+        .dayArc: "一天弧线",
+        .minuteTypography: "分钟排印",
+        .shortcutRosette: "快捷花盘",
+        .connectionBento: "连接便当",
+        .batteryDial: "电池刻度盘",
+        .noteReceipt: "便签小票",
+        .galleryWindow: "记忆窗格",
+        .contactSheet: "相片索引",
+        .memoryPostcard: "记忆明信片",
+        .photoEditorial: "照片扉页",
+        .vinylSleeve: "唱片封套",
+        .musicRibbon: "旋律丝带",
+        .playlistTicket: "歌单票签",
+        .albumMosaic: "唱片拼贴",
+        .budgetLedger: "预算账笺",
+        .exchangeTicket: "换汇票据",
+        .marketRibbon: "行情折线",
+        .savingsConstellation: "储蓄星图",
+        .dayItinerary: "今日行程签",
+        .focusDial: "专注表盘",
+        .habitConstellation: "习惯星群",
+        .morningLetter: "晨间来信",
+        .moonConstellation: "月夜星图",
+        .teaReceipt: "茶歇小笺"
     ]
 
     var template: WidgetTemplateKind {
@@ -185,7 +282,7 @@ enum CollectionWidgetStyle: String, CaseIterable, AppEnum {
 
 struct CollectionWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "设置灵感合集"
-    static var description = IntentDescription("从新增的 85 款原创设计中选择一款。")
+    static var description = IntentDescription("从新增的 133 款原创设计中选择一款。")
 
     @Parameter(title: "样式", default: .hydrationBloom)
     var style: CollectionWidgetStyle
@@ -236,7 +333,7 @@ struct CollectionWidget: Widget {
             .widgetURL(URL(string: "workdayglow://widgets"))
         }
         .configurationDisplayName("灵感合集")
-        .description("健康、效率、生活、照片、音乐与行情等 85 款原创桌面设计。")
+        .description("健康、效率、生活、照片、音乐与行情等 133 款原创桌面设计。")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
         .contentMarginsDisabled()
     }

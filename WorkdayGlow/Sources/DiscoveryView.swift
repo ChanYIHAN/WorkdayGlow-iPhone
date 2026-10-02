@@ -51,7 +51,7 @@ struct DiscoveryView: View {
                     .accessibilityHidden(true)
             }
 
-            Text("奕刻 · 150 款原创设计 · 桌面与锁屏")
+            Text("奕刻 · 200 款原创设计 · 桌面与锁屏")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
 

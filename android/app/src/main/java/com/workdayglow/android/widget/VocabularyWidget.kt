@@ -28,11 +28,11 @@ class VocabularyWidget : GlanceAppWidget() {
         val prefs = context.getSharedPreferences("vocabulary", Context.MODE_PRIVATE)
         val revealed = word != null && prefs.getBoolean("widget.${word.id}.revealed", false)
         provideContent {
-            Column(GlanceModifier.fillMaxSize().background(ColorProvider(Color(0xEEECF6F4))).cornerRadius(28.dp).appWidgetBackground().padding(16.dp)) {
-                Text("词汇学习", style = TextStyle(color = ColorProvider(Color(0xFF176D61)), fontSize = 13.sp))
+            Column(GlanceModifier.fillMaxSize().background(ColorProvider(Color(0xFFF0F5F1))).cornerRadius(28.dp).appWidgetBackground().padding(16.dp)) {
+                Text("词汇学习", style = TextStyle(color = ColorProvider(Color(0xFF287B67)), fontSize = 13.sp))
                 Spacer(GlanceModifier.height(10.dp))
                 Text(if (word == null) "本轮完成 ✓" else if (revealed) word.meaning else word.word,
-                    style = TextStyle(color = ColorProvider(Color(0xFF1D1C27)), fontSize = 23.sp, fontWeight = FontWeight.Bold), maxLines = 2)
+                    style = TextStyle(color = ColorProvider(Color(0xFF202B3A)), fontSize = 23.sp, fontWeight = FontWeight.Bold), maxLines = 2)
                 Spacer(GlanceModifier.height(8.dp))
                 if (word != null) {
                     Text(if (revealed) word.word else "先回想，再翻面", style = TextStyle(color = ColorProvider(Color(0xFF625F6C)), fontSize = 12.sp))
@@ -42,7 +42,7 @@ class VocabularyWidget : GlanceAppWidget() {
                     }
                 }
                 Text("打开学习 →", modifier = GlanceModifier.clickable(actionStartActivity(Intent(context, MainActivity::class.java).putExtra("study", true))),
-                    style = TextStyle(color = ColorProvider(Color(0xFF176D61)), fontSize = 12.sp))
+                    style = TextStyle(color = ColorProvider(Color(0xFF287B67)), fontSize = 12.sp))
             }
         }
     }

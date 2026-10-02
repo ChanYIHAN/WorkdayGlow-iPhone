@@ -122,7 +122,7 @@ struct FinanceTemplateArtwork: View {
                     .fontWeight(.bold)
                 Spacer()
                 Text("ECB")
-                    .font(.system(size: 8, weight: .black))
+                    .font(.system(size: 8, weight: .semibold))
                     .tracking(1.2)
                     .foregroundStyle(.secondary)
             }
@@ -134,7 +134,7 @@ struct FinanceTemplateArtwork: View {
                 .foregroundStyle(.secondary)
             HStack(alignment: .firstTextBaseline, spacing: 5) {
                 Text(rateText(currency.rate))
-                    .font(.system(size: size == .small ? 42 : 54, weight: .black, design: .rounded))
+                    .font(.system(size: size == .small ? 42 : 54, weight: .semibold, design: .rounded))
                     .fontWidth(.condensed)
                     .monospacedDigit()
                     .minimumScaleFactor(0.55)
@@ -161,7 +161,7 @@ struct FinanceTemplateArtwork: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("汇率矩阵")
                         .font(.headline)
-                        .fontWeight(.black)
+                        .fontWeight(.semibold)
                     Text("1 \(currency.baseCode) 可兑换")
                         .font(.caption2)
                         .foregroundStyle(.white.opacity(0.45))
@@ -181,7 +181,7 @@ struct FinanceTemplateArtwork: View {
                             .foregroundStyle(.white.opacity(0.42))
                         Text(rateText(item.value))
                             .font(.headline)
-                            .fontWeight(.black)
+                            .fontWeight(.semibold)
                             .monospacedDigit()
                             .minimumScaleFactor(0.7)
                             .lineLimit(1)
@@ -216,7 +216,7 @@ struct FinanceTemplateArtwork: View {
 
             HStack(alignment: .firstTextBaseline, spacing: 5) {
                 Text(amountText(currency.amount * currency.rate))
-                    .font(.system(size: size == .small ? 36 : 50, weight: .black, design: .rounded))
+                    .font(.system(size: size == .small ? 36 : 50, weight: .semibold, design: .rounded))
                     .fontWidth(.condensed)
                     .monospacedDigit()
                     .minimumScaleFactor(0.55)
@@ -251,7 +251,7 @@ struct FinanceTemplateArtwork: View {
                 Spacer()
 
                 Text("$\(priceText(gold.goldPrice))")
-                    .font(.system(size: size == .small ? 33 : 46, weight: .black, design: .rounded))
+                    .font(.system(size: size == .small ? 33 : 46, weight: .semibold, design: .rounded))
                     .fontWidth(.condensed)
                     .monospacedDigit()
                     .minimumScaleFactor(0.55)
@@ -273,7 +273,7 @@ struct FinanceTemplateArtwork: View {
                             .padding(10)
                         Text("Au")
                             .font(.title2)
-                            .fontWeight(.black)
+                            .fontWeight(.semibold)
                             .foregroundStyle(Color("ButterGlow"))
                     }
                     .frame(width: 76, height: 76)
@@ -295,7 +295,7 @@ struct FinanceTemplateArtwork: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("黄金近期走势")
                         .font(.headline)
-                        .fontWeight(.black)
+                        .fontWeight(.semibold)
                     Text("Alpha Vantage · 参考行情")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
@@ -307,7 +307,7 @@ struct FinanceTemplateArtwork: View {
             HStack(alignment: .firstTextBaseline, spacing: 5) {
                 Text("$\(priceText(gold.goldPrice))")
                     .font(.title)
-                    .fontWeight(.black)
+                    .fontWeight(.semibold)
                     .fontDesign(.rounded)
                     .monospacedDigit()
                 Text("/ oz")
@@ -361,7 +361,7 @@ struct FinanceTemplateArtwork: View {
                         VStack(alignment: .leading, spacing: 1) {
                             Text(quote.symbol)
                                 .font(.headline)
-                                .fontWeight(.black)
+                                .fontWeight(.semibold)
                             Text(quote.displayName)
                                 .font(.caption2)
                                 .foregroundStyle(.white.opacity(0.44))
@@ -376,7 +376,7 @@ struct FinanceTemplateArtwork: View {
                     Spacer()
 
                     Text("\(currencySymbol(quote.currency))\(priceText(quote.price))")
-                        .font(.system(size: size == .small ? 38 : 50, weight: .black, design: .rounded))
+                        .font(.system(size: size == .small ? 38 : 50, weight: .semibold, design: .rounded))
                         .fontWidth(.condensed)
                         .monospacedDigit()
                         .minimumScaleFactor(0.55)
@@ -411,7 +411,7 @@ struct FinanceTemplateArtwork: View {
             HStack {
                 Text("自选股")
                     .font(.headline)
-                    .fontWeight(.black)
+                    .fontWeight(.semibold)
                 Spacer()
                 Text("最新收盘 · 仅供参考")
                     .font(.system(size: 8, weight: .bold))
@@ -423,7 +423,7 @@ struct FinanceTemplateArtwork: View {
                     VStack(alignment: .leading, spacing: 1) {
                         Text(quote.symbol)
                             .font(.caption)
-                            .fontWeight(.black)
+                            .fontWeight(.semibold)
                         Text(quote.displayName)
                             .font(.system(size: 8))
                             .foregroundStyle(.secondary)
@@ -464,7 +464,7 @@ struct FinanceTemplateArtwork: View {
                 VStack(alignment: .leading, spacing: 7) {
                     HStack {
                         Text(quote.currency == "HKD" ? "港股" : "美股")
-                            .font(.system(size: 8, weight: .black))
+                            .font(.system(size: 8, weight: .semibold))
                             .tracking(1)
                             .foregroundStyle(.white.opacity(0.36))
                         Spacer()
@@ -474,7 +474,7 @@ struct FinanceTemplateArtwork: View {
                     }
                     Text(quote.symbol)
                         .font(.headline)
-                        .fontWeight(.black)
+                        .fontWeight(.semibold)
                     Text(quote.displayName)
                         .font(.caption2)
                         .foregroundStyle(.white.opacity(0.45))
@@ -484,7 +484,7 @@ struct FinanceTemplateArtwork: View {
 
                     Text("\(currencySymbol(quote.currency))\(priceText(quote.price))")
                         .font(size == .large ? .title : .title3)
-                        .fontWeight(.black)
+                        .fontWeight(.semibold)
                         .monospacedDigit()
                         .minimumScaleFactor(0.7)
                         .lineLimit(1)
@@ -514,7 +514,7 @@ struct FinanceTemplateArtwork: View {
             HStack {
                 Text(symbol)
                     .font(.headline)
-                    .fontWeight(.black)
+                    .fontWeight(.semibold)
                     .foregroundStyle(tint)
                 Spacer()
                 Image(systemName: "seal.fill")
@@ -526,7 +526,7 @@ struct FinanceTemplateArtwork: View {
                 .foregroundStyle(.white.opacity(0.44))
             Text("$\(priceText(price))")
                 .font(.title3)
-                .fontWeight(.black)
+                .fontWeight(.semibold)
                 .monospacedDigit()
                 .minimumScaleFactor(0.6)
                 .lineLimit(1)

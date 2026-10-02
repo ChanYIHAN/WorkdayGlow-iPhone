@@ -49,7 +49,7 @@ struct CreativeTemplateBackground: View {
             )
         case .musicGlass:
             LinearGradient(
-                colors: [Color("AuroraLavender"), Color("SkyGlow"), Color("SeaGlass")],
+                colors: [Color(atelierHex: "#30283B"), Color(atelierHex: "#483D52")],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -103,7 +103,7 @@ struct CreativeTemplateArtwork: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("快捷控制")
                         .font(.headline)
-                        .fontWeight(.black)
+                        .fontWeight(.semibold)
                     Text("SHORTCUT CONSOLE")
                         .font(.system(size: 8, weight: .bold))
                         .tracking(1.6)
@@ -131,7 +131,7 @@ struct CreativeTemplateArtwork: View {
                 Image(systemName: "bolt.fill")
                     .foregroundStyle(Color("AuroraCoral"))
                 Text("QUICK SWITCH")
-                    .font(.system(size: 9, weight: .black))
+                    .font(.system(size: 9, weight: .semibold))
                     .tracking(1.4)
                 Spacer()
             }
@@ -165,7 +165,7 @@ struct CreativeTemplateArtwork: View {
 
             Text("安静一会儿")
                 .font(size == .small ? .title3 : .title2)
-                .fontWeight(.black)
+                .fontWeight(.semibold)
             Text("飞行模式 · 专注 · 离线")
                 .font(.caption2)
                 .foregroundStyle(.white.opacity(0.52))
@@ -193,7 +193,7 @@ struct CreativeTemplateArtwork: View {
                     .clipShape(RoundedRectangle(cornerRadius: 3, style: .continuous))
                 HStack {
                     Text("SUMMER MEMORY")
-                        .font(.system(size: 8, weight: .black))
+                        .font(.system(size: 8, weight: .semibold))
                         .tracking(1)
                     Spacer()
                     Image(systemName: "heart.fill")
@@ -251,7 +251,7 @@ struct CreativeTemplateArtwork: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("NOW SPINNING")
-                    .font(.system(size: 8, weight: .black))
+                    .font(.system(size: 8, weight: .semibold))
                     .tracking(1.5)
                     .foregroundStyle(.white.opacity(0.42))
                 Spacer()
@@ -308,7 +308,7 @@ struct CreativeTemplateArtwork: View {
                     .foregroundStyle(.white.opacity(0.58))
                 Text("Cloud Nine")
                     .font(.title3)
-                    .fontWeight(.black)
+                    .fontWeight(.semibold)
                 Text("Aurora Radio")
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.58))
@@ -348,7 +348,7 @@ struct CreativeTemplateArtwork: View {
 
             Text("慢慢喜欢你")
                 .font(.headline)
-                .fontWeight(.black)
+                .fontWeight(.semibold)
                 .lineLimit(1)
             Text("今日歌单")
                 .font(.caption2)

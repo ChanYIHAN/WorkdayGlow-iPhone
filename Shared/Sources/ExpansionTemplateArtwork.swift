@@ -1,24 +1,19 @@
 import SwiftUI
 
+extension Color {
+    init(atelierHex: String) {
+        let value = UInt64(atelierHex.dropFirst(), radix: 16) ?? 0
+        self.init(.sRGB, red: Double((value >> 16) & 255) / 255, green: Double((value >> 8) & 255) / 255, blue: Double(value & 255) / 255, opacity: 1)
+    }
+}
+
 struct ExpansionTemplateBackground: View {
     let template: WidgetTemplateKind
-
     var body: some View {
-        LinearGradient(
-            colors: colors,
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-    }
-
-    private var colors: [Color] {
-        switch template.expansionMetadata?.palette ?? 0 {
-        case 0: [Color("SoftCream"), Color("SeaGlass").opacity(0.42)]
-        case 1: [Color("PlumInk"), Color("GlowSurfaceAlt")]
-        case 2: [Color("SkyGlow"), Color("AuroraLavender").opacity(0.78)]
-        case 3: [Color("GlowCanvas"), Color("PlumInk")]
-        case 4: [Color("ButterGlow"), Color("RoseGlow").opacity(0.72)]
-        default: [Color("AuroraLavender"), Color("AuroraCoral").opacity(0.74)]
+        let palette = template.design.palette
+        ZStack {
+            LinearGradient(colors: [Color(atelierHex: palette[0]), Color(atelierHex: palette[1])], startPoint: .topLeading, endPoint: .bottomTrailing)
+            RadialGradient(colors: [.white.opacity(0.16), .clear], center: .topLeading, startRadius: 0, endRadius: 280)
         }
     }
 }
@@ -26,353 +21,217 @@ struct ExpansionTemplateBackground: View {
 struct ExpansionTemplateArtwork: View {
     let template: WidgetTemplateKind
     let size: WidgetArtworkSize
-
-    private var metadata: ExpansionTemplateMetadata {
-        template.expansionMetadata ?? ExpansionTemplateMetadata(
-            title: template.title,
-            subtitle: template.subtitle,
-            category: template.category,
-            symbolName: template.symbolName,
-            layout: .poster,
-            palette: 0
-        )
-    }
+    private var design: TemplateDesign { template.design }
+    private var ink: Color { Color(atelierHex: design.palette[2]) }
+    private var accent: Color { Color(atelierHex: design.palette[3]) }
+    private var muted: Color { Color(atelierHex: design.palette[4]) }
+    private var compact: Bool { size == .small }
 
     var body: some View {
-        Group {
-            switch metadata.layout {
-            case .orbit: orbitLayout
-            case .bento: bentoLayout
-            case .timeline: timelineLayout
-            case .poster: posterLayout
-            case .gauge: gaugeLayout
-            case .list: listLayout
+        VStack(alignment: .leading, spacing: compact ? 8 : 11) {
+            HStack(spacing: 6) {
+                Image(systemName: template.symbolName).font(.system(size: 10, weight: .medium)).foregroundStyle(accent)
+                Text(design.eyebrow).font(.system(size: compact ? 8 : 9, weight: .semibold)).tracking(1.4).lineLimit(1)
+                Spacer(minLength: 0)
+            }.foregroundStyle(muted)
+            composition.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            HStack {
+                Text(template.title).font(.system(size: compact ? 10 : 11, weight: .semibold)).lineLimit(1)
+                Spacer(minLength: 4)
+                if !compact { Text("EKHART").font(.system(size: 8, weight: .medium)).tracking(1.2).foregroundStyle(muted) }
             }
         }
-        .foregroundStyle(primaryText)
+        .padding(compact ? 16 : size == .large ? 24 : 19)
+        .foregroundStyle(ink)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(metadata.title)，\(primaryValue)")
+        .accessibilityLabel("\(template.title)，\(design.value)，示例内容")
     }
 
-    private var orbitLayout: some View {
+    @ViewBuilder private var composition: some View {
+        switch design.layout {
+        case .orbit, .dial: circular
+        case .bento: bento
+        case .timeline, .waveform: chart
+        case .poster, .editorial: editorial
+        case .gauge: gauge
+        case .list: list
+        case .ticket: ticket
+        case .constellation: constellation
+        case .mosaic: mosaic
+        }
+    }
+
+    private func headline(_ text: String, serif: Bool = false) -> some View {
+        Text(text).font(.system(size: compact ? 24 : size == .large ? 38 : 30, weight: serif ? .regular : .semibold, design: serif ? .serif : .rounded))
+            .minimumScaleFactor(0.72).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var editorial: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Rectangle().fill(accent.opacity(0.7)).frame(width: 28, height: 1)
+            headline(design.value, serif: design.layout == .editorial)
+            Text(design.caption).font(.system(size: compact ? 10 : 11)).foregroundStyle(muted).lineLimit(2)
+        }
+    }
+
+    private var circular: some View {
         Group {
-            if size == .small {
-                VStack(spacing: 9) {
-                    orbit(diameter: 92)
-                    Text(metadata.title)
-                        .font(.caption.weight(.bold))
-                }
+            if compact {
+                ZStack {
+                    rings(diameter: 86)
+                    Text(design.value).font(.system(size: 15, weight: .semibold, design: .rounded)).multilineTextAlignment(.center).lineLimit(2).padding(22)
+                }.frame(maxWidth: .infinity)
             } else {
                 HStack(spacing: 20) {
-                    orbit(diameter: 112)
-                    VStack(alignment: .leading, spacing: 7) {
-                        Label(metadata.title, systemImage: metadata.symbolName)
-                            .font(.headline)
-                        Text(primaryValue)
-                            .font(.title2.weight(.bold))
-                            .monospacedDigit()
-                        Text(metadata.subtitle)
-                            .font(.caption)
-                            .foregroundStyle(secondaryText)
-                            .lineLimit(2)
+                    rings(diameter: size == .large ? 132 : 84)
+                    VStack(alignment: .leading, spacing: 8) {
+                        headline(design.value)
+                        Text(design.metrics[0].label + " · " + design.metrics[0].value).font(.caption).foregroundStyle(muted)
                     }
-                    Spacer(minLength: 0)
                 }
             }
         }
-        .padding(size == .small ? 14 : 18)
     }
 
-    private var bentoLayout: some View {
-        VStack(alignment: .leading, spacing: size == .large ? 14 : 10) {
-            HStack {
-                Label(metadata.title, systemImage: metadata.symbolName)
-                    .font(.headline)
-                Spacer()
-                Text("TODAY")
-                    .font(.caption2.weight(.black))
-                    .tracking(1)
-                    .foregroundStyle(secondaryText)
-            }
-
-            HStack(spacing: 9) {
-                metricCard(value: primaryValue, label: metricLabels[0], tint: accents[0])
-                metricCard(value: secondaryValues[0], label: metricLabels[1], tint: accents[1])
-                if size == .large {
-                    metricCard(value: secondaryValues[1], label: metricLabels[2], tint: accents[2])
+    private func rings(diameter: CGFloat) -> some View {
+        ZStack {
+            if design.layout == .dial {
+                ForEach(0..<36) { index in
+                    Rectangle().fill(index % 3 == 0 ? accent : ink.opacity(0.2)).frame(width: 1, height: index % 3 == 0 ? 8 : 4)
+                        .offset(y: -diameter / 2 + 6).rotationEffect(.degrees(Double(index) * 10))
                 }
+                Circle().fill(accent).frame(width: 7, height: 7)
+                Rectangle().fill(accent).frame(width: 2, height: diameter * 0.27).offset(y: -diameter * 0.135).rotationEffect(.degrees(42))
+            } else {
+                Circle().stroke(ink.opacity(0.09), lineWidth: 7)
+                Circle().trim(from: 0, to: design.progress).stroke(accent, style: StrokeStyle(lineWidth: 7, lineCap: .round)).rotationEffect(.degrees(-90))
+                Circle().inset(by: 14).trim(from: 0, to: design.secondaryProgress).stroke(accent.opacity(0.38), style: StrokeStyle(lineWidth: 4, lineCap: .round)).rotationEffect(.degrees(-90))
+                if !compact { Text("\(Int(design.progress * 100))%").font(.system(size: 16, weight: .medium, design: .rounded)) }
             }
-
-            if size == .large {
-                Text(metadata.subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(secondaryText)
-            }
-        }
-        .padding(size == .large ? 20 : 16)
+        }.frame(width: diameter, height: diameter)
     }
 
-    private var timelineLayout: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Label(metadata.title, systemImage: metadata.symbolName)
-                    .font(.headline)
-                Spacer()
-                Text(primaryValue)
-                    .font(.subheadline.weight(.bold))
-                    .monospacedDigit()
-            }
-
-            HStack(alignment: .bottom, spacing: 7) {
-                ForEach(Array(barValues.enumerated()), id: \.offset) { index, value in
-                    VStack(spacing: 5) {
-                        Capsule()
-                            .fill(index == 4 ? accents[0] : accents[index % accents.count].opacity(0.52))
-                            .frame(maxWidth: .infinity)
-                            .frame(height: CGFloat(value) * (size == .large ? 78 : 48))
-                        Text(weekLabels[index])
-                            .font(.system(size: 9, weight: .semibold))
-                            .foregroundStyle(secondaryText)
+    private var bento: some View {
+        HStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(design.value).font(.system(size: compact ? 22 : 24, weight: .semibold, design: .rounded)).lineLimit(1).minimumScaleFactor(0.65)
+                Text(design.metrics[0].label).font(.caption2).foregroundStyle(muted)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading).padding(12).background(.white.opacity(0.16), in: RoundedRectangle(cornerRadius: 15))
+            if !compact {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(1..<3) { index in
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(design.metrics[index].value).font(.system(size: 14, weight: .semibold)).lineLimit(1)
+                            Text(design.metrics[index].label).font(.system(size: 9)).foregroundStyle(muted)
+                        }
                     }
-                    .frame(maxWidth: .infinity)
-                }
-            }
-
-            if size == .large {
-                Text(metadata.subtitle)
-                    .font(.caption)
-                    .foregroundStyle(secondaryText)
+                }.frame(maxWidth: .infinity, alignment: .leading).padding(12)
             }
         }
-        .padding(size == .large ? 20 : 16)
     }
 
-    private var posterLayout: some View {
+    private var chart: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Image(systemName: metadata.symbolName)
-                    .font(.title2)
-                    .foregroundStyle(accents[0])
-                Spacer()
-                Text(metadata.category.title)
-                    .font(.caption2.weight(.bold))
-                    .foregroundStyle(secondaryText)
-            }
-
-            Spacer(minLength: 0)
-
-            Text(primaryValue)
-                .font(.system(size: size == .small ? 38 : 48, weight: .black, design: .rounded))
-                .minimumScaleFactor(0.55)
-                .lineLimit(1)
-                .monospacedDigit()
-            Text(metadata.title)
-                .font(.headline)
-            Text(metadata.subtitle)
-                .font(.caption2)
-                .foregroundStyle(secondaryText)
-                .lineLimit(size == .small ? 2 : 1)
+            Text(design.value).font(.system(size: compact ? 20 : 25, weight: .medium, design: .rounded)).lineLimit(1).minimumScaleFactor(0.7)
+            Canvas { context, canvas in
+                if design.layout == .timeline || template.category == .music {
+                    let count = design.series.count
+                    for (index, value) in design.series.enumerated() {
+                        let width = canvas.width / CGFloat(count)
+                        let rect = CGRect(x: CGFloat(index) * width + 2, y: canvas.height * (1 - value), width: width * 0.6, height: canvas.height * value)
+                        context.fill(Path(roundedRect: rect, cornerRadius: 3), with: .color(index == count - 1 ? accent : accent.opacity(0.38)))
+                    }
+                } else {
+                    var path = Path()
+                    for (index, value) in design.series.enumerated() {
+                        let point = CGPoint(x: canvas.width * Double(index) / Double(design.series.count - 1), y: canvas.height * (1 - value))
+                        if index == 0 { path.move(to: point) } else { path.addLine(to: point) }
+                    }
+                    context.stroke(path, with: .color(accent), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                }
+            }.frame(height: size == .large ? 94 : 37).accessibilityHidden(true)
+            Text(design.metrics[0].label + " · " + design.metrics[0].value).font(.system(size: 9)).foregroundStyle(muted)
         }
-        .padding(size == .small ? 15 : 18)
     }
 
-    private var gaugeLayout: some View {
-        VStack(alignment: .leading, spacing: size == .small ? 11 : 14) {
-            HStack {
-                Label(metadata.title, systemImage: metadata.symbolName)
-                    .font(.caption.weight(.bold))
-                Spacer()
-                Text("72%")
-                    .font(.caption.weight(.black))
-                    .monospacedDigit()
-            }
-
-            Text(primaryValue)
-                .font(size == .small ? .title2 : .largeTitle)
-                .fontWeight(.black)
-                .fontDesign(.rounded)
-                .minimumScaleFactor(0.6)
-                .lineLimit(1)
-
+    private var gauge: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            headline(design.value)
             GeometryReader { proxy in
                 ZStack(alignment: .leading) {
-                    Capsule().fill(primaryText.opacity(0.12))
-                    Capsule()
-                        .fill(LinearGradient(colors: [accents[0], accents[1]], startPoint: .leading, endPoint: .trailing))
-                        .frame(width: proxy.size.width * 0.72)
+                    Capsule().fill(ink.opacity(0.09))
+                    Capsule().fill(accent).frame(width: proxy.size.width * design.progress)
                 }
-            }
-            .frame(height: 10)
+            }.frame(height: 5)
+            Text(design.metrics[0].label + " " + design.metrics[0].value).font(.system(size: 10)).foregroundStyle(muted)
+        }
+    }
 
-            if size != .small {
+    private var list: some View {
+        VStack(alignment: .leading, spacing: compact ? 6 : 9) {
+            ForEach(0..<(compact ? 2 : 3)) { index in
                 HStack {
-                    Text(secondaryValues[0])
-                    Spacer()
-                    Text(secondaryValues[1])
+                    Text(String(format: "%02d", index + 1)).font(.system(size: 8)).foregroundStyle(accent)
+                    Text(design.rows[index].label).font(.system(size: compact ? 11 : 12)).lineLimit(1)
+                    Spacer(minLength: 6)
+                    Text(design.rows[index].value).font(.system(size: compact ? 10 : 11, weight: .medium)).lineLimit(1).foregroundStyle(muted)
                 }
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(secondaryText)
+                if index < (compact ? 1 : 2) { Rectangle().fill(ink.opacity(0.1)).frame(height: 0.5) }
             }
         }
-        .padding(size == .small ? 15 : 18)
     }
 
-    private var listLayout: some View {
+    private var ticket: some View {
         VStack(alignment: .leading, spacing: 10) {
+            headline(design.value)
+            Line().stroke(ink.opacity(0.22), style: StrokeStyle(lineWidth: 0.7, dash: [2, 4])).frame(height: 1)
             HStack {
-                Label(metadata.title, systemImage: metadata.symbolName)
-                    .font(.headline)
-                Spacer()
-                Text(primaryValue)
-                    .font(.subheadline.weight(.bold))
-            }
-
-            ForEach(Array(sampleRows.enumerated()), id: \.offset) { index, row in
-                HStack(spacing: 10) {
-                    Circle()
-                        .fill(accents[index % accents.count])
-                        .frame(width: 8, height: 8)
-                    Text(row.0)
-                        .font(.subheadline)
-                        .lineLimit(1)
-                    Spacer()
-                    Text(row.1)
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(secondaryText)
+                ForEach(0..<(compact ? 2 : 3)) { index in
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text(design.metrics[index].label).font(.system(size: 8)).foregroundStyle(muted)
+                        Text(design.metrics[index].value).font(.system(size: 11, weight: .medium)).lineLimit(1)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .padding(.horizontal, 11)
-                .frame(minHeight: size == .large ? 43 : 34)
-                .background(primaryText.opacity(isDarkPalette ? 0.07 : 0.08), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             }
         }
-        .padding(size == .large ? 20 : 16)
     }
 
-    private func orbit(diameter: CGFloat) -> some View {
+    private var constellation: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            Text(design.value).font(.system(size: compact ? 20 : 25, weight: .medium)).lineLimit(1)
+            HStack(spacing: 8) {
+                ForEach(0..<7) { column in
+                    VStack(spacing: 7) {
+                        ForEach(0..<3) { row in
+                            Circle().fill(Double(column * 3 + row) / 21 < design.progress ? accent : ink.opacity(0.1)).frame(width: compact ? 6 : 8, height: compact ? 6 : 8)
+                        }
+                    }.frame(maxWidth: .infinity)
+                }
+            }
+        }
+    }
+
+    private var mosaic: some View {
+        HStack(spacing: 7) {
+            window(index: 0).frame(maxWidth: .infinity)
+            if !compact {
+                VStack(spacing: 7) { window(index: 1); window(index: 2) }.frame(width: 70)
+            }
+        }.frame(height: size == .large ? 160 : compact ? 75 : 82)
+        .overlay(alignment: .bottomLeading) {
+            Text(design.value).font(.system(size: 13, weight: .medium, design: .serif)).foregroundStyle(ink).padding(9)
+        }
+    }
+
+    private func window(index: Int) -> some View {
         ZStack {
-            Circle().stroke(primaryText.opacity(0.1), lineWidth: 12)
-            Circle()
-                .trim(from: 0, to: 0.72)
-                .stroke(accents[0], style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                .rotationEffect(.degrees(-90))
-            Circle()
-                .inset(by: 18)
-                .trim(from: 0, to: 0.48)
-                .stroke(accents[1], style: StrokeStyle(lineWidth: 8, lineCap: .round))
-                .rotationEffect(.degrees(-90))
-            VStack(spacing: 0) {
-                Text("72")
-                    .font(.title2.weight(.black))
-                    .monospacedDigit()
-                Text("%")
-                    .font(.caption2.weight(.bold))
-                    .foregroundStyle(secondaryText)
-            }
-        }
-        .frame(width: diameter, height: diameter)
+            accent.opacity(index == 0 ? 0.14 : 0.08)
+            Circle().fill(accent.opacity(0.25)).frame(width: index == 0 ? 45 : 22, height: index == 0 ? 45 : 22).offset(x: 12, y: -12)
+            RoundedRectangle(cornerRadius: 35).fill(accent.opacity(0.16)).rotationEffect(.degrees(-22)).offset(y: 40)
+        }.clipShape(RoundedRectangle(cornerRadius: 12)).overlay(RoundedRectangle(cornerRadius: 12).stroke(.white.opacity(0.35), lineWidth: 0.7))
     }
+}
 
-    private func metricCard(value: String, label: String, tint: Color) -> some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Circle().fill(tint).frame(width: 9, height: 9)
-            Text(value)
-                .font(.headline)
-                .monospacedDigit()
-                .minimumScaleFactor(0.65)
-                .lineLimit(1)
-            Text(label)
-                .font(.caption2)
-                .foregroundStyle(secondaryText)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(11)
-        .background(primaryText.opacity(isDarkPalette ? 0.08 : 0.1), in: RoundedRectangle(cornerRadius: 15, style: .continuous))
-    }
-
-    private var isDarkPalette: Bool {
-        [1, 3].contains(metadata.palette)
-    }
-
-    private var primaryText: Color {
-        isDarkPalette ? .white : Color("PlumInk")
-    }
-
-    private var secondaryText: Color {
-        primaryText.opacity(isDarkPalette ? 0.58 : 0.56)
-    }
-
-    private var accents: [Color] {
-        switch metadata.palette {
-        case 0: [Color("SeaGlass"), Color("SkyGlow"), Color("AuroraLavender")]
-        case 1: [Color("AuroraCoral"), Color("SeaGlass"), Color("AuroraLavender")]
-        case 2: [Color("PlumInk"), Color("AuroraLavender"), Color("SeaGlass")]
-        case 3: [Color("SkyGlow"), Color("AuroraLavender"), Color("RoseGlow")]
-        case 4: [Color("AuroraCoral"), Color("PlumInk"), Color("SeaGlass")]
-        default: [Color("ButterGlow"), Color("SeaGlass"), Color("SkyGlow")]
-        }
-    }
-
-    private var primaryValue: String {
-        if let value = template.sampleValue { return value }
-        return switch metadata.category {
-        case .health: "7,480"
-        case .weather: "23°"
-        case .love: "520 天"
-        case .time: "09:41"
-        case .tools: "72%"
-        case .photos: "AUG 10"
-        case .music: "03:28"
-        case .finance: "+2.36%"
-        case .planner: "3 / 5"
-        case .daily: "今日"
-        case .countdown: "18 天"
-        case .income: "¥386"
-        case .rhythm: "61%"
-        default: "72%"
-        }
-    }
-
-    private var secondaryValues: [String] {
-        switch metadata.category {
-        case .health: ["7.2 h", "98%"]
-        case .weather: ["湿度 56%", "微风 NE"]
-        case .love: ["下次见面 3 天", "周年 42 天"]
-        case .time: ["上海", "伦敦 01:41"]
-        case .tools: ["已使用 84 GB", "剩余 44 GB"]
-        case .photos: ["3 张照片", "两年前"]
-        case .music: ["正在播放", "喜欢的歌单"]
-        case .finance: ["¥12,680", "本月 +6.4%"]
-        case .planner: ["下一项 14:00", "专注 45 MIN"]
-        case .daily: ["适合整理", "幸运时段 16:00"]
-        case .countdown: ["周五出发", "已准备 72%"]
-        case .income: ["本月 61%", "距发薪 12 天"]
-        case .rhythm: ["第 32 周", "还剩 142 天"]
-        default: ["今日", "本周"]
-        }
-    }
-
-    private var metricLabels: [String] {
-        switch metadata.category {
-        case .health: ["今日", "睡眠", "血氧"]
-        case .finance: ["涨跌", "资产", "本月"]
-        case .planner: ["完成", "下一项", "专注"]
-        default: ["当前", "今日", "本周"]
-        }
-    }
-
-    private var sampleRows: [(String, String)] {
-        switch metadata.category {
-        case .planner:
-            [("方案确认", "09:30"), ("散步与晒太阳", "14:00"), ("晚间阅读", "19:30")]
-        case .weather:
-            [("今天", "23° / 16°"), ("明天", "25° / 17°"), ("周三", "22° / 15°")]
-        case .finance:
-            [("科技", "+2.4%"), ("消费", "+0.8%"), ("能源", "-0.3%")]
-        default:
-            [("第一项", secondaryValues[0]), ("第二项", secondaryValues[1]), ("今日状态", "良好")]
-        }
-    }
-
-    private let barValues: [Double] = [0.38, 0.62, 0.48, 0.82, 1, 0.66, 0.52]
-    private let weekLabels = ["一", "二", "三", "四", "五", "六", "日"]
+private struct Line: Shape {
+    func path(in rect: CGRect) -> Path { Path { $0.move(to: .zero); $0.addLine(to: CGPoint(x: rect.width, y: 0)) } }
 }
