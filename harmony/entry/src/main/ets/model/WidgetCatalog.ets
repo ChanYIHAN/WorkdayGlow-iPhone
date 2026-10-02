@@ -1,3 +1,4 @@
+import { getExpandedTemplates } from './ExpandedContent';
 export enum WidgetCategory {
   Featured = '精选',
   Countdown = '下班',
@@ -12,7 +13,8 @@ export enum WidgetCategory {
   Music = '音乐',
   Finance = '行情',
   Planner = '日程',
-  Daily = '日常'
+  Daily = '日常',
+  Learning = '学习'
 }
 
 export enum WidgetLayout {
@@ -31,6 +33,7 @@ export interface WidgetTemplate {
   category: WidgetCategory;
   layout: WidgetLayout;
   palette: number;
+  sampleValue?: string;
 }
 
 const layouts: WidgetLayout[] = [
@@ -76,12 +79,13 @@ function buildCatalog(): WidgetTemplate[] {
   addGroup(result, WidgetCategory.Finance, '延迟参考数据，不制造交易焦虑', ['极简汇率', '汇率矩阵', '旅行换算', '黄金现货', '金价曲线', '金银双卡', '单股行情', '自选股便当', '港美双市场', '数字资产双卡', '组合脉搏', '市场热力图', '预算圆环', '储蓄目标', '支出快照']);
   addGroup(result, WidgetCategory.Planner, '把重要的事放在最容易看见的位置', ['玻璃日程', '一周计划', '专注此刻', '习惯打卡', '番茄专注', '优先级看板', '会议倒计时', '月度总览', '学习计划', '项目里程碑']);
   addGroup(result, WidgetCategory.Daily, '每天一点新鲜感', ['每日一句', '月相观测', '日光节律', '今日肯定', '感恩提问', '星座日签', '节日倒计时']);
-  return result;
+  return result.concat(getExpandedTemplates());
 }
 
 export const widgetTemplates: WidgetTemplate[] = buildCatalog();
 export const widgetCategories: WidgetCategory[] = [
   WidgetCategory.Featured,
+  WidgetCategory.Learning,
   WidgetCategory.Health,
   WidgetCategory.Planner,
   WidgetCategory.Weather,

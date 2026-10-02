@@ -1,9 +1,32 @@
 {
   "string": [
-    { "name": "app_name", "value": "奕刻" },
-    { "name": "module_desc", "value": "100 款原创桌面卡片" },
-    { "name": "ability_desc", "value": "组件画廊与设置" },
-    { "name": "widget_name", "value": "奕刻 · 今日活力" },
-    { "name": "widget_description", "value": "步数、距离、活动能量与今日进度" }
+    {
+      "name": "app_name",
+      "value": "奕刻"
+    },
+    {
+      "name": "module_desc",
+      "value": "100 款原创桌面卡片"
+    },
+    {
+      "name": "ability_desc",
+      "value": "组件画廊与设置"
+    },
+    {
+      "name": "widget_name",
+      "value": "奕刻 · 今日活力"
+    },
+    {
+      "name": "widget_description",
+      "value": "步数、距离、活动能量与今日进度"
+    },
+    {
+      "name": "vocabulary_name",
+      "value": "奕刻 · 每日单词"
+    },
+    {
+      "name": "vocabulary_description",
+      "value": "每日一个入门词，点击进入本地间隔复习"
+    }
   ]
 }

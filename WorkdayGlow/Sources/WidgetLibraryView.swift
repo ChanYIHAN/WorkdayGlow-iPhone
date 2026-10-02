@@ -53,7 +53,7 @@ struct WidgetLibraryView: View {
             .frame(width: 54, height: 54)
 
             VStack(alignment: .leading, spacing: 3) {
-                Text("100 款原创模板")
+                Text("150 款原创模板")
                     .font(.headline)
                 Text("按场景筛选，也可以直接搜索")
                     .font(.caption)

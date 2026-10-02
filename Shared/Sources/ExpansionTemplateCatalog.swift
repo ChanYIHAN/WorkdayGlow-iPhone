@@ -36,7 +36,8 @@ struct ExpansionTemplateMetadata: Sendable {
 
 extension WidgetTemplateKind {
     var expansionMetadata: ExpansionTemplateMetadata? {
-        switch self {
+        if let metadata = newMetadata { return metadata }
+        return switch self {
         case .hydrationBloom:
             item("饮水花园", "用花瓣进度提醒今天温柔补水", .health, "drop.fill", .orbit, 0)
         case .stressBalance:

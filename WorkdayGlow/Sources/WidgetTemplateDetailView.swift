@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct WidgetTemplateDetailView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let template: WidgetTemplateKind
 
     @State private var selectedSize: WidgetArtworkSize
@@ -37,6 +38,16 @@ struct WidgetTemplateDetailView: View {
                 if template.usesGoldMarketData || template.usesStockMarketData {
                     alphaVantageSetupSection
                 }
+                if template.category == .learning {
+                    NavigationLink("开始背单词") { VocabularyStudyView() }
+                        .buttonStyle(.borderedProminent)
+                    Text("桌面词卡在编辑小组件中配置；应用词库与桌面配置独立保存。")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+                if template.expansionMetadata != nil && template.category != .learning {
+                    Text("本款为本地视觉展示模板，尚未接入实时数据或独立编辑功能。")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
                 installSection
             }
             .padding()
@@ -51,7 +62,7 @@ struct WidgetTemplateDetailView: View {
         VStack(spacing: 14) {
             WidgetPreviewView(template: template, size: selectedSize)
                 .frame(maxWidth: selectedSize == .small ? 220 : nil)
-                .animation(.snappy, value: selectedSize)
+                .animation(reduceMotion ? nil : .snappy, value: selectedSize)
 
             Text(previewFootnote)
                 .font(.caption)
@@ -257,6 +268,7 @@ struct WidgetTemplateDetailView: View {
     }
 
     private var configurationInstruction: String {
+        if template.category == .learning { return "长按词汇学习组件，选择学习卡样式；可填写自己的英文、词义和例句。" }
         if let style = template.configurationStyleName {
             if template.usesHealthData {
                 return "添加后长按并选择“编辑小组件”，把样式设为“\(style)”；自动读取不可用时把数据来源改为“手动填写”。"
@@ -291,7 +303,8 @@ struct WidgetTemplateDetailView: View {
     }
 
     private var previewFootnote: String {
-        switch template.category {
+        if template.expansionMetadata != nil { return "本地示例内容 · 学习组件可进入应用练习" }
+        return switch template.category {
         case .health:
             "桌面实际效果会读取你授权的 Apple 健康摘要"
         case .weather:
@@ -324,7 +337,7 @@ struct WidgetTemplateDetailView: View {
     }
 
     private var usesOnlineData: Bool {
-        template.usesWeatherData || template.category == .finance
+        template.usesWeatherData || template.usesExchangeRates || template.usesGoldMarketData || template.usesStockMarketData
     }
 
     private func instructionRow(number: Int, text: String) -> some View {

@@ -24,5 +24,6 @@ struct WorkdayGlowWidgetBundle: WidgetBundle {
         PlannerWidget()
         DailyInspirationWidget()
         CollectionWidget()
+        VocabularyWidget()
     }
 }

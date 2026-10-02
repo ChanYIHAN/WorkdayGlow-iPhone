@@ -12,8 +12,8 @@ android {
         applicationId = "com.workdayglow.android"
         minSdk = 28
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.1.1"
+        versionCode = 3
+        versionName = "0.2.0"
     }
 
     buildFeatures {
@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    testImplementation("junit:junit:4.13.2")
     val composeBom = platform("androidx.compose:compose-bom:2024.12.01")
     implementation(composeBom)
     androidTestImplementation(composeBom)

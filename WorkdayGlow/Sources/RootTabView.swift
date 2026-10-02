@@ -10,6 +10,7 @@ private enum RootTab: Hashable {
 
 struct RootTabView: View {
     @State private var selectedTab: RootTab = .discovery
+    @State private var studying = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -43,6 +44,7 @@ struct RootTabView: View {
                 }
                 .tag(RootTab.settings)
         }
+        .sheet(isPresented: $studying) { NavigationStack { VocabularyStudyView() } }
         .tint(Color.accentColor)
         .onOpenURL(perform: handleDeepLink)
     }
@@ -61,6 +63,8 @@ struct RootTabView: View {
                 try? await Task.sleep(nanoseconds: 350_000_000)
                 ShortcutBridge.run(named: name)
             }
+        case "learning":
+            studying = true
         case "tools":
             selectedTab = .tools
         case "widgets":

@@ -4,7 +4,12 @@ import { window } from '@kit.ArkUI';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    AppStorage.setOrCreate('openLearning', want.parameters?.destination === 'learning');
     hilog.info(0x0000, 'WorkdayGlow', 'EntryAbility created');
+  }
+
+  onNewWant(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    AppStorage.setOrCreate('openLearning', want.parameters?.destination === 'learning');
   }
 
   onWindowStageCreate(windowStage: window.WindowStage): void {

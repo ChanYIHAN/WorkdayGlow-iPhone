@@ -5,51 +5,91 @@
 ![iOS 17+](https://img.shields.io/badge/iOS-17%2B-111111?logo=apple)
 ![Android 9+](https://img.shields.io/badge/Android-9%2B-3DDC84?logo=android&logoColor=white)
 ![HarmonyOS](https://img.shields.io/badge/HarmonyOS-ArkTS-EA3323)
-![Templates](https://img.shields.io/badge/Widget%20Templates-100-6C63FF)
+![Templates](https://img.shields.io/badge/Widget%20Templates-150-6C63FF)
 
-一个本地优先、跨 iOS、Android 与 HarmonyOS 的设计型桌面组件项目。组件库围绕健康、天气、倒计时、时间、工具、相册、音乐、汇率、黄金、港美股和日程等场景，共提供 **100 款中文视觉模板**。
+一个本地优先、跨 iOS、Android 与 HarmonyOS 的设计型桌面组件项目。组件库围绕健康、天气、倒计时、时间、工具、相册、音乐、汇率、黄金、港美股和日程等场景，共提供 **150 款中文视觉模板**。
 
 项目不包含自建服务器、账号系统、广告、统计 SDK 或付费能力。三端共享同一套内容目录与设计语言，同时保留各自平台的原生交互、字体、动态配色、圆角和桌面组件规范。
 
-> **让每一刻，恰好可见。** 当前主版本：iOS `0.7.1`、Android/HarmonyOS `0.1.1`。iOS 与 Android 使用 GitHub Actions 构建；HarmonyOS 已提供 ArkTS 源码工程，首次 HAP 编译需要 DevEco Studio 和 HarmonyOS SDK。
+> **让每一刻，恰好可见。** 当前主版本：iOS `0.8.0`、Android/HarmonyOS `0.2.0`。iOS 与 Android 使用 GitHub Actions 构建；HarmonyOS 已提供 ArkTS 源码工程，首次 HAP 编译需要 DevEco Studio 和 HarmonyOS SDK。
+
+## 0.8 / 0.2 新增能力
+
+- 三端统一扩展为 **150 款视觉主题**，保留原有 100 项；新增内容从共享 JSON 生成。
+- iOS 26 使用原生 Liquid Glass，旧系统使用 Material 降级，支持减少透明度。Android 使用原生绘制的玻璃视觉近似，HarmonyOS 使用 ArkUI 背景模糊；两端设置页支持不透明背景与动效开关。
+- 新增 **20 款学习主题**，三端应用内支持英文/词义翻面、记住/再练、本地保存与个人词库导入。iOS/Android 支持设备英文朗读；鸿蒙当前使用文字练习。
+- 内置 **40 个入门词与原创例句**。成功记忆按 1、3、7、14、30 天间隔复习，忘记后 1 分钟重试；应用只在前台检查到期时间，不承诺后台提醒。
+- 另外新增旅行、休息、效率与生活主题 **30 款**，目前为本地示例展示，不代表已接入航班、通勤、心情等实时数据或完整编辑能力。
+- 桌面组件受平台刷新预算约束，不播放持续动画；轻动效用于应用内交互。
+
+### 开始背单词
+
+iOS 在组件库筛选“学习”，进入任一详情后点击“开始背单词”；Android/鸿蒙进入“学习”标签页。翻面揭晓词义后，选择“记住了”或“再想一想”。
+
+导入格式为每行 `英文 | 中文 | 例句（可选）`，也支持制表符。每次最多读取前 500 行，无效行忽略，相同英文更新内容并重置该词进度。
+
+```text
+curious | 好奇的 | Stay curious about the world.
+resilient | 有韧性的 | A resilient team learns from setbacks.
+```
+
+雅思、四六级、词根、短语等名称是学习主题，**不附带完整考试词库**，可以导入对应内容。
+
+### 桌面词卡的范围
+
+- iOS：“词汇学习”入口可选择 20 种主题；英文留空时按本地日历切换入门词，也可配置英文、词义与例句。支持桌面翻面和“已记住”标记。为保留免费侧载兼容性，不启用 App Group，桌面词卡配置和标记在扩展内保存，**与应用内词库/间隔复习独立**。
+- Android：Glance 词卡读取应用词库并优先显示到期词；桌面翻面、记住与应用共享本地进度。导入或复习后刷新词卡，系统可能延迟桌面更新。
+- HarmonyOS：Form Kit 词卡按日轮换入门词，点击进入学习页；尚未同步个人词库和复习进度。
+
+研究方法与三端材质差异见 [玻璃设计说明](design-system/workdayglow/LIQUID-GLASS.md)。研究参考 [Koco 官方介绍](https://apps.apple.com/us/app/koco-widgets-app-launcher/id6702013570)，未复制其资产或源码。
+
+### 内容与逻辑验证
+
+```bash
+node Scripts/sync-content.mjs
+node --test Tests/content.test.mjs
+```
+
+Swift 复习/导入/目录测试在 macOS CI 执行；Android 执行 `gradle :app:testDebugUnitTest :app:assembleDebug`。HarmonyOS 尚需 DevEco Studio 与实际设备验收，源码检查不代表 HAP 编译通过。
 
 ## 项目状态
 
 | 平台 | 主应用 | 桌面组件 | 数据能力 | 构建状态 |
 | --- | --- | --- | --- | --- |
-| iOS 17+ | SwiftUI 五栏应用、搜索与 100 款画廊 | 20 个 WidgetKit 入口，覆盖小/中/大与部分锁屏尺寸 | HealthKit、Open-Meteo、ECB、Alpha Vantage、本地数据与手动备用 | 可生成未签名 IPA |
-| Android 9+ | Jetpack Compose、Material 3、动态配色与 100 款画廊 | 1 个可调整尺寸的 Glance“今日活力”组件 | Health Connect 权限与依赖框架已预留；当前组件使用展示数据 | 可生成 Debug APK |
-| HarmonyOS | ArkUI 五栏应用、搜索与 100 款画廊 | 1 个多尺寸“今日活力”Form Kit 服务卡片 | 当前使用展示数据，等待真机 API 接入 | 源码完成，待 DevEco Studio 验证 |
+| iOS 17+ | SwiftUI 五栏应用、搜索与 150 款画廊 | 21 个 WidgetKit 入口，覆盖小/中/大与部分锁屏尺寸 | HealthKit、Open-Meteo、ECB、Alpha Vantage、本地数据与手动备用 | 可生成未签名 IPA |
+| Android 9+ | Jetpack Compose、Material 3、动态配色与 150 款画廊 | 今日活力 + 可翻面的 Glance 词汇学习组件 | Health Connect 权限与依赖框架已预留；当前组件使用展示数据 | 可生成 Debug APK |
+| HarmonyOS | ArkUI 五栏应用、搜索与 150 款画廊 | 今日活力 + 每日单词 Form Kit 服务卡片 | 当前使用展示数据，等待真机 API 接入 | 源码完成，待 DevEco Studio 验证 |
 
-这里的“100 款”指三端统一的视觉模板目录，不代表系统组件选择器中会出现 100 个独立入口。iOS 将相近设计合并到 20 个 WidgetKit 入口，并通过“编辑小组件”切换具体样式；Android 与 HarmonyOS 当前各实现了一个原生桌面卡片，后续会逐步扩展原生入口与实时数据。
+这里的“150 款”指三端统一的视觉模板目录，不代表系统组件选择器中会出现 150 个独立入口。iOS 将相近设计合并到 20 个 WidgetKit 入口，并通过“编辑小组件”切换具体样式；Android 与 HarmonyOS 当前各实现了两个原生桌面卡片，后续会逐步扩展原生入口与实时数据。
 
-## 100 款组件目录
+## 150 款组件目录
 
 | 分类 | 数量 | 代表设计 |
 | --- | ---: | --- |
-| 健康 | 13 | 健康便当、睡眠丝带、血氧脉冲、心率区间、睡眠阶段、饮水花园 |
+| 健康 | 21 | 健康便当、睡眠丝带、血氧脉冲、心率区间、睡眠阶段、饮水花园 |
 | 天气 | 8 | 天气画布、逐时天气、降雨雷达、空气质量、一周天气、晨昏预报 |
 | 恋爱 | 5 | 恋爱天数、纪念日轨道、双人相框、情书便签、下次约会 |
-| 时间 | 8 | 编辑部时钟、世界时间、翻页时钟、文字时钟、专注时钟、时区长条 |
+| 时间 | 10 | 编辑部时钟、世界时间、翻页时钟、文字时钟、专注时钟、时区长条 |
 | 工具 | 8 | 灵动控制台、快捷开关、电量面板、二维码入口、快捷便签、应用启动台 |
-| 相册 | 7 | 拍立得记忆、胶片时刻、照片叠层、宽幅记忆、手帐拼贴 |
-| 音乐 | 7 | 黑胶唱片、玻璃播放器、声波胶囊、专辑陈列架、歌词摘录 |
-| 行情与财务 | 15 | 汇率矩阵、旅行换算、黄金现货、港美双市场、市场热力图、预算圆环 |
-| 日程 | 10 | 玻璃日程、一周计划、习惯打卡、番茄专注、月度总览、项目里程碑 |
-| 日常 | 7 | 每日一句、月相观测、日光节律、今日肯定、感恩提问 |
+| 相册 | 9 | 拍立得记忆、胶片时刻、照片叠层、宽幅记忆、手帐拼贴 |
+| 音乐 | 8 | 黑胶唱片、玻璃播放器、声波胶囊、专辑陈列架、歌词摘录 |
+| 行情与财务 | 16 | 汇率矩阵、旅行换算、黄金现货、港美双市场、市场热力图、预算圆环 |
+| 日程 | 23 | 玻璃日程、一周计划、习惯打卡、番茄专注、月度总览、项目里程碑 |
+| 日常 | 11 | 每日一句、月相观测、日光节律、今日肯定、感恩提问 |
 | 下班倒计时 | 5 | 光轨倒计时、极简倒计时、今晚提案、假期倒计时、周末倒计时 |
 | 收入 | 4 | 收入便当、发薪月历、本月收入进度、加班收益估算 |
 | 节奏 | 3 | 本周节奏、进度轨道、年度进度 |
-| **合计** | **100** | 六类响应式构图：Orbit、Bento、Timeline、Poster、Gauge、List |
+| 学习 | 20 | 每日单词、翻面、到期复习、例句、易忘词夹、词汇目标、阅读摘录 |
+| **合计** | **150** | 六类响应式构图：Orbit、Bento、Timeline、Poster、Gauge、List |
 
 ## 设计特点
 
 - 苹果风的空间层次、玻璃材质、柔和渐变和大面积留白，不逐像素复制任何第三方产品。
-- Android 使用 Material 3 语义色、动态配色、48dp 触控区域和 Glance 原生组件能力。
-- HarmonyOS 使用 ArkUI/ArkTS 与 Form Kit，并遵循服务卡片的尺寸和刷新限制。
+- Android 使用通透渐变、反射边缘、阴影与 Material 3 语义色、动态配色、48dp 触控区域和 Glance 原生组件能力。
+- HarmonyOS 使用背景模糊、玻璃卡片与轻量属性动画，基于 ArkUI/ArkTS 与 Form Kit，并遵循服务卡片的尺寸和刷新限制。
 - 小、中、大尺寸采用不同信息密度，而不是简单缩放同一张卡片。
 - 支持浅色与深色语义配色；核心状态同时使用文字、图标与颜色表达。
-- 100 项长列表采用原生惰性布局，保持搜索、筛选和滚动性能。
+- 150 项长列表采用原生惰性布局，保持搜索、筛选和滚动性能。
 
 设计令牌和平台差异说明位于 [`design-system/workdayglow`](design-system/workdayglow)。
 
@@ -108,7 +148,7 @@ hvigorw --mode project -p product=default -p buildMode=debug assembleApp
 - 音乐：填写歌名、歌手、Apple Music 分享链接和可选封面。
 - 汇率：选择基准币种、目标币种与金额，无需 API Key。
 - 黄金与港美股：填写 Alpha Vantage API Key 和品种/股票代码。
-- 灵感合集：在同一个组件入口中切换新增的 55 款设计。
+- 灵感合集：在同一个组件入口中切换85 款展示设计；另有 20 款词汇主题入口。
 
 ## 数据来源与能力边界
 
@@ -124,7 +164,7 @@ hvigorw --mode project -p product=default -p buildMode=debug assembleApp
 
 ### Android 与 HarmonyOS
 
-- 已完成 100 款本地模板目录、搜索、筛选、预览与原生桌面卡片基础工程。
+- 已完成 150 款本地模板目录、搜索、筛选、预览与原生桌面卡片基础工程。
 - Android 已声明 Health Connect 依赖和权限入口，但尚未完成用户授权、数据读取与桌面组件刷新链路。
 - 天气、健康、行情、相册和音乐目前为展示数据；接入正式 API 前不应视为实时结果。
 
@@ -172,7 +212,7 @@ gradle :app:assembleDebug
 .
 ├─ WorkdayGlow/Sources          iOS SwiftUI 主应用
 ├─ WorkdayGlowWidget/Sources    WidgetKit、App Intents 与桌面组件
-├─ Shared/Sources               iOS 共享模型、计算逻辑与 100 款视觉目录
+├─ Shared/Sources               iOS 共享模型、计算逻辑与 150 款视觉目录
 ├─ Shared/Resources             iOS 颜色、资源与隐私清单
 ├─ android                      Kotlin、Compose、Material 3 与 Glance 工程
 ├─ harmony                      ArkTS、ArkUI、Stage 模型与 Form Kit 工程
@@ -184,7 +224,7 @@ gradle :app:assembleDebug
 
 ## 持续集成
 
-仓库包含两个可手动触发的 GitHub Actions 工作流：
+仓库包含 iOS、Android 构建与共享内容验证工作流；代码推送和 PR 自动执行，也可手动触发：
 
 - [`Build Ekhart unsigned IPA`](.github/workflows/build-unsigned-ipa.yml)：在 macOS runner 上生成 Xcode 工程、关闭代码签名并打包 IPA。
 - [`Build Ekhart Android APK`](.github/workflows/build-android.yml)：在 Ubuntu runner 上使用 Java 17 和 Gradle 8.11.1 生成 Debug APK。
